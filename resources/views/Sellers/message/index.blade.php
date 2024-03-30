@@ -50,7 +50,7 @@
 </div>
 @endsection
 @push('styles')
-  <link href="{{asset('Sellers/vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
+  <link href="{{asset('backend/vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
   <style>
       div.dataTables_wrapper div.dataTables_paginate{
@@ -66,12 +66,12 @@
   </style>
 @endpush
 @push('scripts')
-  <script src="{{asset('Sellers/vendor/datatables/jquery.dataTables.min.js')}}"></script>
-  <script src="{{asset('Sellers/vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
+  <script src="{{asset('backend/vendor/datatables/jquery.dataTables.min.js')}}"></script>
+  <script src="{{asset('backend/vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 
   <!-- Page level custom scripts -->
-  <script src="{{asset('Sellers/js/demo/datatables-demo.js')}}"></script>
+  <script src="{{asset('backend/js/demo/datatables-demo.js')}}"></script>
   <script>
 
       $('#message-dataTable').DataTable( {

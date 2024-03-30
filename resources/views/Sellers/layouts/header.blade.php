@@ -53,7 +53,7 @@
           @if(Auth()->user()->photo)
             <img class="img-profile rounded-circle" src="{{Auth()->user()->photo}}">
           @else
-            <img class="img-profile rounded-circle" src="{{asset('Sellers/img/avatar.png')}}">
+            <img class="img-profile rounded-circle" src="{{asset('backend/img/avatar.png')}}">
           @endif
         </a>
 
@@ -66,7 +66,7 @@
             <i class="fas fa-key fa-sm fa-fw mr-2 text-gray-400"></i>
             Change Password
           </a>
-          
+
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="{{ route('logout') }}"
                 onclick="event.preventDefault();
