@@ -1,4 +1,4 @@
-@extends('Sellers.layouts.master')
+@extends('Sellers.InStoreLayouts.InStoreMaster')
 @section('title','Seller Dashboard')
 @section('main-content')
 <div class="container-fluid">

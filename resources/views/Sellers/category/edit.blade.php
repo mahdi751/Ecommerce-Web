@@ -1,4 +1,4 @@
-@extends('Sellers.layouts.master')
+@extends('Sellers.InStorelayouts.InStoreMaster')
 
 @section('main-content')
 

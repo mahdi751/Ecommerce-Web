@@ -15,12 +15,14 @@ class Seller
      */
     public function handle($request, Closure $next)
     {
-        if($request->user()->role == 'seller') {
+        $user = $request->user();
+
+        if ($user && $user->role === 'seller') {
             return $next($request);
         } else {
-            request()->session()->flash('error', 'You do not have permission to access this page');
-            //return redirect()->route($request->user()->role);
+            $request->session()->flash('error', 'You do not have permission to access this page');
             return redirect()->route('home');
         }
     }
+
 }

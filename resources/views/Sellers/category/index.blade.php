@@ -1,4 +1,4 @@
-@extends('Sellers.layouts.master')
+@extends('Sellers.InStorelayouts.InStoreMaster')
 
 @section('main-content')
  <!-- DataTales Example -->
@@ -25,6 +25,7 @@
               <th>Parent Category</th>
               <th>Photo</th>
               <th>Status</th>
+              <th>Store</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -81,7 +82,6 @@
             @endforeach
           </tbody>
         </table>
-        <span style="float:right">{{$categories->links()}}</span>
         @else
           <h6 class="text-center">No Categories found!!! Please create Category</h6>
         @endif

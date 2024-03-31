@@ -74,7 +74,6 @@
                               <option value="">-----Select Role-----</option>
                                   <option value="seller" {{(($profile->role=='seller')? 'selected' : '')}}>Seller</option>
                                   <option value="user" {{(($profile->role=='user')? 'selected' : '')}}>User</option>
-                                  {{-- <option value="user" {{(($profile->role=='admin')? 'selected' : '')}}>Admin</option> --}}
                           </select>
                         @error('role')
                         <span class="text-danger">{{$message}}</span>

@@ -22,10 +22,10 @@ return new class extends Migration
             $table->tinyInteger('is_parent')->default(1);
             $table->enum('status', ['active', 'inactive'])->default('inactive');
             $table->timestamps();
-
-            $table->foreignId('parent_id')->references('id')->on('categories')->onDelete('cascade');
-            $table->foreignId('store_id')->references('id')->on('stores')->onDelete('cascade');
+            $table->foreignId('parent_id')->nullable()->constrained('categories')->onDelete('cascade');
+            $table->foreignId('store_id')->constrained('stores')->onDelete('cascade');
         });
+
     }
 
     /**
