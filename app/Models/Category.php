@@ -33,15 +33,18 @@ class Category extends Model
 
 
     public static function getAllCategory(){
-        return  Category::orderBy('id','DESC')->paginate(10);
+        $storeId = session('current_store_id');
+        return  Category::orderBy('id','DESC')->paginate(10)->where('store_id',$storeId);
     }
 
     public static function getChildByParentID($id){
-        return Category::where('parent_id',$id)->orderBy('id','ASC')->pluck('title','id');
+        $storeId = session('current_store_id');
+        return Category::where('parent_id',$id)->orderBy('id','ASC')->pluck('title','id')->where('store_id',$storeId);
     }
 
     public static function getAllParentWithChild(){
-        return Category::with('child_cat')->where('is_parent',1)->where('status','active')->orderBy('title','ASC')->get();
+        $storeId = session('current_store_id');
+        return Category::with('child_cat')->where('is_parent',1)->where('status','active')->orderBy('title','ASC')->where('store_id',$storeId)->get();
     }
 
 }
