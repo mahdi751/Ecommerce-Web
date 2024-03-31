@@ -16,9 +16,9 @@
 
     <!-- Nav Item - Dashboard -->
     <li class="nav-item active">
-      <a class="nav-link" href="{{route('seller')}}">
-        <i class="fas fa-fw fa-tachometer-alt"></i>
-        <span>Dashboard</span></a>
+        <a class="nav-link" href="{{ route('seller') }}">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Dashboard</span></a>
     </li>
 
     <!-- Divider -->
@@ -32,46 +32,48 @@
     <!-- Nav Item - Pages Collapse Menu -->
     <!-- Nav Item - Charts -->
     <li class="nav-item">
-        <a class="nav-link" href="{{route('file-manager')}}">
+        <a class="nav-link" href="{{ route('file-manager') }}">
             <i class="fas fa-fw fa-chart-area"></i>
             <span>Media Manager</span></a>
     </li>
 
     <hr class="sidebar-divider">
-        <div class="sidebar-heading">
-            @if(session()->has('current_store_name'))
-                {{ session('current_store_name') }} Store
-            @else
-                Default Shop Name
-            @endif
-        </div>
+    <div class="sidebar-heading">
+        @if (session()->has('current_store_name'))
+            {{ session('current_store_name') }} Store
+        @else
+            Default Shop Name
+        @endif
+    </div>
 
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#categoryCollapse" aria-expanded="true" aria-controls="categoryCollapse">
-          <i class="fas fa-sitemap"></i>
-          <span>Category</span>
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#categoryCollapse"
+            aria-expanded="true" aria-controls="categoryCollapse">
+            <i class="fas fa-sitemap"></i>
+            <span>Category</span>
         </a>
         <div id="categoryCollapse" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Category Options:</h6>
-            <a class="collapse-item" href="{{route('category.index')}}">Category</a>
-            <a class="collapse-item" href="{{route('category.create')}}">Add Category</a>
-          </div>
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Category Options:</h6>
+                <a class="collapse-item" href="{{ route('category.index') }}">Category</a>
+                <a class="collapse-item" href="{{ route('category.create') }}">Add Category</a>
+            </div>
         </div>
     </li>
 
     {{-- Products --}}
-    {{-- <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#productCollapse" aria-expanded="true" aria-controls="productCollapse">
-          <i class="fas fa-cubes"></i>
-          <span>Products</span>
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#productCollapse"
+            aria-expanded="true" aria-controls="productCollapse">
+            <i class="fas fa-cubes"></i>
+            <span>Products</span>
         </a>
         <div id="productCollapse" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Product Options:</h6>
-            <a class="collapse-item" href="{{route('product.index')}}">Products</a>
-            <a class="collapse-item" href="{{route('product.create')}}">Add Product</a>
-          </div>
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Product Options:</h6>
+                <a class="collapse-item" href="{{ route('product.index') }}">Products</a>
+                <a class="collapse-item" href="{{ route('product.create') }}">Add Product</a>
+            </div>
         </div>
     </li>
 
@@ -135,7 +137,7 @@
 
     <!-- Sidebar Toggler (Sidebar) -->
     <div class="text-center d-none d-md-inline">
-      <button class="rounded-circle border-0" id="sidebarToggle"></button>
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
     </div>
 
 </ul>

@@ -24,4 +24,7 @@ class Product extends Model
     {
         return $this->hasMany(Cart::class);
     }
+    public static function getAllProduct(){
+        return Product::with(['cat_info','sub_cat_info'])->orderBy('id','desc')->paginate(10);
+    }
 }
