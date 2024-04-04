@@ -92,7 +92,7 @@
                     <label for="condition">Condition</label>
                     <select name="condition" class="form-control">
                         <option value="">--Select Condition--</option>
-                        <option value="default">Default</option>
+                        <option value="default" selected>Default</option>
                         <option value="new">New</option>
                         <option value="hot">Hot</option>
                     </select>
