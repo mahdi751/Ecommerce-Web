@@ -21,7 +21,12 @@ class CategoryController extends Controller
 
     public function create()
     {
-        $parent_categaries=Category::where('is_parent',1)->orderBy('title','ASC')->get();
+        $storeId = session('current_store_id');
+        $parent_categaries = Category::where('is_parent', 1)
+                              ->where('store_id', $storeId)
+                              ->orderBy('title','ASC')
+                              ->get();
+      
         return view('Sellers.category.create')->with('parent_categaries',$parent_categaries);
     }
 
@@ -35,6 +40,7 @@ class CategoryController extends Controller
     {
         $storeId = session('current_store_id');
         $request['store_id'] = $storeId;
+
 
             $this->validate($request,[
             'title'=>'string|required',
@@ -79,7 +85,12 @@ class CategoryController extends Controller
 
     public function edit($id)
     {
-        $parent_cats=Category::where('is_parent',1)->get();
+
+        $storeId = session('current_store_id');
+        $parent_cats = Category::where('is_parent', 1)
+                              ->where('store_id', $storeId)
+                              ->get();
+      
         $category=Category::findOrFail($id);
         return view('Sellers.category.edit')->with('category',$category)->with('parent_cats',$parent_cats);
     }
@@ -97,6 +108,8 @@ class CategoryController extends Controller
 
         $storeId = session('current_store_id');
         $request['store_id'] = $storeId;
+  
+
 
             $this->validate($request,[
             'title'=>'string|required',
@@ -152,4 +165,7 @@ class CategoryController extends Controller
             return response()->json(['status'=>true,'msg'=>'','data'=>$child_cat]);
         }
     }
+
+
+
 }

@@ -38,7 +38,9 @@
                         <option value="">--Select any category--</option>
                         @foreach ($parent_cats as $key => $parent_cat)
                             <option value='{{ $parent_cat->id }}'
-                                {{ $parent_cat->id == $category->parent_id ? 'selected' : '' }}>{{ $parent_cat->title }}
+                                {{ $parent_cat->id == $category->parent_id ? 'selected' : '' }}
+                                {{ $category->id == $parent_cat->id ? 'disabled' : '' }}>
+                                {{ $parent_cat->title }}
                             </option>
                         @endforeach
                     </select>
