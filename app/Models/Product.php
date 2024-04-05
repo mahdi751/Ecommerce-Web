@@ -24,9 +24,6 @@ class Product extends Model
     // {
     //     return $this->hasMany(Cart::class);
     // }
-    // public static function getAllProduct(){
-    //     return Product::with(['cat_info','sub_cat_info'])->orderBy('id','desc')->paginate(10);
-    // }
 
     
 
@@ -38,6 +35,17 @@ class Product extends Model
     }
     public static function getAllProduct(){
         return Product::with(['cat_info','sub_cat_info'])->orderBy('id','desc')->paginate(10);
+    }
+    public static function getProductsByStore(){
+        $storeId = session('current_store_id');
+        return Product::whereHas('cat_info', function($query) use ($storeId) {
+                    $query->where('store_id', $storeId);
+                })
+                ->orWhereHas('sub_cat_info', function($query) use ($storeId) {
+                    $query->where('store_id', $storeId);
+                })
+                ->orderBy('id', 'desc')
+                ->paginate(10);
     }
     public function rel_prods(){
         return $this->hasMany('App\Models\Product','cat_id','cat_id')->where('status','active')->orderBy('id','DESC')->limit(8);

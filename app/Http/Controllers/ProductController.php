@@ -18,7 +18,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products=Product::getAllProduct();
+        $products=Product::getProductsByStore();
         // return $products;
         return view('Sellers.product.index')->with('products',$products);
     }
@@ -30,8 +30,11 @@ class ProductController extends Controller
      */
     public function create()
     {
-  
-        $category=Category::where('is_parent',1)->get();
+        $storeId = session('current_store_id');
+        $category = Category::where('is_parent', 1)
+                              ->where('store_id', $storeId)
+                              ->get();
+    
         // return $category;
         return view('Sellers.product.create')->with('categories',$category);
     }
@@ -110,7 +113,10 @@ class ProductController extends Controller
     {
        
         $product=Product::findOrFail($id);
-        $category=Category::where('is_parent',1)->get();
+        $storeId = session('current_store_id');
+        $category = Category::where('is_parent', 1)
+                              ->where('store_id', $storeId)
+                              ->get();
         $items=Product::where('id',$id)->get();
         // return $items;
         return view('Sellers.product.edit')->with('product',$product)
