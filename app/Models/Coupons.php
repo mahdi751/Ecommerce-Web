@@ -14,4 +14,18 @@ class Coupons extends Model
     {
         return $this->belongsTo(Store::class);
     }
+    public static function findByCode($code){
+        return self::where('code',$code)->first();
+    }
+    public function discount($total){
+        if($this->type=="fixed"){
+            return $this->value;
+        }
+        elseif($this->type=="percent"){
+            return ($this->value /100)*$total;
+        }
+        else{
+            return 0;
+        }
+    }
 }
