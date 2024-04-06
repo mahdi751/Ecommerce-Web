@@ -9,6 +9,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductReviewController;
 use App\Http\Controllers\CouponsController;
+use App\Http\Controllers\OrderController;
 // use \UniSharp\LaravelFilemanager\Lfm;
 
 /*
@@ -75,6 +76,9 @@ Route::group(['prefix' => '/seller', 'middleware' => ['auth', 'seller']], functi
 Route::group(['prefix' => '/user', 'middleware' => ['user']], function () {
     Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('user');
 });
+
+Route::get('/income', [OrderController::class, 'incomeChart'])->name('product.order.income');
+
 
 Auth::routes();
 

@@ -47,4 +47,12 @@ class Category extends Model
         return Category::with('child_cat')->where('is_parent',1)->where('status','active')->orderBy('title','ASC')->where('store_id',$storeId)->get();
     }
 
+    public static function countActiveCategory(){
+        $data=Category::where('status','active')->count();
+        if($data){
+            return $data;
+        }
+        return 0;
+    }
+
 }
