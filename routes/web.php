@@ -7,6 +7,8 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProductReviewController;
+
 // use \UniSharp\LaravelFilemanager\Lfm;
 
 /*
@@ -79,3 +81,9 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 // Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () { '\vendor\UniSharp\LaravelFilemanager\Lfm::routes()'; });
+
+
+// Product Review
+Route::resource('/review', '\App\Http\Controllers\ProductReviewController');
+Route::post('product/{slug}/review', [ProductReviewController::class, 'store'])->name('review.store');
+
