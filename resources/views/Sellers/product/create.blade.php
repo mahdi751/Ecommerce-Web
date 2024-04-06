@@ -180,7 +180,7 @@
             if (cat_id != null) {
                 // Ajax call
                 $.ajax({
-                    url: "/admin/category/" + cat_id + "/child",
+                    url: "/seller/category/" + cat_id + "/child",
                     data: {
                         _token: "{{ csrf_token() }}",
                         id: cat_id

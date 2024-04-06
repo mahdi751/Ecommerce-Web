@@ -193,7 +193,7 @@
             if (cat_id != null) {
                 // ajax call
                 $.ajax({
-                    url: "/admin/category/" + cat_id + "/child",
+                    url: "/seller/category/" + cat_id + "/child",
                     type: "POST",
                     data: {
                         _token: "{{ csrf_token() }}"
