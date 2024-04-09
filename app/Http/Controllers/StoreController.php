@@ -45,6 +45,7 @@ class StoreController extends Controller
             'email' => 'string|nullable',
             'phone_number' => 'required|required',
             'address' => 'string|nullable',
+            'photo'=>'string|nullable',
             'owner_id' => 'required|exists:users,id',
         ]);
 
@@ -110,6 +111,7 @@ class StoreController extends Controller
             'email' => 'string|nullable',
             'phone_number' => 'required|required',
             'address' => 'string|nullable',
+            'photo'=>'string|nullable',
             'owner_id' => 'required|exists:users,id',
         ]);
 
