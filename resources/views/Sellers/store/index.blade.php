@@ -25,6 +25,7 @@
               <th>Phone</th>
               <th>Address</th>
               <th>Status</th>
+              <th>Photo</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -37,6 +38,7 @@
                 <th>Phone</th>
                 <th>Address</th>
                 <th>Status</th>
+                <th>Photo</th>
                 <th>Action</th>
             </tr>
           </tfoot>
@@ -48,7 +50,7 @@
                 <tr>
                     <td>{{$store->id}}</td>
                     <td>{{$store->name}}</td>
-                    <td>{{$store->description}}</td>
+                    <td>{!! $store->description !!}</td>
                     <td>{{$store->email}}</td>
                     <td>{{$store->phone_number}}</td>
                     <td>{{$store->address}}</td>
@@ -59,6 +61,18 @@
                             <span class="badge badge-warning">{{$store->status}}</span>
                         @endif
                     </td>
+                    <td>
+                        @if ($store->photo)
+                            @php
+                                $photo = explode(',', $store->photo);
+                                // dd($photo);
+                            @endphp
+                            <img src="{{ $photo[0] }}" class="img-fluid zoom" style="max-width:80px"
+                                alt="{{ $store->photo }}">
+                        @else
+                            <img src="{{ asset('backend/img/thumbnail-default.jpg') }}" class="img-fluid"
+                                style="max-width:80px" alt="avatar.png">
+                        @endif
                     <td>
                         <a href="{{route('store.edit',$store->id)}}" class="btn btn-primary btn-sm float-left mr-1" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="edit" data-placement="bottom"><i class="fas fa-edit"></i></a>
                         <a href="{{route('store.show',$store->id)}}" class="btn btn-warning btn-sm float-left mr-1" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="view" data-placement="bottom"><i class="fas fa-eye"></i></a>

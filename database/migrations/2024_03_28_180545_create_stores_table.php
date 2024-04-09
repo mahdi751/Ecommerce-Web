@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->string('phone_number');
             $table->string('address')->nullable();
+            $table->string('photo')->nullable();
             $table->enum('status', ['active', 'inactive'])->default('inactive');
             $table->foreignId('owner_id')->references('id')->on('users')->onDelete('cascade');
 

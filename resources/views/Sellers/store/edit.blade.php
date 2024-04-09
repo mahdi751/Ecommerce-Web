@@ -41,6 +41,25 @@
                 @enderror
               </div>
 
+
+              <div class="form-group">
+                <label for="inputPhoto" class="col-form-label">Photo <span class="text-danger">*</span></label>
+                <div class="input-group">
+                    <span class="input-group-btn">
+                        <a id="lfm" data-input="thumbnail" data-preview="holder"
+                            class="btn btn-primary text-white">
+                            <i class="fas fa-image"></i> Choose
+                        </a>
+                    </span>
+                    <input id="thumbnail" class="form-control" type="text" name="photo"
+                        value="{{ $store->photo }}">
+                </div>
+                <div id="holder" style="margin-top:15px;max-height:100px;"></div>
+                @error('photo')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+
               <div class="form-group">
                   <label for="inputAddress" class="col-form-label">Address</label>
                   <input id="inputAddress" type="text" name="address" placeholder="Enter store address"  value="{{$store->address}}" class="form-control">
@@ -48,6 +67,8 @@
                   <span class="text-danger">{{$message}}</span>
                   @enderror
                 </div>
+
+
         <div class="form-group mb-3">
            <button class="btn btn-success" type="submit">Update</button>
         </div>
@@ -64,6 +85,8 @@
 <script src="/vendor/laravel-filemanager/js/stand-alone-button.js"></script>
 <script src="{{asset('backend/summernote/summernote.min.js')}}"></script>
 <script>
+    $('#lfm').filemanager('image');
+
     $(document).ready(function() {
     $('#description').summernote({
       placeholder: "Write short description.....",
