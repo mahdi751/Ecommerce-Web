@@ -10,6 +10,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductReviewController;
 use App\Http\Controllers\CouponsController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\AdminController;
 use \UniSharp\LaravelFilemanager\Lfm;
 
 /*
@@ -41,8 +42,6 @@ Route::group(['prefix' => '/seller', 'middleware' => ['auth', 'seller']], functi
     Route::get('/file-manager', function () {
         return view('Sellers.layouts.file-manager');
     })->name('file-manager');
-
-    Route::get('/store', [\App\Http\Controllers\StoreController::class, 'index'])->name('store.index');
 
     Route::get('/store', [\App\Http\Controllers\StoreController::class, 'index'])->name('store.index');
     Route::resource('/store', '\App\Http\Controllers\StoreController');
@@ -91,6 +90,19 @@ Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']
     Lfm::routes();
 });
 
+
+Route::group(['prefix' => '/admin', 'middleware' => ['auth', 'admin']], function () {
+
+    Route::get('/', [\App\Http\Controllers\AdminController::class, 'index'])->name('admin');
+    Route::get('/profile', [\App\Http\Controllers\AdminController::class, 'profile'])->name('admin-profile');
+    Route::post('/profile/{id}', [\App\Http\Controllers\AdminController::class, 'profileUpdate'])->name('profile-update');
+
+    Route::get('/stores', [\App\Http\Controllers\StoreController::class, 'stores'])->name('store.stores');
+    Route::get('/stores/{id}', [\App\Http\Controllers\StoreController::class, 'editAdmin'])->name('store.editAdmin');
+    Route::patch('/stores/{id}', [\App\Http\Controllers\StoreController::class, 'updateAdmin'])->name('store.updateAdmin');
+
+    Route::resource('users', '\App\Http\Controllers\UserController');
+});
 // Product Review
 Route::resource('/review', '\App\Http\Controllers\ProductReviewController');
 Route::post('product/{slug}/review', [ProductReviewController::class, 'store'])->name('review.store');
