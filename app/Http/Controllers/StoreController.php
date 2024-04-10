@@ -24,6 +24,13 @@ class StoreController extends Controller
          return view('Sellers.store.index')->with('stores',$stores);
     }
 
+    public function stores()
+    {
+         $stores=Store::all();
+         return view('admin.store.index')->with('stores',$stores);
+    }
+
+
     public function create()
     {
         return view('Sellers.store.create');
@@ -97,6 +104,38 @@ class StoreController extends Controller
     {
         $store=Store::findOrFail($id);
         return view('Sellers.store.edit')->with('store',$store);
+    }
+
+    public function editAdmin($id)
+    {
+        $store=Store::findOrFail($id);
+        return view('admin.store.edit')->with('store',$store);
+    }
+
+    public function updateAdmin(Request $request, $id)
+    {
+        $store=Store::findOrFail($id);
+
+        $this->validate($request, [
+            'name' => 'string|required',
+            'description' => 'string|required',
+            'email' => 'string|nullable',
+            'phone_number' => 'required|required',
+            'address' => 'string|nullable',
+            'photo'=>'string|nullable',
+            'status'=>'required|in:active,inactive',
+        ]);
+
+        $data= $request->all();
+
+        $status=$store->fill($data)->save();
+        if($status){
+            request()->session()->flash('success','Store successfully updated');
+        }
+        else{
+            request()->session()->flash('error','Error occurred, Please try again!');
+        }
+        return redirect()->route('store.stores');
     }
 
     public function update(Request $request, $id)
