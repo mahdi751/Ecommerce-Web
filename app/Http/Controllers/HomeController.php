@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Store;
 
 class HomeController extends Controller
 {
@@ -23,6 +24,17 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+         $stores = Store::all();
+        // ->where('status','active');
+        return view('home')->with('stores', $stores);
     }
+
+
+    public function storePressed(Request $request){
+        $current_store_id = $request->id;
+        session(['current_store_id' => $current_store_id]);
+        $stores = Store::all();
+        return view('home')->with('stores', $stores);
+    }
+
 }

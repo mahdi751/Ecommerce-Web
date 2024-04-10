@@ -84,12 +84,15 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+
+Route::get('/product/{id}', [App\Http\Controllers\HomeController::class, 'storePressed'])->name('storePressed');
+
 //Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () { '\vendor\UniSharp\LaravelFilemanager\Lfm::routes()'; });
 
 
 Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
     Lfm::routes();
-});
+});     
 
 // Product Review
 Route::resource('/review', '\App\Http\Controllers\ProductReviewController');
