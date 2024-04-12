@@ -1,6 +1,18 @@
 @extends('layouts.app')
 
 @section('content')
+
+<head>
+<meta name="google-signin-client_id" content="1003600153635-c2qdgdrd5dgqthh4m03rec3o1s8u0utb.apps.googleusercontent.com">
+<script src="https://accounts.google.com/gsi/client" async></script>
+
+<script>
+function loginCallBack(){
+    
+}
+    </script>
+</head>
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -63,6 +75,23 @@
                                     </a>
                                 @endif
                             </div>
+                        </div>
+
+                        <div id="g_id_onload"
+                            data-client_id="1003600153635-c2qdgdrd5dgqthh4m03rec3o1s8u0utb.apps.googleusercontent.com"
+                            data-context="signin"
+                            data-ux_mode="popup"
+                            data-callback="loginCallBack"
+                            data-auto_prompt="false">
+                        </div>
+
+                        <div class="g_id_signin"
+                            data-type="standard"
+                            data-shape="pill"
+                            data-theme="filled_black"
+                            data-text="continue_with"
+                            data-size="large"
+                            data-logo_alignment="left">
                         </div>
                     </form>
                 </div>
