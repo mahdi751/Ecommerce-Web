@@ -64,7 +64,7 @@
    var route_prefix = "/filemanager";
   </script>
 
-  <!-- CKEditor init -->
+
   <script src="//cdnjs.cloudflare.com/ajax/libs/ckeditor/4.5.11/ckeditor.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/ckeditor/4.5.11/adapters/jquery.js"></script>
   <script>
@@ -77,7 +77,7 @@
     });
   </script>
 
-  <!-- TinyMCE init -->
+
   <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
   <script>
     var editor_config = {

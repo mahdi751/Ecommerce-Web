@@ -7,8 +7,8 @@
 
     <style>
         #imageBanner {
-            width: 100vw; /* Full screen width */
-            object-fit: cover; /* Ensure image covers the whole area */
+            width: 100%;
+            object-fit: cover;
         }
 
         .store-image-container {
@@ -27,6 +27,8 @@
         .store-name {
             color: orange;
         }
+
+       
     </style>
 
 </head>
@@ -36,11 +38,15 @@
         <img id='imageBanner' src="{{ asset('backend/img/banner1.jpg') }}" alt="Banner">
     </section>
 
+
+
     <div class="row justify-content-center mb-4" style="margin-top:50px">
         <div class="col-md-6 text-center">
             <p class="h3 mb-0 text-white" style="letter-spacing: 4px; font-weight: 100; font-size: 20px">Our Stores</p>
         </div>
     </div>
+
+
 
     <div class="container">
         <div class="row justify-content-center">
@@ -83,6 +89,8 @@
             </div>
         </div>
     </div>
+
+
 </div>
 
 @endsection

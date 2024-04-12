@@ -5,29 +5,29 @@
 
 <body id="page-top">
 
-  <!-- Page Wrapper -->
+
   <div id="wrapper">
 
-    <!-- Sidebar -->
-    @include('Sellers.layouts.sidebar')
-    <!-- End of Sidebar -->
 
-    <!-- Content Wrapper -->
+    @include('Sellers.layouts.sidebar')
+
+
+
     <div id="content-wrapper" class="d-flex flex-column">
 
-      <!-- Main Content -->
+
       <div id="content">
 
-        <!-- Topbar -->
-        @include('Sellers.layouts.header')
-        <!-- End of Topbar -->
 
-        <!-- Begin Page Content -->
+        @include('Sellers.layouts.header')
+
+
+
         @yield('main-content')
-        <!-- /.container-fluid -->
+
 
       </div>
-      <!-- End of Main Content -->
+      
       @include('Sellers.layouts.footer')
 
 </body>
