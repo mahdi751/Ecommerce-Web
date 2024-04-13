@@ -29,10 +29,14 @@ class BuyerController extends Controller
       $storeParameters = $request->route()->parameters();
       $store_id = $storeParameters['store_id'];
       
-     
       
+     
+      session_start();
+      
+        $_SESSION['storeId'] = $store_id;
+
       session(['current_store_id' => $store_id]);
-      dump(session('current_store_id'));
+      
       
       
       
@@ -41,6 +45,8 @@ class BuyerController extends Controller
                               ->where('status', 'active')
                               ->where('is_parent', 1)
                               ->pluck('id');
+
+    $categories = Category::whereIn('id', $category_ids)->get();
   
       // Retrieve featured products
       $featured = Product::where('status', 'active')
@@ -60,7 +66,9 @@ class BuyerController extends Controller
       return view('Buyers.index')
               ->with('store_id', $store_id)
               ->with('featured', $featured)
-              ->with('product_lists', $products);
+              ->with('product_lists', $products)
+              ->with('categories', $categories);
+              
               
   }
   
@@ -77,7 +85,7 @@ class BuyerController extends Controller
     public function productDetail($slug){
         $product_detail= Product::getProductBySlug($slug);
         // dd($product_detail);
-        return view('Buyers.pages.product_detail')->with('product_detail',$product_detail);
+        return view('Buyers.pages.productDetail')->with('product_detail',$product_detail);
     }
 
     public function productGrids(Request $request){
@@ -135,8 +143,15 @@ class BuyerController extends Controller
     $products = Product::query();
     
     // Retrieve the store ID from the request
-    $store_id =  $request->route()->parameters();
-
+    //$store_id = 1;
+    
+session_start();
+$store_id = $_SESSION['storeId'];
+    
+    //$store_id = $request->input('store_id');  
+    
+    //$store_id = session('current_store_id');   
+    dd($store_id);
     // Retrieve the category IDs associated with the store ID
     $category_ids = Category::where('store_id', $store_id)->pluck('id');
 
@@ -172,6 +187,7 @@ class BuyerController extends Controller
     return view('Buyers.pages.product-lists')->with('products', $products)->with('recent_products', $recent_products);
 }
 public function productFilter(Request $request){
+    
   $data = $request->all();
   $showURL = "";
   if(!empty($data['show'])){
@@ -186,6 +202,7 @@ public function productFilter(Request $request){
   $catURL = "";
   if(!empty($data['category'])){
       $store_id = $request->route()->parameters();
+      dd($store_id);
       $category_ids = Category::where('store_id', $store_id)->pluck('id');
       foreach($data['category'] as $category){
           if($category_ids->contains($category)) {
@@ -213,8 +230,7 @@ public function productFilter(Request $request){
   
 public function productSearch(Request $request){
     // Retrieve the store ID from the session
-    $store_id = session('current_store_id');
-    dd(session()->all());
+    $store_id = $request->input('store_id');     
 
     
 

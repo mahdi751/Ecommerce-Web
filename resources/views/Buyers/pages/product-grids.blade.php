@@ -21,8 +21,9 @@
     <!-- End Breadcrumbs -->
 
     <!-- Product Style -->
-    <form  >
+    <form action="{{route('shop.filter')}}" method="POST">
         @csrf
+        
         <section class="product-area shop-sidebar shop section">
             <div class="container">
                 <div class="row">
@@ -77,6 +78,7 @@
                                                     <span>Range:</span>
                                                     <input style="" type="text" id="amount" readonly/>
                                                     <input type="hidden" name="price_range" id="price_range" value="@if(!empty($_GET['price'])){{$_GET['price']}}@endif"/>
+                                                    
                                                 </div>
                                                 </div>
                                             </div>
@@ -315,7 +317,7 @@
                                                     </div> --}}
                                                 </div>
                                             </div>
-                                            <form action="{{route('single-add-to-cart')}}" method="POST">
+                                            <form  method="POST">
                                                 @csrf
                                                 <div class="quantity">
                                                     <!-- Input Order -->
@@ -337,7 +339,7 @@
                                                 </div>
                                                 <div class="add-to-cart">
                                                     <button type="submit" class="btn">Add to cart</button>
-                                                    <a href="{{route('add-to-wishlist',$product->slug)}}" class="btn min"><i class="ti-heart"></i></a>
+                                                    <a class="btn min"><i class="ti-heart"></i></a>
                                                 </div>
                                             </form>
                                             <div class="default-social">

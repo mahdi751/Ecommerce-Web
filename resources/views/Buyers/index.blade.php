@@ -19,10 +19,7 @@
                         <div class="nav-main">
                             <!-- Tab Nav -->
                             <ul class="nav nav-tabs filter-tope-group" id="myTab" role="tablist">
-                                @php
-                                    $categories=DB::table('categories')->where('status','active')->where('is_parent',1)->get();
-                                    // dd($categories);
-                                @endphp
+                               
                                 @if($categories)
                                 <button class="btn" style="background:black"data-filter="*">
                                     All Products

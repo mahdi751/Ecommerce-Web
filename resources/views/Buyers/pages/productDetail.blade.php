@@ -1,4 +1,4 @@
-@extends('frontend.layouts.master')
+@extends('Buyers.layouts.master')
 
 @section('meta')
 	<meta charset="utf-8">
@@ -117,7 +117,7 @@
 											<!--/ End Size -->
 											<!-- Product Buy -->
 											<div class="product-buy">
-												<form action="{{route('single-add-to-cart')}}" method="POST">
+												<form  method="POST">
 													@csrf 
 													<div class="quantity">
 														<h6>Quantity :</h6>
@@ -140,7 +140,7 @@
 													</div>
 													<div class="add-to-cart mt-4">
 														<button type="submit" class="btn">Add to cart</button>
-														<a href="{{route('add-to-wishlist',$product_detail->slug)}}" class="btn min"><i class="ti-heart"></i></a>
+														<a class="btn min"><i class="ti-heart"></i></a>
 													</div>
 												</form>
 

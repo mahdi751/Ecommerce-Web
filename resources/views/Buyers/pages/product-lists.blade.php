@@ -1,4 +1,4 @@
-@extends('frontend.layouts.master')
+@extends('Buyers.layouts.master')
 
 @section('title','E-SHOP || PRODUCT PAGE')
 
@@ -22,6 +22,9 @@
 		<!-- End Breadcrumbs -->
 		<form action="{{route('shop.filter')}}" method="POST">
 		@csrf
+		
+		<input type="hidden" name="store_id" value="{{ session('current_store_id') }}">
+		
 			<!-- Product Style 1 -->
 			<section class="product-area shop-sidebar shop-list shop section">
 				<div class="container">
@@ -124,21 +127,7 @@
                                         </div>
                                         <!-- End Single Post -->
                                     @endforeach
-                                </div>
-                                <!--/ End Single Widget -->
-                                <!-- Single Widget -->
-                                <div class="single-widget category">
-                                    <h3 class="title">Brands</h3>
-                                    <ul class="categor-list">
-                                        @php
-                                            $brands=DB::table('brands')->orderBy('title','ASC')->where('status','active')->get();
-                                        @endphp
-                                        @foreach($brands as $brand)
-                                            <li><a href="{{route('product-brand',$brand->slug)}}">{{$brand->title}}</a></li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                                <!--/ End Single Widget -->
+                                
                         	</div>
 						</div>
 						<div class="col-lg-9 col-md-8 col-12">
@@ -196,10 +185,10 @@
 															<div class="button-head">
 																<div class="product-action">
 																	<a data-toggle="modal" data-target="#{{$product->id}}" title="Quick View" href="#"><i class=" ti-eye"></i><span>Quick Shop</span></a>
-																	<a title="Wishlist" href="{{route('add-to-wishlist',$product->slug)}}" class="wishlist" data-id="{{$product->id}}"><i class=" ti-heart "></i><span>Add to Wishlist</span></a>
+																	<a title="Wishlist"  class="wishlist" data-id="{{$product->id}}"><i class=" ti-heart "></i><span>Add to Wishlist</span></a>
 																</div>
 																<div class="product-action-2">
-																	<a title="Add to cart" href="{{route('add-to-cart',$product->slug)}}">Add to cart</a>
+																	<a title="Add to cart" >Add to cart</a>
 																</div>
 															</div>
 														</div>
@@ -323,7 +312,7 @@
 														</ul>
 													</div>
 												@endif
-												<form action="{{route('single-add-to-cart')}}" method="POST">
+												<form  method="POST">
 													@csrf 
 													<div class="quantity">
 														<!-- Input Order -->
@@ -345,7 +334,7 @@
 													</div>
 													<div class="add-to-cart">
 														<button type="submit" class="btn">Add to cart</button>
-														<a href="{{route('add-to-wishlist',$product->slug)}}" class="btn min"><i class="ti-heart"></i></a>
+														<a class="btn min"><i class="ti-heart"></i></a>
 													</div>
 												</form>
 												<div class="default-social">

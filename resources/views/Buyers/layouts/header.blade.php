@@ -54,15 +54,10 @@
               <div class="col-lg-8 col-md-7 col-12">
                   <div class="search-bar-top">
                       <div class="search-bar">
-                          <select>
-                              <option >All Category</option>
-                              @foreach(Helper::getAllCategory() as $cat)
-                                  <option>{{$cat->title}}</option>
-                              @endforeach
-                          </select>
+                          
                           <form method="POST" action="{{route('product.search')}}">
                               @csrf
-                              
+                              <input type="hidden" name="store_id" value="{{ session('current_store_id') }}">
                               <input name="search" placeholder="Search Products Here....." type="search">
                            
                               <button class="btnn" type="submit"><i class="ti-search"></i></button>
