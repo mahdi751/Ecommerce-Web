@@ -11,6 +11,7 @@ use App\Http\Controllers\ProductReviewController;
 use App\Http\Controllers\CouponsController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\BuyerController;
 use \UniSharp\LaravelFilemanager\Lfm;
 
 /*
@@ -84,7 +85,20 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
-Route::get('/product/{id}', [App\Http\Controllers\HomeController::class, 'storePressed'])->name('storePressed');
+Route::get('/home/{store_id}', [App\Http\Controllers\BuyerController::class, 'home'])->name('homestore');
+Route::post('/product/search', [BuyerController::class, 'productSearch'])->name('product.search');
+
+
+Route::get('/about-us', [BuyerController::class, 'aboutUs'])->name('about-us');
+    Route::get('/contact', [BuyerController::class, 'contact'])->name('contact');
+    Route::post('/contact/message', [BuyerController::class, 'store'])->name('contact.store');
+    Route::get('product-detail/{slug}', [BuyerController::class, 'productDetail'])->name('product-detail');
+    Route::post('/product/search', [BuyerController::class, 'productSearch'])->name('product.search');
+    Route::get('/product-cat/{slug}', [BuyerController::class, 'productCat'])->name('product-cat');
+    Route::get('/product-sub-cat/{slug}/{sub_slug}', [BuyerController::class, 'productSubCat'])->name('product-sub-cat');
+    Route::get('/product-grids', [BuyerController::class, 'productGrids'])->name('product-grids');
+    Route::get('/product-lists', [BuyerController::class, 'productLists'])->name('product-lists');
+
 
 //Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () { '\vendor\UniSharp\LaravelFilemanager\Lfm::routes()'; });
 
