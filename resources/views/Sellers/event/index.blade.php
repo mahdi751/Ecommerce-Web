@@ -25,7 +25,7 @@
                                 <th>Start</th>
                                 <th>End</th>
                                 <th>Photo</th>
-
+                                <th>Status</th>
                                 <th>Store</th>
                                 <th>Action</th>
                             </tr>
@@ -38,7 +38,7 @@
                                 <th>Start</th>
                                 <th>End</th>
                                 <th>Photo</th>
-
+                                <th>Status</th>
                                 <th>Shop</th>
                                 <th>Action</th>
                             </tr>
@@ -64,7 +64,13 @@
                                                 style="max-width:80px" alt="avatar.png">
                                         @endif
                                     </td>
-
+                                    <td>
+                                        @if ($event->status == 'active')
+                                            <span class="badge badge-success">{{ $event->status }}</span>
+                                        @else
+                                            <span class="badge badge-warning">{{ $event->status }}</span>
+                                        @endif
+                                    </td>
 
                                     <td>{{ $event->store->name }}</td>
 

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->text('photo')->nullable();
             $table->dateTime('start_time');
             $table->dateTime('end_time');
+            $table->enum('status', ['active', 'inactive'])->default('active');
             $table->foreignId('store_id')->constrained('stores')->onDelete('cascade');
             $table->timestamps();
         });
