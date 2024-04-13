@@ -11,6 +11,7 @@ use App\Http\Controllers\ProductReviewController;
 use App\Http\Controllers\CouponsController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\EventController;
 use \UniSharp\LaravelFilemanager\Lfm;
 
 /*
@@ -46,7 +47,8 @@ Route::group(['prefix' => '/seller', 'middleware' => ['auth', 'seller']], functi
     Route::get('/store', [\App\Http\Controllers\StoreController::class, 'index'])->name('store.index');
     Route::resource('/store', '\App\Http\Controllers\StoreController');
 
-
+    Route::resource('/event', '\App\Http\Controllers\EventController');
+    
     Route::resource('/category', '\App\Http\Controllers\CategoryController');
     Route::post('/category/{id}/child', '\App\Http\Controllers\CategoryController@getChildByParent');
 
