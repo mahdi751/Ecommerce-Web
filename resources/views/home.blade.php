@@ -54,7 +54,7 @@
                 <div class="row">
                     @foreach ($stores as $store)
                     <div class="col-md-4 mb-4">
-                        <a href="{{ route('storePressed', $store->id) }}" class="text-decoration-none">
+                        <a href="{{ route('homestore', $store->id) }}" class="text-decoration-none">
                             <div class="card rounded-3 shadow-lg hover-expand" style="height: 300px; background-color: #ffffff; overflow: hidden; border-radius: 20px; transition: box-shadow 0.3s;">
                                 <div class="card-body d-flex flex-column justify-content-between">
                                     <div class="text-center mb-3 store-image-container">
