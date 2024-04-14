@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Category;
-
+use App\Models\Event;
 
 use Illuminate\Support\Str;
 
@@ -35,8 +35,8 @@ class ProductController extends Controller
                               ->where('store_id', $storeId)
                               ->get();
     
-        // return $category;
-        return view('Sellers.product.create')->with('categories',$category);
+        $events = Event::where('store_id', $storeId)->get();
+        return view('Sellers.product.create')->with('categories',$category)->with('events',$events);
     }
 
     /**
@@ -48,23 +48,21 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         // return $request->all();
-        $this->validate($request,[
-            'title'=>'string|required',
-            'summary'=>'string|required',
-            'description'=>'string|nullable',
-            'photo'=>'string|nullable',
-            'size'=>'nullable',
-            'stock'=>"required|numeric",
-            'cat_id'=>'required|exists:categories,id',
-            'child_cat_id'=>'nullable|exists:categories,id',
-            'is_featured'=>'sometimes|in:1',
-            'status'=>'required|in:active,inactive',
-            'condition'=>'required|in:default,new,hot',
-            'price'=>'required|numeric',
-            'discount'=>'nullable|numeric'
-        ]);
+        $this->validateProduct($request);
 
         $data=$request->all();
+        if ($request->has('is_event_item') && $request->input('is_event_item') == 1) {
+            $this->validateEventItem($request);
+            $data['is_event_item'] = 1;
+            $data['starting_bid_price'] = $request->input('starting_bid_price');
+            $data['minimum_bid_increment'] = $request->input('minimum_bid_increment');
+            $data['current_highest_bid'] = $request->input('current_highest_bid');
+            $data['closing_bid'] = $request->input('closing_bid');
+            $data['bid_status'] = $request->input('bid_status');
+        }
+    
+
+        $data['event_id'] = $request->input('event_id');
         $slug=Str::slug($request->title);
         $count=Product::where('slug',$slug)->count();
         if($count>0){
@@ -79,8 +77,8 @@ class ProductController extends Controller
         else{
             $data['size']='';
         }
-        // return $size;
-        // return $data;
+
+     
         $status=Product::create($data);
         if($status){
             request()->session()->flash('success','Product Successfully added');
@@ -118,9 +116,10 @@ class ProductController extends Controller
                               ->where('store_id', $storeId)
                               ->get();
         $items=Product::where('id',$id)->get();
+        $events = Event::where('store_id', $storeId)->get();
         // return $items;
         return view('Sellers.product.edit')->with('product',$product)
-                    ->with('categories',$category)->with('items',$items);
+                    ->with('categories',$category)->with('items',$items)->with('events',$events);
     }
 
     /**
@@ -133,23 +132,22 @@ class ProductController extends Controller
     public function update(Request $request, $id)
     {
         $product=Product::findOrFail($id);
-        $this->validate($request,[
-            'title'=>'string|required',
-            'summary'=>'string|required',
-            'description'=>'string|nullable',
-            'photo'=>'string|nullable',
-            'size'=>'nullable',
-            'stock'=>"required|numeric",
-            'cat_id'=>'required|exists:categories,id',
-            'child_cat_id'=>'nullable|exists:categories,id',
-            'is_featured'=>'sometimes|in:1',
-            'status'=>'required|in:active,inactive',
-            'condition'=>'required|in:default,new,hot',
-            'price'=>'required|numeric',
-            'discount'=>'nullable|numeric'
-        ]);
+
+        $this->validateProduct($request);
 
         $data=$request->all();
+
+        if ($request->has('is_event_item') && $request->input('is_event_item') == 1) {
+            $this->validateEventItem($request);
+            $data['is_event_item'] = 1;
+            $data['starting_bid_price'] = $request->input('starting_bid_price');
+            $data['minimum_bid_increment'] = $request->input('minimum_bid_increment');
+            $data['current_highest_bid'] = $request->input('current_highest_bid');
+            $data['closing_bid'] = $request->input('closing_bid');
+            $data['bid_status'] = $request->input('bid_status');
+            $data['event_id'] = $request->input('event_id');
+        }
+
         $data['is_featured']=$request->input('is_featured',0);
         $size=$request->input('size');
         if($size){
@@ -188,4 +186,36 @@ class ProductController extends Controller
         }
         return redirect()->route('product.index');
     }
+    
+protected function validateProduct($request)
+{
+    return $this->validate($request, [
+        'title' => 'string|required',
+        'summary' => 'string|required',
+        'description' => 'string|nullable',
+        'photo' => 'string|nullable',
+        'size' => 'nullable',
+        'stock' => 'required|numeric',
+        'cat_id' => 'required|exists:categories,id',
+        'child_cat_id' => 'nullable|exists:categories,id',
+        'is_featured' => 'sometimes|in:1',
+        'status' => 'required|in:active,inactive',
+        'condition' => 'required|in:default,new,hot',
+        'price' => 'required|numeric',
+        'discount' => 'nullable|numeric',
+    ]);
 }
+
+protected function validateEventItem($request)
+{
+    return $this->validate($request, [
+        'starting_bid_price' => 'required|numeric',
+        'minimum_bid_increment' => 'required|numeric',
+        'current_highest_bid' => 'required|numeric',
+        'closing_bid' => 'required|numeric',
+        'bid_status' => 'required|in:open,closed',
+        'event_id' => 'required|exists:events,id',
+    ]);
+}
+}
+

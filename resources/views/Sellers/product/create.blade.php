@@ -16,6 +16,51 @@
                 </div>
 
                 <div class="form-group">
+                    <label for="is_event_item">Is Event Item</label><br>
+                    <input type="checkbox" name='is_event_item' id='is_event_item' value='1'
+                        onchange="toggleEventFields(this.checked)"> Yes
+                </div>
+
+                {{-- Fields for event items --}}
+                <div id="event_fields" style="display: none;">
+                    <div class="form-group">
+                        <label for="event_id">Event <span class="text-danger">*</span></label>
+                        <select name="event_id" id="event_id" class="form-control">
+                            <option value="">--Select any event--</option>
+                            @foreach ($events as $key => $event_data)
+                                <option value='{{ $event_data->id }}'>{{ $event_data->title }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="starting_bid_price">Starting Bid Price</label>
+                        <input type="number" name="starting_bid_price" id="starting_bid_price" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="minimum_bid_increment">Minimum Bid Increment</label>
+                        <input type="number" name="minimum_bid_increment" id="minimum_bid_increment" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="current_highest_bid">Current Highest Bid</label>
+                        <input value="0" type="number" name="current_highest_bid" id="current_highest_bid"
+                            class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="closing_bid">Closing Bid</label>
+                        <input type="number" name="closing_bid" id="closing_bid" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="bid_status">Bid Status</label>
+                        <select name="bid_status" id="bid_status" class="form-control">
+                            <option value="open">Open</option>
+                            <option value="closed">Closed</option>
+                        </select>
+                    </div>
+
+
+                </div>
+
+                <div class="form-group">
                     <label for="summary" class="col-form-label">Summary <span class="text-danger">*</span></label>
                     <textarea class="form-control" id="summary" name="summary">{{ old('summary') }}</textarea>
                     @error('summary')
@@ -58,7 +103,7 @@
                     </select>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" id="price_group">
                     <label for="price" class="col-form-label">Price<span class="text-danger">*</span></label>
                     <input id="price" type="number" name="price" placeholder="Enter price"
                         value="{{ old('price') }}" class="form-control">
@@ -67,7 +112,7 @@
                     @enderror
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" id='discount_group'>
                     <label for="discount" class="col-form-label">Discount(%)</label>
                     <input id="discount" type="number" name="discount" min="0" max="100"
                         placeholder="Enter discount" value="{{ old('discount') }}" class="form-control">
@@ -98,7 +143,7 @@
                     </select>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" id="quantity_group">
                     <label for="stock">Quantity <span class="text-danger">*</span></label>
                     <input id="quantity" type="number" name="stock" min="0" placeholder="Enter quantity"
                         value="{{ old('stock') }}" class="form-control">
@@ -210,5 +255,45 @@
                 });
             } else {}
         })
+    </script>
+    <script>
+        function toggleEventFields(isChecked) {
+            var eventFields = document.getElementById('event_fields');
+            var quantityInput = document.getElementById('quantity');
+            var priceInput = document.getElementById('price');
+            var discountInput = document.getElementById('discount');
+            var quantityGroup = document.getElementById('quantity_group');
+            var priceGroup = document.getElementById('price_group');
+            var discountGroup = document.getElementById('discount_group');
+
+            if (isChecked) {
+                // Hide and set default values for non-event related fields
+                quantityGroup.style.display = 'none';
+                priceGroup.style.display = 'none';
+                discountGroup.style.display = 'none';
+                quantityInput.value = 1; // Set default value for quantity
+                priceInput.value = 0; // Set default value for price
+
+                eventFields.style.display = 'block';
+            } else {
+                // Show and reset values of non-event related fields
+                quantityGroup.style.display = 'block';
+                priceGroup.style.display = 'block';
+                discountGroup.style.display = 'block';
+                quantityInput.value = ''; // Reset value for quantity
+                priceInput.value = ''; // Reset value for price
+
+                // Clear values of event fields
+                var inputs = eventFields.getElementsByTagName('input');
+                for (var i = 0; i < inputs.length; i++) {
+                    inputs[i].value = '';
+                }
+                var selects = eventFields.getElementsByTagName('select');
+                for (var i = 0; i < selects.length; i++) {
+                    selects[i].selectedIndex = 0;
+                }
+                eventFields.style.display = 'none';
+            }
+        }
     </script>
 @endpush

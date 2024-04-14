@@ -15,6 +15,54 @@
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
+                <div class="form-group">
+                    <label for="is_event_item">Is Event Item</label><br>
+                    <input type="checkbox" name='is_event_item' id='is_event_item' value='1'
+                        {{ $product->is_event_item ? 'checked' : '' }} disabled> Yes
+                </div>
+
+                {{-- Event-related fields --}}
+                @if ($product->is_event_item)
+                    <div class="form-group">
+                        <label for="event_id">Event <span class="text-danger">*</span></label>
+                        <select name="event_id" id="event_id" class="form-control">
+                            <option value="">--Select any event--</option>
+                            @foreach ($events as $key => $event_data)
+                                <option value='{{ $event_data->id }}'
+                                    {{ $product->event_id == $event_data->id ? 'selected' : '' }}>{{ $event_data->title }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="starting_bid_price">Starting Bid Price</label>
+                        <input type="number" value="{{ $product->starting_bid_price }}" name="starting_bid_price"
+                            id="starting_bid_price" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="minimum_bid_increment">Minimum Bid Increment</label>
+                        <input type="number" value="{{ $product->minimum_bid_increment }}" name="minimum_bid_increment"
+                            id="minimum_bid_increment" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="current_highest_bid">Current Highest Bid</label>
+                        <input value="{{ $product->current_highest_bid }}" type="number" name="current_highest_bid"
+                            id="current_highest_bid" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="closing_bid">Closing Bid</label>
+                        <input type="number"value="{{ $product->closing_bid }}" name="closing_bid" id="closing_bid"
+                            class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="bid_status">Bid Status</label>
+                        <select name="bid_status" id="bid_status" class="form-control">
+                            <option value="open" {{ $product->bid_status == 'open' ? 'selected' : '' }}>Open</option>
+                            <option value="closed" {{ $product->bid_status == 'closed' ? 'selected' : '' }}>Closed</option>
+                        </select>
+                    </div>
+                @endif
+
 
                 <div class="form-group">
                     <label for="summary" class="col-form-label">Summary <span class="text-danger">*</span></label>
@@ -66,23 +114,38 @@
                     </select>
                 </div>
 
-                <div class="form-group">
+                {{-- <div class="form-group">
                     <label for="price" class="col-form-label">Price <span class="text-danger">*</span></label>
                     <input id="price" type="number" name="price" placeholder="Enter price"
                         value="{{ $product->price }}" class="form-control">
+
+                    @error('price')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div> --}}
+                <div class="form-group">
+                    <label for="price" class="col-form-label">Price <span class="text-danger">*</span></label>
+                    @if ($product->is_event_item)
+                        <span>: {{ $product->price }}</span>
+                        <input type="hidden" name="price" value="{{ $product->price }}">
+                    @else
+                        <input id="price" type="number" name="price" placeholder="Enter price"
+                            value="{{ $product->price }}" class="form-control">
+                    @endif
                     @error('price')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
-
-                <div class="form-group">
-                    <label for="discount" class="col-form-label">Discount(%)</label>
-                    <input id="discount" type="number" name="discount" min="0" max="100"
-                        placeholder="Enter discount" value="{{ $product->discount }}" class="form-control">
-                    @error('discount')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                </div>
+                @if (!$product->is_event_item)
+                    <div class="form-group">
+                        <label for="discount" class="col-form-label">Discount(%)</label>
+                        <input id="discount" type="number" name="discount" min="0" max="100"
+                            placeholder="Enter discount" value="{{ $product->discount }}" class="form-control">
+                        @error('discount')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                @endif
                 <div class="form-group">
                     <label for="size">Size</label>
                     <select name="size[]" class="form-control selectpicker" multiple data-live-search="true">

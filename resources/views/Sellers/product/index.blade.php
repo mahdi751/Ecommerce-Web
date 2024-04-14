@@ -22,6 +22,7 @@
                                 <th>S.N.</th>
                                 <th>Title</th>
                                 <th>Category</th>
+                                <th>Event Item</th>
                                 <th>Is Featured</th>
                                 <th>Price</th>
                                 <th>Discount</th>
@@ -39,6 +40,8 @@
                                 <th>S.N.</th>
                                 <th>Title</th>
                                 <th>Category</th>
+                                <th>Event Item</th>
+
                                 <th>Is Featured</th>
                                 <th>Price</th>
                                 <th>Discount</th>
@@ -69,7 +72,9 @@
                                             {{ $product->sub_cat_info->title ?? '' }}
                                         </sub>
                                     </td>
+                                    <td>{{ $product->is_event_item == 1 ? 'Yes' : 'No' }}</td>
                                     <td>{{ $product->is_featured == 1 ? 'Yes' : 'No' }}</td>
+
                                     <td>{{ $product->price }}</td>
                                     <td> {{ $product->discount }}% OFF</td>
                                     <td>{{ $product->size }}</td>
