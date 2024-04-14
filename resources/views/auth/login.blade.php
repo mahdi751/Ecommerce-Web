@@ -77,21 +77,17 @@ function loginCallBack(){
                             </div>
                         </div>
 
-                        <div id="g_id_onload"
-                            data-client_id="1003600153635-c2qdgdrd5dgqthh4m03rec3o1s8u0utb.apps.googleusercontent.com"
-                            data-context="signin"
-                            data-ux_mode="popup"
-                            data-callback="loginCallBack"
-                            data-auto_prompt="false">
-                        </div>
-
-                        <div class="g_id_signin"
-                            data-type="standard"
-                            data-shape="pill"
-                            data-theme="filled_black"
-                            data-text="continue_with"
-                            data-size="large"
-                            data-logo_alignment="left">
+                        <div class="container mt-5">
+                            <div class="row justify-content-center">
+                                <div class="col-md-6">
+                                <div class="text-center">
+                                <a class="btn btn-link" href="{{ route('google-auth') }}">
+                                <h2>Sign in with Google</h2>
+                                    </a>
+                                    
+                                </div>
+                                </div>
+                            </div>
                         </div>
                     </form>
                 </div>
