@@ -13,10 +13,10 @@ class Event extends Model
     {
         return $this->belongsTo(Store::class);
     }
-    // public function GetItems()
-    // {
-    //     return $this->hasMany(Items::class);
-    // }
+     public function GetProducts()
+    {
+        return $this->hasMany(Product::class);
+     }
     public static function getAllEvents(){
         $storeId = session('current_store_id');
         return  Event::orderBy('id','DESC')->paginate(10)->where('store_id',$storeId);
