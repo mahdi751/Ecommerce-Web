@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\GoogleAuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SellerController;
 use App\Http\Controllers\MessagesController;
@@ -112,3 +113,5 @@ Route::group(['prefix' => '/admin', 'middleware' => ['auth', 'admin']], function
 Route::resource('/review', '\App\Http\Controllers\ProductReviewController');
 Route::post('product/{slug}/review', [ProductReviewController::class, 'store'])->name('review.store');
 
+Route::get("auth/google", [GoogleAuthController::class,"redirect"])->name("google-auth");
+Route::get("auth/google/call-back", [GoogleAuthController::class,"callBack"]);

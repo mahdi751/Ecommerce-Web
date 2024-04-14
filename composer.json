@@ -11,6 +11,7 @@
         "laravel/framework": "^9.19",
         "laravel/helpers": "^1.7",
         "laravel/sanctum": "^3.0",
+        "laravel/socialite": "^5.12",
         "laravel/tinker": "^2.7",
         "laravel/ui": "^4.5",
         "munafio/chatify": "^1.6",
