@@ -22,7 +22,7 @@
                                 <th>S.N.</th>
                                 <th>Title</th>
                                 <th>Category</th>
-                                <th>Event Item</th>
+                                <th>Event </th>
                                 <th>Is Featured</th>
                                 <th>Price</th>
                                 <th>Discount</th>
@@ -40,7 +40,7 @@
                                 <th>S.N.</th>
                                 <th>Title</th>
                                 <th>Category</th>
-                                <th>Event Item</th>
+                                <th>Event</th>
 
                                 <th>Is Featured</th>
                                 <th>Price</th>
@@ -72,7 +72,8 @@
                                             {{ $product->sub_cat_info->title ?? '' }}
                                         </sub>
                                     </td>
-                                    <td>{{ $product->is_event_item == 1 ? 'Yes' : 'No' }}</td>
+                                    <td>{{ $product->is_event_item == 1 ? $product->event_info['title'] : 'Not event item' }}
+                                    </td>
                                     <td>{{ $product->is_featured == 1 ? 'Yes' : 'No' }}</td>
 
                                     <td>{{ $product->price }}</td>
@@ -163,7 +164,8 @@
     <script src="{{ asset('backend/js/demo/datatables-demo.js') }}"></script>
     <script>
         $('#product-dataTable').DataTable({
-            "scrollX": false "columnDefs": [{
+            "scrollX": false,
+            "columnDefs": [{
                 "orderable": false,
                 "targets": [10, 11, 12]
             }]

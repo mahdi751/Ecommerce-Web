@@ -31,6 +31,11 @@ class Product extends Model
     public function cat_info(){
         return $this->hasOne('App\Models\Category','id','cat_id');
     }
+    
+    public function event_info(){
+        return $this->hasOne('App\Models\Event','id','event_id');
+    }
+    
     public function sub_cat_info(){
         return $this->hasOne('App\Models\Category','id','child_cat_id');
     }
