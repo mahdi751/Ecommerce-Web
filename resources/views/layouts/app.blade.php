@@ -4,38 +4,57 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- CSRF Token -->
+
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Fonts -->
+
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
-    
-    <!-- Scripts -->
+
+
+    <style>
+        #openChatifyPanel {
+            position: fixed;
+            bottom: 20px;
+            right: 6%;
+            z-index: 9999;
+        }
+        </style>
+
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
-<body  style="background-image: url('{{ asset('backend/img/background-image.jpg') }}'); background-size: cover;">
+<body style="background-image: url('{{ asset('backend/img/background-image.jpg') }}'); background-size: cover;">
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
+
+                <div style="background: lightblue;border-radius: 20px;height: 60px;padding: 0px;margin-left: -50px;margin-right: 20px;">
+                    <button id="openChatifyPanel" class="btn btn-link rounded-circle position-relative" style="margin-top: 20px;margin-left: 10px">
+                        <img src="{{ asset('backend/img/message.png') }}" style="width: 40px; height: 40px;"/>
+                        <span class="badge badge-primary position-absolute top-40 start-90 translate-middle" style="background: red">new</span>
+                    </button>
+                </div>
+
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}
                 </a>
+
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
+
                     <ul class="navbar-nav me-auto">
+
 
                     </ul>
 
-                    <!-- Right Side Of Navbar -->
+
                     <ul class="navbar-nav ms-auto">
-                        <!-- Authentication Links -->
+
                         @guest
                             @if (Route::has('login'))
                                 <li class="nav-item">
@@ -76,5 +95,15 @@
             @yield('content')
         </main>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var openChatifyButton = document.getElementById("openChatifyPanel");
+
+            openChatifyButton.addEventListener("click", function() {
+                window.location.href = '/chatify';
+            });
+        });
+    </script>
 </body>
 </html>

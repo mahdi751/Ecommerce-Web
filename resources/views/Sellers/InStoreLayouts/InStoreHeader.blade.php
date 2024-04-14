@@ -4,6 +4,20 @@
       <i class="fa fa-bars"></i>
     </button>
 
+    <button id="openChatifyPanel" class="btn btn-link rounded-circle mr-3 position-relative">
+        <i class="fas fa-comment"></i>
+        <span class="badge badge-danger position-absolute top-0 start-100 translate-middle">new
+         </span>
+
+    {{-- <span  class="badge badge-danger badge-counter">
+        @if(count(Auth::user()->unreadNotifications) >5 )<span data-count="5" class="count">5+</span>
+        @else
+            <span class="count" data-count="{{count(Auth::user()->unreadNotifications)}}">{{count(Auth::user()->unreadNotifications)}}</span>
+        @endif
+    </span> --}}
+
+    </button>
+
     <ul class="navbar-nav ml-auto">
 
       <li class="nav-item dropdown no-arrow d-sm-none">
@@ -83,3 +97,14 @@
     </ul>
 
   </nav>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var openChatifyButton = document.getElementById("openChatifyPanel");
+
+        openChatifyButton.addEventListener("click", function() {
+            window.location.href = '/chatify';
+        });
+    });
+</script>
+
