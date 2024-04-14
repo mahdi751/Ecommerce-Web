@@ -19,7 +19,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 class BuyerController extends Controller
 {
-   
+
     public function index(Request $request){
         return redirect()->route($request->user()->role);
     }
@@ -27,19 +27,17 @@ class BuyerController extends Controller
     public function home(Request $request){
       // Retrieve the current store ID from the request
       $storeParameters = $request->route()->parameters();
-      $store_id = $storeParameters['store_id'];
-      
-      
-     
-      session_start();
-      
-        $_SESSION['storeId'] = $store_id;
+      //$store_id = $storeParameters['store_id'];
 
-      session(['current_store_id' => $store_id]);
-      
-      
-      
-      
+      $store_id = $request->route('store_id');
+    //   session_start();
+    //   $_SESSION['storeId'] = $store_id;
+
+       session(['current_store_id' => $store_id]);
+
+
+
+
       // Retrieve category IDs associated with the store ID
       $category_ids = Category::where('store_id', $store_id)
                               ->where('status', 'active')
@@ -47,32 +45,32 @@ class BuyerController extends Controller
                               ->pluck('id');
 
     $categories = Category::whereIn('id', $category_ids)->get();
-  
+
       // Retrieve featured products
       $featured = Product::where('status', 'active')
                          ->where('is_featured', 1)
                          ->orderBy('price', 'DESC')
                          ->limit(2)
                          ->get();
-  
+
       // Retrieve products based on the category IDs
       $products = Product::whereIn('cat_id', $category_ids)
                          ->where('status', 'active')
                          ->orderBy('id', 'DESC')
                          ->limit(8)
                          ->get();
-  
+
       // Pass the retrieved data to the frontend view
       return view('Buyers.index')
               ->with('store_id', $store_id)
               ->with('featured', $featured)
               ->with('product_lists', $products)
               ->with('categories', $categories);
-              
-              
+
+
   }
-  
-  
+
+
 
     public function aboutUs(){
         return view('Buyers.pages.about-us');
@@ -91,19 +89,20 @@ class BuyerController extends Controller
     public function productGrids(Request $request){
       // Initialize query builder for the Product model
       $products = Product::query();
-      
+
+      $store_id = $request->input('store_id');
       // Retrieve the current store ID from the request
-      $current_store_id =  $request->route()->parameters();
-      
+     // $current_store_id =  $request->route()->parameters();
+
       // Retrieve category IDs associated with the store ID
-      $category_ids = Category::where('store_id', $current_store_id)
+      $category_ids = Category::where('store_id', $store_id)
                               ->where('status', 'active')
                               ->where('is_parent', 1)
                               ->pluck('id');
-    
+
       // Filter products to include only those belonging to the retrieved category IDs
       $products->whereIn('cat_id', $category_ids);
-     
+
       // Sort products based on user-selected option
       if(!empty($_GET['sortBy'])){
           if($_GET['sortBy'] == 'title'){
@@ -113,45 +112,49 @@ class BuyerController extends Controller
               $products->orderBy('price', 'ASC');
           }
       }
-  
+
       // Filter products based on price range if provided
       if(!empty($_GET['price'])){
           $price = explode('-', $_GET['price']);
           $products->whereBetween('price', $price);
       }
-  
+
       // Retrieve recent products for display
       $recent_products = Product::where('status', 'active')
                                 ->orderBy('id', 'DESC')
                                 ->limit(3)
                                 ->get();
-    
+
       // Paginate products based on user-selected option or default to 9 products per page
       if(!empty($_GET['show'])){
           $products = $products->where('status', 'active')->paginate($_GET['show']);
       } else {
           $products = $products->where('status', 'active')->paginate(9);
       }
-  
+
       // Render the view with filtered, sorted, and paginated products along with recent products
       return view('Buyers.pages.product-grids')
               ->with('products', $products)
               ->with('recent_products', $recent_products);
   }
-  
+
   public function productLists(Request $request){
     $products = Product::query();
-    
+
+    $store_id = $request->input('store_id');
+   // $store_id = $request->input('store_id');
+
+    //dd($store_id);
+
     // Retrieve the store ID from the request
     //$store_id = 1;
-    
-session_start();
-$store_id = $_SESSION['storeId'];
-    
-    //$store_id = $request->input('store_id');  
-    
-    //$store_id = session('current_store_id');   
-    dd($store_id);
+
+
+
+    //$store_id = $request->input('store_id');
+
+    //$store_id = session('current_store_id');
+
     // Retrieve the category IDs associated with the store ID
     $category_ids = Category::where('store_id', $store_id)->pluck('id');
 
@@ -187,7 +190,10 @@ $store_id = $_SESSION['storeId'];
     return view('Buyers.pages.product-lists')->with('products', $products)->with('recent_products', $recent_products);
 }
 public function productFilter(Request $request){
-    
+
+  $store_id = $request->input('store_id');
+
+
   $data = $request->all();
   $showURL = "";
   if(!empty($data['show'])){
@@ -221,18 +227,17 @@ public function productFilter(Request $request){
   }
 
   if(request()->is('e-shop.loc/product-grids')){
-      return redirect()->route('product-grids', $catURL.$priceRangeURL.$showURL.$sortByURL);
+      return redirect()->route('product-grids', $catURL.$priceRangeURL.$showURL.$sortByURL.'&store_id='.$store_id);
   } else {
-      return redirect()->route('product-lists', $catURL.$priceRangeURL.$showURL.$sortByURL);
+      return redirect()->route('product-lists', $catURL.$priceRangeURL.$showURL.$sortByURL.'&store_id='.$store_id);
   }
 }
 
-  
+
 public function productSearch(Request $request){
     // Retrieve the store ID from the session
-    $store_id = $request->input('store_id');     
+    $store_id = $request->input('store_id');
 
-    
 
     // Retrieve category IDs associated with the store ID
     $category_ids = Category::where('store_id', $store_id)
@@ -258,19 +263,19 @@ public function productSearch(Request $request){
                         })
                        ->orderBy('id', 'DESC')
                        ->paginate(9);
-                       
-   
-    
+
+
+
     // Return the view with the search results and recent products
-    return view('Buyers.pages.product-grids')->with('products', $products)->with('recent_products', $recent_products);
+    return view('Buyers.pages.product-grids')->with('products', $products)->with('store_id',$store_id)->with('recent_products', $recent_products);
 }
 
 
-   
+
 public function productCat(Request $request){
   // Retrieve the current store ID from the request
   $current_store_id = $request->id;
-  
+
   // Retrieve products associated with the category slug and store ID
   $products = Category::where('slug', $request->slug)
                       ->where('store_id', $current_store_id)
@@ -323,5 +328,5 @@ public function productSubCat(Request $request){
           ->with('recent_products', $recent_products);
 }
 
-       
+
 }

@@ -23,7 +23,8 @@
     <!-- Product Style -->
     <form action="{{route('shop.filter')}}" method="POST">
         @csrf
-        
+        <input type="hidden" name="store_id" value="{{ $store_id }}">
+
         <section class="product-area shop-sidebar shop section">
             <div class="container">
                 <div class="row">
@@ -78,7 +79,7 @@
                                                     <span>Range:</span>
                                                     <input style="" type="text" id="amount" readonly/>
                                                     <input type="hidden" name="price_range" id="price_range" value="@if(!empty($_GET['price'])){{$_GET['price']}}@endif"/>
-                                                    
+
                                                 </div>
                                                 </div>
                                             </div>
@@ -110,7 +111,7 @@
                                         </div>
                                         <!-- End Single Post -->
                                     @endforeach
-                                
+
                                 <!--/ End Single Widget -->
                         </div>
                     </div>
@@ -137,7 +138,7 @@
                                                 <option value="title" @if(!empty($_GET['sortBy']) && $_GET['sortBy']=='title') selected @endif>Name</option>
                                                 <option value="price" @if(!empty($_GET['sortBy']) && $_GET['sortBy']=='price') selected @endif>Price</option>
                                                 <option value="category" @if(!empty($_GET['sortBy']) && $_GET['sortBy']=='category') selected @endif>Category</option>
-                                                
+
                                             </select>
                                         </div>
                                     </div>
