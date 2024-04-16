@@ -1,8 +1,9 @@
 <?php
 use App\Models\Messages;
 use App\Models\Category;
-use App\Models\PostTag;
-use App\Models\PostCategory;
+use App\Models\Memory;
+
+
 use App\Models\Order;
 use App\Models\Wishlist;
 use App\Models\Shipping;
@@ -20,18 +21,19 @@ class Helper{
     }
 
     public static function getHeaderCategory(){
-        $category = new Category();
-        // dd($category);
-        $menu=$category->getAllParentWithChild();
+        $store_id = Memory::findOrFail(1)->storeId;
+        
+        $category_ids = Category::where('store_id', $store_id)->pluck('id');
+        $categories = Category::whereIn('id', $category_ids)->get();
 
-        if($menu){
+        if($categories){
             ?>
 
             <li>
             <a href="javascript:void(0);">Category<i class="ti-angle-down"></i></a>
                 <ul class="dropdown border-0 shadow">
                 <?php
-                    foreach($menu as $cat_info){
+                    foreach($categories as $cat_info){
                         if($cat_info->child_cat->count()>0){
                             ?>
                             <li><a href="<?php echo route('product-cat',$cat_info->slug); ?>"><?php echo $cat_info->title; ?></a>

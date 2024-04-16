@@ -1,5 +1,5 @@
 @extends('Buyers.layouts.master')
-@section('title','E-SHOP || HOME PAGE')
+@section('title','E-SHOP')
 @section('main-content')
 
 
@@ -103,6 +103,12 @@
 <section class="midium-banner">
     <div class="container">
         <div class="row">
+            <div class="col-12">
+                <div class="section-title">
+                    <h2>Discounts</h2>
+                </div>
+            </div>
+            
             @if($featured)
                 @foreach($featured as $data)
                     <!-- Single Banner  -->

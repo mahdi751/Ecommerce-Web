@@ -1,6 +1,6 @@
 @extends('Buyers.layouts.master')
 
-@section('title','E-SHOP || PRODUCT PAGE')
+@section('title','E-SHOP')
 
 @section('main-content')
 	
@@ -20,8 +20,10 @@
 			</div>
 		</div>
 		<!-- End Breadcrumbs -->
+		<!-- Main Form -->
 		<form action="{{route('shop.filter')}}" method="POST">
 		@csrf
+		<input type="hidden" name="store_id" value="{{ request('store_id') }}">
 		
 		<input type="hidden" name="store_id" value="{{ session('current_store_id') }}">
 		
@@ -35,13 +37,11 @@
                                 <div class="single-widget category">
                                     <h3 class="title">Categories</h3>
                                     <ul class="categor-list">
-										@php
-											// $category = new Category();
-											$menu=App\Models\Category::getAllParentWithChild();
-										@endphp
-										@if($menu)
+										
+										
+										@if($categories)
 										<li>
-											@foreach($menu as $cat_info)
+											@foreach($categories as $cat_info)
 													@if($cat_info->child_cat->count()>0)
 														<li><a href="{{route('product-cat',$cat_info->slug)}}">{{$cat_info->title}}</a>
 															<ul>
@@ -56,11 +56,7 @@
 											@endforeach
 										</li>
 										@endif
-                                        {{-- @foreach(Helper::productCategoryList('products') as $cat)
-                                            @if($cat->is_parent==1)
-												<li><a href="{{route('product-cat',$cat->slug)}}">{{$cat->title}}</a></li>
-											@endif
-                                        @endforeach --}}
+                                        
                                     </ul>
                                 </div>
                                 <!--/ End Single Widget -->
@@ -105,28 +101,7 @@
 								</div>
 								<!--/ End Shop By Price -->
                                 <!-- Single Widget -->
-                                <div class="single-widget recent-post">
-                                    <h3 class="title">Recent post</h3>
-                                    {{-- {{dd($recent_products)}} --}}
-                                    @foreach($recent_products as $product)
-                                        <!-- Single Post -->
-                                        @php 
-                                            $photo=explode(',',$product->photo);
-                                        @endphp
-                                        <div class="single-post first">
-                                            <div class="image">
-                                                <img src="{{$photo[0]}}" alt="{{$photo[0]}}">
-                                            </div>
-                                            <div class="content">
-                                                <h5><a href="{{route('product-detail',$product->slug)}}">{{$product->title}}</a></h5>
-                                                @php
-                                                    $org=($product->price-($product->price*$product->discount)/100);
-                                                @endphp
-                                                <p class="price"><del class="text-muted">${{number_format($product->price,2)}}</del>   ${{number_format($org,2)}}  </p>                                                
-                                            </div>
-                                        </div>
-                                        <!-- End Single Post -->
-                                    @endforeach
+                                
                                 
                         	</div>
 						</div>
@@ -162,9 +137,8 @@
 											<li class="active"><a href="javascript:void(0)"><i class="fa fa-th-list"></i></a></li>
 										</ul>
 									</div>
-									<!--/ End Shop Top -->
-								</div>
-							</div>
+										<!--Display Products-->
+							
 							<div class="row">
 								@if(count($products))
 									@foreach($products as $product)
@@ -176,9 +150,10 @@
 													<div class="single-product">
 														<div class="product-img">
 															<a href="{{route('product-detail',$product->slug)}}">
-															@php 
+																@php
 																$photo=explode(',',$product->photo);
-															@endphp
+														
+														@endphp
 															<img class="default-img" src="{{$photo[0]}}" alt="{{$photo[0]}}">
 															<img class="hover-img" src="{{$photo[0]}}" alt="{{$photo[0]}}">
 															</a>
@@ -219,12 +194,37 @@
 									<h4 class="text-warning" style="margin:100px auto;">There are no products.</h4>
 								@endif
 							</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 							 <div class="row">
                             <div class="col-md-12 justify-content-center d-flex">
                                 {{-- {{$products->appends($_GET)->links()}}  --}}
                             </div>
+									<!--/ End Shop Top -->
+								</div>
+							</div>
+							
+							
+							
+							
+							
+							
+						
                           </div>
 						</div>
+						
 					</div>
 				</div>
 			</section>
@@ -364,6 +364,7 @@
         margin-top:10px;
         color: white;
     }
+		
 </style>
 @endpush
 @push('scripts')
