@@ -178,7 +178,7 @@
                                         </li>
                                           
                                           <li class="@if(Request::path()=='product-grids'||Request::path()=='product-lists')  active  @endif"><a href="{{route('product-lists')}}">Products</a><span class="new">New</span></li>												
-                                              {{Helper::getHeaderCategory()}}
+                                              
 
                                               
                                             
