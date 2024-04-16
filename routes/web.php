@@ -90,6 +90,7 @@ Route::match(['get', 'post'], '/product/search', [BuyerController::class, 'produ
 
 
 
+
 Route::get('/about-us', [BuyerController::class, 'aboutUs'])->name('about-us');
     Route::get('/contact', [BuyerController::class, 'contact'])->name('contact');
     Route::post('/contact/message', [BuyerController::class, 'store'])->name('contact.store');
