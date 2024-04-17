@@ -145,6 +145,14 @@ function loginCallBack(){
                             </button>
                         </div>
 
+
+                        <div class="body-login-button">
+                        <p>OR</p>
+                            <button type="button" class="login-with-google-btn" >
+                            <a href="{{ route('github-auth') }}"> Sign in with Github</a>
+
+                            </button>
+                        </div>
                     </form>
                 </div>
             </div>
