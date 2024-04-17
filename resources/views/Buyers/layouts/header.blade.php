@@ -125,7 +125,7 @@
                               <div class="shopping-item">
                                   <div class="dropdown-cart-header">
                                       <span>{{count(Helper::getAllProductFromCart())}} Items</span>
-                                      <a>View Cart</a>
+                                      <a href="{{route('cart')}}">View Cart</a>
                                   </div>
                                   <ul class="shopping-list">
                                       {{-- {{Helper::getAllProductFromCart()}} --}}

@@ -66,7 +66,7 @@
                                                     <a title="Wishlist"><i class=" ti-heart "></i><span>Add to Wishlist</span></a>
                                                 </div>
                                                 <div class="product-action-2">
-                                                    <a title="Add to cart">Add to cart</a>
+                                                    <a title="Add to cart" href="{{route('add-to-cart',$product->slug)}}">Add to cart</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -166,7 +166,7 @@
                                         <a title="Wishlist"><i class=" ti-heart "></i><span>Add to Wishlist</span></a>
                                     </div>
                                     <div class="product-action-2">
-                                        <a >Add to cart</a>
+                                        <a href="{{route('add-to-cart',$product->slug)}}">Add to cart</a>
                                     </div>
                                 </div>
                             </div>
@@ -383,7 +383,7 @@
                                                 </div>
                                             </div>
                                         @endif
-                                        <form  method="POST" class="mt-4">
+                                        <form action="{{route('single-add-to-cart')}}" method="POST" class="mt-4">
                                             @csrf
                                             <div class="quantity">
                                                 <!-- Input Order -->

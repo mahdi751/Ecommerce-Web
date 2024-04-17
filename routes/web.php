@@ -11,6 +11,7 @@ use App\Http\Controllers\ProductReviewController;
 use App\Http\Controllers\CouponsController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\BuyerController;
 use \UniSharp\LaravelFilemanager\Lfm;
 
@@ -127,3 +128,11 @@ Route::group(['prefix' => '/admin', 'middleware' => ['auth', 'admin']], function
 Route::resource('/review', '\App\Http\Controllers\ProductReviewController');
 Route::post('product/{slug}/review', [ProductReviewController::class, 'store'])->name('review.store');
 
+
+//Cart
+Route::get('/add-to-cart/{slug}', [CartController::class, 'addToCart'])->name('add-to-cart');
+Route::post('/add-to-cart', [CartController::class, 'singleAddToCart'])->name('single-add-to-cart');
+Route::get('cart-delete/{id}', [CartController::class, 'cartDelete'])->name('cart-delete');
+Route::post('cart-update', [CartController::class, 'cartUpdate'])->name('cart.update');
+
+Route::get('/cart', function () {return view('Buyers.pages.cart');})->name('cart');
