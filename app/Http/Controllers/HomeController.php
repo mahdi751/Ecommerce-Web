@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Store;
+use App\Models\Product;
+use App\Models\Category;
 
 class HomeController extends Controller
 {
@@ -30,11 +32,7 @@ class HomeController extends Controller
     }
 
 
-    public function storePressed(Request $request){
-        $current_store_id = $request->id;
-        session(['current_store_id' => $current_store_id]);
-        $stores = Store::all();
-        return view('home')->with('stores', $stores);
-    }
+    
+
 
 }

@@ -30,6 +30,10 @@ class Category extends Model
         return $this->hasMany(Product::class);
     }
 
+    public function child_cat(){
+        return $this->hasMany('App\Models\Category','parent_id','id')->where('status','active');
+    }
+
 
 
     public static function getAllCategory(){
