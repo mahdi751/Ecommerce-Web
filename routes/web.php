@@ -13,6 +13,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BuyerController;
 use \UniSharp\LaravelFilemanager\Lfm;
+use App\Http\Controllers\BotManController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +29,9 @@ use \UniSharp\LaravelFilemanager\Lfm;
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+Route::match(['get', 'post'], 'botman', [BotManController::class, 'handle']);
 
 Auth::routes(['register' => false]);
 
@@ -126,4 +130,6 @@ Route::group(['prefix' => '/admin', 'middleware' => ['auth', 'admin']], function
 // Product Review
 Route::resource('/review', '\App\Http\Controllers\ProductReviewController');
 Route::post('product/{slug}/review', [ProductReviewController::class, 'store'])->name('review.store');
+
+
 
