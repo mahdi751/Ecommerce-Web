@@ -29,8 +29,6 @@ class BuyerController extends Controller
       // Retrieve the current store ID from the request
       $storeParameters = $request->route()->parameters();
       $store_id = $storeParameters['store_id']; 
-      session(['current_store_id' => $store_id]);
-
       Memory::where('id', 1)->update(['storeId' => $store_id]);
       
       
