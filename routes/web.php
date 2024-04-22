@@ -17,6 +17,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\BuyerController;
 use App\Http\Controllers\EventController;
 use \UniSharp\LaravelFilemanager\Lfm;
+use App\Http\Controllers\BotManController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +33,9 @@ use \UniSharp\LaravelFilemanager\Lfm;
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+Route::match(['get', 'post'], 'botman', [BotManController::class, 'handle']);
 
 Auth::routes(['register' => false]);
 
@@ -131,6 +135,8 @@ Route::group(['prefix' => '/admin', 'middleware' => ['auth', 'admin']], function
 // Product Review
 Route::resource('/review', '\App\Http\Controllers\ProductReviewController');
 Route::post('product/{slug}/review', [ProductReviewController::class, 'store'])->name('review.store');
+
+
 
 Route::get("auth/google", [GoogleAuthController::class,"redirect"])->name("google-auth");
 Route::get("auth/google/call-back", [GoogleAuthController::class,"callBack"]);
