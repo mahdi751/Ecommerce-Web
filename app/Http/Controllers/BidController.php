@@ -26,10 +26,10 @@ class BidController extends Controller
         // Get the authenticated user
         $user = Auth::user();
 
-        // Check if the user already placed a bid for the product
-        if ($user->bids()->where('product_id', $request->product_id)->exists()) {
-            return response()->json(['error' => 'You have already placed a bid for this product'], 422);
-        }
+        // // Check if the user already placed a bid for the product
+        // if ($user->bids()->where('product_id', $request->product_id)->exists()) {
+        //     return response()->json(['error' => 'You have already placed a bid for this product'], 422);
+        // }
 
         // Create a new bid
         $bid = new Bid();
@@ -37,9 +37,16 @@ class BidController extends Controller
         $bid->product_id = $request->product_id;
         $bid->user_id = $user->id;
         $bid->save();
+        
 
-        // Update the current highest bid for the associated product
+
         $this->updateCurrentHighestBid($request->product_id);
+
+
+        
+        broadcast(new NewBid($bid))->toOthers();
+        // Update the current highest bid for the associated product
+       
 
         return response()->json(['message' => 'Bid placed successfully'], 201);
     }

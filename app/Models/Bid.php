@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Bid extends Model
 {
     use HasFactory;
-    protected $fillable = ['bid','product_id','user_id'];
+    protected $fillable = ['bid','product_id','user_id','event_id'];
 
     
     /**
