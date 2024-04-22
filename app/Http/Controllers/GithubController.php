@@ -16,7 +16,7 @@ class GithubController extends Controller
     public function callBack(){
         try{
             $github_user = Socialite::driver("github")->user();
-            dd($github_user);
+
 
             $user = User::where("provider_id", $github_user->getId())->first();
 
