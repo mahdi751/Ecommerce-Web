@@ -42,6 +42,10 @@ class Event extends Model
         $storeId = session('current_store_id');
         return  Event::orderBy('id','DESC')->paginate(10)->where('store_id',$storeId);
     }
+    public static function getAllEventsBuyer(){
+        
+        return  Event::orderBy('id','DESC')->paginate(10);
+    }
     
 
 }

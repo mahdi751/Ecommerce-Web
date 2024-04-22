@@ -101,6 +101,13 @@ class ProductController extends Controller
         //
     }
 
+    public function showProductsForEvent($event_id)
+    {
+        $products = Product::where('event_id', $event_id)->get();
+
+        return view('Buyers.event.eventItems.index', ['products' => $products, 'event_id' => $event_id]);
+    }
+
     /**
      * Show the form for editing the specified resource.
      *

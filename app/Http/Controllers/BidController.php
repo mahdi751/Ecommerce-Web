@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Bid;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
+use App\Events\NewBid;
 
 class BidController extends Controller
 {
@@ -16,6 +17,7 @@ class BidController extends Controller
         $request->validate([
             'bid' => 'required|numeric|min:0',
             'product_id' => 'required|exists:products,id',
+            'event_id' => 'required|exists:events,id',
         ]);
 
         // Check if the user is authenticated
@@ -35,7 +37,8 @@ class BidController extends Controller
         $bid = new Bid();
         $bid->bid = $request->bid;
         $bid->product_id = $request->product_id;
-        $bid->user_id = $user->id;
+        $bid->event_id = $request->event_id ;
+        $bid->user_id = $user->id ;
         $bid->save();
         
 
@@ -58,6 +61,7 @@ class BidController extends Controller
         $this->validate($request, [
             'bid' => 'required|numeric|min:0',
             'product_id' => 'required|exists:products,id',
+            'event_id' => 'required|exists:events,id',
         ]);
 
         $data = $request->all();

@@ -14,6 +14,12 @@ class EventController extends Controller
         return view('Sellers.event.index')->with('events',$events);
     }
 
+    public function buyerIndex()
+    {
+        $events =Event::getAllEventsBuyer();
+        return view('Buyers.event.index')->with('events',$events);
+    }
+
     public function create()
     {
       

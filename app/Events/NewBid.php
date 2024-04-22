@@ -36,15 +36,21 @@ class NewBid implements ShouldBroadcast
         return new Channel('event-'.$event_id);
     }
 
-    public function broadcastWith()
+    
+    public function broadcastAs(): string
     {
-        return [
-            'id' => $this->bid->id,
-            'product_id' => $this->bid->product_id,
-            'user_id' => $this->bid->user_id,
-            'bid' => $this->bid->bid,
-        ];
+        return 'NewBid';
     }
+
+    // public function broadcastWith()
+    // {
+    //     return [
+    //         'id' => $this->bid->id,
+    //         'product_id' => $this->bid->product_id,
+    //         'user_id' => $this->bid->user_id,
+    //         'bid' => $this->bid->bid,
+    //     ];
+    // }
 
 
 }

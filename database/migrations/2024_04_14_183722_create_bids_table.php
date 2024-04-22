@@ -19,6 +19,7 @@ return new class extends Migration
             $table->double('bid', 8, 2);
             $table->foreignId('product_id')->references('id')->on('products');
             $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
+            
         });
     }
 
