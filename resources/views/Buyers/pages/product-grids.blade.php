@@ -76,7 +76,7 @@
                                                     <span>Range:</span>
                                                     <input style="" type="text" id="amount" readonly/>
                                                     <input type="hidden" name="price_range" id="price_range" value="@if(!empty($_GET['price'])){{$_GET['price']}}@endif"/>
-                                                    
+
                                                 </div>
                                                 </div>
                                             </div>
