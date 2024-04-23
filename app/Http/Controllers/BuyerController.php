@@ -18,6 +18,9 @@ use DB;
 use Hash;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Models\Event;
+use Carbon\Carbon;
+
 class BuyerController extends Controller
 {
 
@@ -32,8 +35,14 @@ class BuyerController extends Controller
       session(['current_store_id' => $store_id]);
 
       Memory::where('id', 1)->update(['storeId' => $store_id]);
-      
-      
+
+      $currentDateTime = Carbon::now();
+      $events = Event::where('store_id', $store_id)
+                      ->where('status','active')
+                      ->where('start_time', '<=', $currentDateTime)
+                      ->where('end_time', '>=', $currentDateTime)
+                      ->orderBy('id','DESC')
+                      ->paginate(10);
       
       
       // Retrieve category IDs associated with the store ID
@@ -65,7 +74,8 @@ class BuyerController extends Controller
               ->with('store_id', $store_id)
               ->with('featured', $featured)
               ->with('product_lists', $products)
-              ->with('categories', $categories);
+              ->with('categories', $categories)
+              ->with('events',$events);
 
 
   }

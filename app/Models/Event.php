@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Event extends Model
 {
     use HasFactory;
-    protected $fillable = ['title', 'slug', 'description', 'photo', 'store_id','start_time','end_time'];
+    protected $fillable = ['title', 'slug', 'description', 'photo', 'store_id','start_time','end_time','status'];
+    
     public function endEvent() {
         // Mark the event as ended
         $this->status = 'inactive';
