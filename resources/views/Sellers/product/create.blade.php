@@ -40,11 +40,7 @@
                         <label for="minimum_bid_increment">Minimum Bid Increment</label>
                         <input type="number" name="minimum_bid_increment" id="minimum_bid_increment" class="form-control">
                     </div>
-                    <div class="form-group">
-                        <label for="current_highest_bid">Current Highest Bid</label>
-                        <input value="0" type="number" name="current_highest_bid" id="current_highest_bid"
-                            class="form-control">
-                    </div>
+                    
                     <div class="form-group">
                         <label for="closing_bid">Closing Bid</label>
                         <input type="number" name="closing_bid" id="closing_bid" class="form-control">

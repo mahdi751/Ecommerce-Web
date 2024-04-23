@@ -56,7 +56,6 @@ class ProductController extends Controller
             $data['is_event_item'] = 1;
             $data['starting_bid_price'] = $request->input('starting_bid_price');
             $data['minimum_bid_increment'] = $request->input('minimum_bid_increment');
-            $data['current_highest_bid'] = $request->input('current_highest_bid');
             $data['closing_bid'] = $request->input('closing_bid');
             $data['bid_status'] = $request->input('bid_status');
         }
@@ -104,8 +103,9 @@ class ProductController extends Controller
     public function showProductsForEvent($event_id)
     {
         $products = Product::where('event_id', $event_id)->get();
+        $event = Event::findOrFail($event_id);
 
-        return view('Buyers.event.eventItems.index', ['products' => $products, 'event_id' => $event_id]);
+        return view('Buyers.event.eventItems.index', ['products' => $products, 'event' => $event]);
     }
 
     /**
@@ -149,7 +149,6 @@ class ProductController extends Controller
             $data['is_event_item'] = 1;
             $data['starting_bid_price'] = $request->input('starting_bid_price');
             $data['minimum_bid_increment'] = $request->input('minimum_bid_increment');
-            $data['current_highest_bid'] = $request->input('current_highest_bid');
             $data['closing_bid'] = $request->input('closing_bid');
             $data['bid_status'] = $request->input('bid_status');
             $data['event_id'] = $request->input('event_id');
@@ -218,7 +217,6 @@ protected function validateEventItem($request)
     return $this->validate($request, [
         'starting_bid_price' => 'required|numeric',
         'minimum_bid_increment' => 'required|numeric',
-        'current_highest_bid' => 'required|numeric',
         'closing_bid' => 'required|numeric',
         'bid_status' => 'required|in:open,closed',
         'event_id' => 'required|exists:events,id',

@@ -24,7 +24,7 @@ class Event extends Model
             $product->bid_status = 'closed';
     
             // Set the product's price to the current highest bid
-            $product->price = $product->current_highest_bid;
+            $product->price = $product->highestBid->bid;
     
             // Save the changes
             $product->save();

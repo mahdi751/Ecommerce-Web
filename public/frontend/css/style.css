@@ -5785,6 +5785,12 @@ Version:1.0
 
 }
 
+.event-item-img {
+    width: 200px;
+    align-self: center;
+    margin-top: 10px;
+}
+
 /*=============================
 	End Footer CSS
 ===============================*/

@@ -32,10 +32,38 @@ class BidController extends Controller
         // if ($user->bids()->where('product_id', $request->product_id)->exists()) {
         //     return response()->json(['error' => 'You have already placed a bid for this product'], 422);
         // }
+        // Check if the user already placed a bid for the product
+    $previousBid = Bid::where('product_id', $request->product_id)
+    ->where('user_id', $user->id)
+    ->orderBy('bid', 'desc')
+    ->first();
 
+if ($previousBid && $request->bid <= $previousBid->bid) {
+return response()->json(['error' => 'Your bid must be higher than your previous bid'], 422);
+}
+$product = Product::findOrFail($request->product_id);
+
+    // Check if the bid is higher than the starting bid price
+    if ($request->bid < $product->starting_bid_price) {
+        return response()->json(['error' => 'Your bid must be higher than the starting bid price'], 422);
+    }
+    $currentHighestBid = optional($product->highestBid)->bid ?? 0 ;
+
+    // If there's a current highest bid, check if the bid is higher
+    if ($currentHighestBid && $request->bid <= $currentHighestBid) {
+        return response()->json(['error' => 'Your bid must be higher than the current highest bid'], 422);
+    }
+    
         // Create a new bid
         $bid = new Bid();
-        $bid->bid = $request->bid;
+        if ($request->bid >= $product->closing_bid) {
+            $bid->bid = $product->closing_bid;
+            
+        }else{
+
+            $bid->bid = $request->bid;
+        }
+       
         $bid->product_id = $request->product_id;
         $bid->event_id = $request->event_id ;
         $bid->user_id = $user->id ;
@@ -99,11 +127,14 @@ class BidController extends Controller
         $highestBid = $product->bids()->orderBy('bid', 'desc')->first();
 
         if ($highestBid) {
-            $product->current_highest_bid = $highestBid->bid;
+            $product->highest_bid_id = $highestBid->id;
+            if ($highestBid->bid == $product->closing_bid) {
+                $product->bid_status = 'closed';
+            }
             $product->save();
         } else {
-            // If there are no bids, reset the current highest bid to null or 0
-            $product->current_highest_bid = null; // or 0, depending on your business logic
+          
+            $product->highest_bid_id = null; 
             $product->save();
         }
     }

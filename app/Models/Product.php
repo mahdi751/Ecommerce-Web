@@ -4,11 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Support\Facades\Auth;
 class Product extends Model
 {
     use HasFactory;
-    protected $fillable = ['title', 'slug', 'summary', 'description', 'photo', 'stock', 'size', 'condition', 'status', 'price', 'discount', 'is_featured', 'cat_id', 'child_cat_id','starting_bid_price','minimum_bid_increment','current_highest_bid','closing_bid','bid_status','event_id','is_event_item'];
+    protected $fillable = ['title', 'slug', 'summary', 'description', 'photo', 'stock', 'size', 'condition', 'status', 'price', 'discount', 'is_featured', 'cat_id', 'child_cat_id','starting_bid_price','minimum_bid_increment','highest_bid_id','closing_bid','bid_status','event_id','is_event_item'];
     
 
     // public function category()
@@ -81,6 +81,26 @@ class Product extends Model
     public function bids()
 {
     return $this->hasMany(Bid::class);
+}
+
+public function highestBid()
+{
+    return $this->belongsTo(Bid::class, 'highest_bid_id');
+}
+
+public function highestBidder()
+{
+    return $this->belongsTo(Bid::class, 'highest_bid_id')->with('user');
+}
+public function getBidByUser()
+{
+
+    if (!Auth::check()) {
+        return response()->json(['error' => 'Unauthenticated'], 401);
+    }
+
+    $user = Auth::user();
+    return $this->hasMany(Bid::class)->where('user_id', $user->id)->orderByDesc('bid');
 }
 
   
