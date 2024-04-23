@@ -4,6 +4,7 @@
 
 
 <!-- Start events area -->
+@if(count($events) > 0)
 <section class="shop-home-list event_section section">
     <div class="container">
         <div class="row">
@@ -30,13 +31,14 @@
                                             // dd($photo);
                                         @endphp
                                         <img src="{{$photo[0]}}" alt="{{$photo[0]}}">
-                                        <a  class="buy"><i class="fa fa-shopping-bag"></i></a>
+                                      
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-12 no-padding">
                                     <div class="content">
-                                        <h4 class="title"><a href="#">{{$event->title}}</a></h4>
-                                        <p class="price with-discount"><a href="#">view</a></p>
+                                   
+                                        <h4 class="title">  <a href="{{ route('products.show', ['event_id' => $event->id]) }}">{{$event->title}}</a></h4>
+                                        <p class="price with-discount">  <a href="{{ route('products.show', ['event_id' => $event->id]) }}">view</a></p>
                                     </div>
                                 </div>
                                 </div>
@@ -50,6 +52,7 @@
         </div>
     </div>
 </section>
+@endif
 <!-- end events area -->
 <!-- Start Product Area -->
 <div class="product-area section">

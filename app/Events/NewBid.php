@@ -32,6 +32,7 @@ class NewBid implements ShouldBroadcast
      */
     public function broadcastOn()
     {
+        \Log::info('NewBid event is being broadcasted.');
         $event_id = $this->bid->event_id;
         return new Channel('event-'.$event_id);
     }
