@@ -250,6 +250,6 @@ class CartController extends Controller
         //     $cart->fill($data);
         //     $cart->save();
         // }
-        return view('frontend.pages.checkout');
+        return view('Buyers.pages.checkout');
     }
 }

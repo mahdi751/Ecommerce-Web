@@ -145,8 +145,13 @@ Route::get('/add-to-cart/{slug}', [CartController::class, 'addToCart'])->name('a
 Route::post('/add-to-cart', [CartController::class, 'singleAddToCart'])->name('single-add-to-cart');
 Route::get('cart-delete/{id}', [CartController::class, 'cartDelete'])->name('cart-delete');
 Route::post('cart-update', [CartController::class, 'cartUpdate'])->name('cart.update');
-
+Route::get('/checkout', [CartController::class, 'checkout'])->name('checkout');
 Route::get('/cart', function () {return view('Buyers.pages.cart');})->name('cart');
 
 Route::get("auth/github", [GithubController::class,"redirect"])->name("github-auth");
 Route::get("auth/github/call-back", [GithubController::class,"callBack"]);
+
+
+
+//order
+Route::post('cart/order', [OrderController::class, 'store'])->name('cart.order');
