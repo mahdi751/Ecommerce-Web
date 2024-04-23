@@ -332,4 +332,9 @@ public function productSubCat(Request $request){
 }
 
 
+public function login(){
+    return view('Buyers.pages.login');
+}
+
+       
 }
