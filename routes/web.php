@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\GithubController;
 use App\Http\Controllers\GoogleAuthController;
+use App\Http\Controllers\SubscriberController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SellerController;
 use App\Http\Controllers\MessagesController;
@@ -101,8 +102,8 @@ Auth::routes([
     'verify' => true
 ]);
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-//->middleware("verified");
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware("verified");
+
 Route::get('/home/events', [App\Http\Controllers\EventController::class, 'buyerIndex']);
 Route::get('/home/events/{event_id}/products', '\App\Http\Controllers\ProductController@showProductsForEvent')->name('products.show');
 
@@ -138,7 +139,7 @@ Route::get('/about-us', [BuyerController::class, 'aboutUs'])->name('about-us');
 
 Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
     Lfm::routes();
-});     
+});
 
 
 Route::group(['prefix' => '/admin', 'middleware' => ['auth', 'admin']], function () {
@@ -171,3 +172,8 @@ Route::get('/cart', function () {return view('Buyers.pages.cart');})->name('cart
 
 Route::get("auth/github", [GithubController::class,"redirect"])->name("github-auth");
 Route::get("auth/github/call-back", [GithubController::class,"callBack"]);
+
+
+
+Route::post('/SendEmails', [SubscriberController::class, 'SendEmails'])->name('SendEmails');
+Route::post('/Savesubscribe', [SubscriberController::class, 'SaveSubscribe'])->name('Savesubscribe');
