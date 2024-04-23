@@ -316,5 +316,10 @@ public function productSubCat(Request $request){
           ->with('recent_products', $recent_products);
 }
 
+
+public function login(){
+    return view('Buyers.pages.login');
+}
+
        
 }

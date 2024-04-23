@@ -14,6 +14,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BuyerController;
 use \UniSharp\LaravelFilemanager\Lfm;
 use App\Http\Controllers\BotManController;
+use App\Http\Controllers\WishlistController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,14 +32,21 @@ Route::get('/', function () {
 });
 
 
+
+
+
 Route::match(['get', 'post'], 'botman', [BotManController::class, 'handle']);
 
 Auth::routes(['register' => false]);
+
+Route::get('user/login', [BuyerController::class, 'login'])->name('login.form');
 
 // Route::get('/home', [FrontendController::class, 'index']);
 Route::get('user/logout', [\App\Http\Controllers\SellerController::class, 'logout'])->name('user.logout');
 
 //Route::get('SellerLogin', [SellerController::class, 'login'])->name('seller.login');
+
+
 
 Route::group(['prefix' => '/seller', 'middleware' => ['auth', 'seller']], function () {
 
@@ -84,9 +92,11 @@ Route::group(['prefix' => '/user', 'middleware' => ['user']], function () {
 Route::get('/income', [OrderController::class, 'incomeChart'])->name('product.order.income');
 
 
-Auth::routes();
+Auth::routes([
+    'verify' => true
+]);
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware("verified");
 
 
 Route::get('/home/{store_id}', [App\Http\Controllers\BuyerController::class, 'home'])->name('homestore');
@@ -105,6 +115,11 @@ Route::get('/about-us', [BuyerController::class, 'aboutUs'])->name('about-us');
     Route::get('/product-grids', [BuyerController::class, 'productGrids'])->name('product-grids');
     Route::get('/product-lists', [BuyerController::class, 'productLists'])->name('product-lists');
     Route::match(['get', 'post'], '/filter', [BuyerController::class, 'productFilter'])->name('shop.filter');
+    Route::get('/wishlist', function () {
+        return view('Buyers.pages.wishlist');
+    })->name('wishlist');
+    Route::get('/wishlist/{slug}', [WishlistController::class, 'wishlist'])->name('add-to-wishlist');
+    Route::get('wishlist-delete/{id}', [WishlistController::class, 'wishlistDelete'])->name('wishlist-delete');
 
 
 //Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () { '\vendor\UniSharp\LaravelFilemanager\Lfm::routes()'; });

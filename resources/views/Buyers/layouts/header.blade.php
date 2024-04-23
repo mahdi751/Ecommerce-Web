@@ -88,7 +88,7 @@
                               <div class="shopping-item">
                                   <div class="dropdown-cart-header">
                                       <span>{{count(Helper::getAllProductFromWishlist())}} Items</span>
-                                      <a >View Wishlist</a>
+                                      <a href="{{route('wishlist')}}" >View Wishlist</a>
                                   </div>
                                   <ul class="shopping-list">
                                       {{-- {{Helper::getAllProductFromCart()}} --}}

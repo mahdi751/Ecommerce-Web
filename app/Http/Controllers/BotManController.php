@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Log;
 use BotMan\BotMan\Messages\Outgoing\OutgoingMessage;
 use BotMan\BotMan\Messages\Attachments\UrlAttachment;
+use BotMan\BotMan\Messages\Outgoing\Actions\Button;
+use BotMan\BotMan\Messages\Outgoing\Question;
+
 
 
 class BotManController extends Controller
@@ -19,8 +22,8 @@ class BotManController extends Controller
     {
         $botman = app('botman');
 
-        $botman->hears('min l3krot', function ($botman) {
-            $this->askName($botman);
+        $botman->hears('hi', function ($botman) {
+            $this->listAvailableHears($botman);
         });
 
         $botman->hears('number of stores', function ($botman) {
@@ -197,6 +200,29 @@ public function redirectToHomepage(BotMan $botman)
 
     // Reply to the user with the message
     $botman->reply('click <a href="http://127.0.0.1:8000/home">here</a> for answers.');;
+}
+
+public function listAvailableHears($botman)
+{
+    $commands = [
+        "1) number of stores",
+        "2) category {category}",
+        "3) products of {store}",
+        "4) product {product}",
+        "5) store {store}",
+        "6) redirect me to homepage"
+    ];
+
+    $questionText = "Here are the available commands you can use:";
+    $question = Question::create($questionText)->addButtons(
+        collect($commands)->map(function ($command) {
+            return Button::create($command)->value($command);
+        })->toArray()
+    );
+
+    $botman->ask($question, function ($answer) {
+        // Handle the user's response if needed
+    });
 }
 
 
