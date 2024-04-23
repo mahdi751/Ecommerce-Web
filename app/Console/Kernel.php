@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Console;
-
+use App\Models\Event;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -15,7 +16,16 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->call(function () {
+            // Retrieve all events that have ended
+            $endedEvents = Event::where('end_time', '<=', now())->where('status', 'active')->get();
+
+            // End each event
+            foreach ($endedEvents as $event) {
+                $event->endEvent();
+                Log::info('Event ended: ' . $event->title);
+            }
+        })->everyMinute(); // You can adjust the frequency as needed
     }
 
     /**

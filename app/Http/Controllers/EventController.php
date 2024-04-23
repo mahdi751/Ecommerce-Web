@@ -14,6 +14,12 @@ class EventController extends Controller
         return view('Sellers.event.index')->with('events',$events);
     }
 
+    public function buyerIndex()
+    {
+        $events =Event::getAllEventsBuyer();
+        return view('Buyers.event.index')->with('events',$events);
+    }
+
     public function create()
     {
       
@@ -130,5 +136,10 @@ class EventController extends Controller
 
    
 
+    public function endEvent($eventId) {
+        $event = Event::findOrFail($eventId);
+        $event->endEvent();
+        // You may want to redirect or return a response after ending the event
+    }
 
 }

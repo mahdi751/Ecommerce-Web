@@ -20,6 +20,7 @@ use \UniSharp\LaravelFilemanager\Lfm;
 use App\Http\Controllers\BotManController;
 use App\Http\Controllers\WishlistController;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -64,7 +65,6 @@ Route::group(['prefix' => '/seller', 'middleware' => ['auth', 'seller']], functi
     Route::resource('/store', '\App\Http\Controllers\StoreController');
 
     Route::resource('/event', '\App\Http\Controllers\EventController');
-    
     Route::resource('/category', '\App\Http\Controllers\CategoryController');
     Route::post('/category/{id}/child', '\App\Http\Controllers\CategoryController@getChildByParent');
 
@@ -102,7 +102,12 @@ Auth::routes([
 ]);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware("verified");
+Route::get('/home/events', [App\Http\Controllers\EventController::class, 'buyerIndex']);
+Route::get('/home/events/{event_id}/products', '\App\Http\Controllers\ProductController@showProductsForEvent')->name('products.show');
 
+Route::post('/bids', '\App\Http\Controllers\BidController@store')->name('bids.store');
+Route::put('/bids/{id}', '\App\Http\Controllers\BidController@update')->name('bids.update');
+Route::delete('/bids/{id}', '\App\Http\Controllers\BidController@destroy')->name('bids.destroy');
 
 Route::get('/home/{store_id}', [App\Http\Controllers\BuyerController::class, 'home'])->name('homestore');
 Route::match(['get', 'post'], '/product/search', [BuyerController::class, 'productSearch'])->name('product.search');

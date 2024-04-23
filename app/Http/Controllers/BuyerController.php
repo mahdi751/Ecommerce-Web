@@ -18,6 +18,9 @@ use DB;
 use Hash;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Models\Event;
+use Carbon\Carbon;
+
 class BuyerController extends Controller
 {
 
@@ -32,8 +35,14 @@ class BuyerController extends Controller
       session(['current_store_id' => $store_id]);
 
       Memory::where('id', 1)->update(['storeId' => $store_id]);
-      
-      
+
+      $currentDateTime = Carbon::now();
+      $events = Event::where('store_id', $store_id)
+                      ->where('status','active')
+                      ->where('start_time', '<=', $currentDateTime)
+                      ->where('end_time', '>=', $currentDateTime)
+                      ->orderBy('id','DESC')
+                      ->paginate(10);
       
       
       // Retrieve category IDs associated with the store ID
@@ -47,6 +56,7 @@ class BuyerController extends Controller
       // Retrieve featured products
       $featured = Product::where('status', 'active')
                          ->where('is_featured', 1)
+                         ->where('is_event_item', 0)
                          ->orderBy('price', 'DESC')
                          ->limit(2)
                          ->get();
@@ -54,6 +64,7 @@ class BuyerController extends Controller
       // Retrieve products based on the category IDs
       $products = Product::whereIn('cat_id', $category_ids)
                          ->where('status', 'active')
+                         ->where('is_event_item', 0)
                          ->orderBy('id', 'DESC')
                          ->limit(8)
                          ->get();
@@ -63,7 +74,8 @@ class BuyerController extends Controller
               ->with('store_id', $store_id)
               ->with('featured', $featured)
               ->with('product_lists', $products)
-              ->with('categories', $categories);
+              ->with('categories', $categories)
+              ->with('events',$events);
 
 
   }
@@ -100,7 +112,7 @@ class BuyerController extends Controller
                               ->pluck('id');
 
       // Filter products to include only those belonging to the retrieved category IDs
-      $products->whereIn('cat_id', $category_ids);
+      $products->whereIn('cat_id', $category_ids)->where('is_event_item', 0);
 
       // Sort products based on user-selected option
       if(!empty($_GET['sortBy'])){
@@ -120,6 +132,7 @@ class BuyerController extends Controller
 
       // Retrieve recent products for display
       $recent_products = Product::where('status', 'active')
+                                ->where('is_event_item', 0)
                                 ->orderBy('id', 'DESC')
                                 ->limit(3)
                                 ->get();
@@ -156,7 +169,7 @@ class BuyerController extends Controller
     $categories = Category::whereIn('id', $category_ids)->get();
 
     // Apply category filter based on the retrieved category IDs
-    $products->whereIn('cat_id', $category_ids);
+    $products->whereIn('cat_id', $category_ids)->where('is_event_item', 0);
 
     // Apply other filters if provided
     if(!empty($_GET['sortBy'])){
@@ -174,7 +187,7 @@ class BuyerController extends Controller
     }
 
     // Retrieve recent products
-    $recent_products = Product::where('status', 'active')->orderBy('id', 'DESC')->limit(3)->get();
+    $recent_products = Product::where('status', 'active')->where('is_event_item', 0)->orderBy('id', 'DESC')->limit(3)->get();
 
     // Paginate the results
     if(!empty($_GET['show'])){
@@ -249,6 +262,7 @@ public function productSearch(Request $request){
 
     // Retrieve recent products for display
     $recent_products = Product::whereIn('cat_id', $category_ids)
+                               ->where('is_event_item', 0)
                                ->where('status', 'active')
                                ->orderBy('id', 'DESC')
                                ->limit(3)
@@ -256,6 +270,7 @@ public function productSearch(Request $request){
 
     // Search for products with the given search query and associated with the categories of the store
     $products = Product::whereIn('cat_id', $category_ids)
+                       ->where('is_event_item', 0)
                        ->where('status', 'active')
                        ->where(function($query) use ($request) {
                             $query->where('title', 'like', '%' . $request->search . '%')
@@ -290,6 +305,7 @@ public function productCat(Request $request){
 
   // Retrieve recent products
   $recent_products = Product::where('status', 'active')
+                            ->where('is_event_item', 0)
                             ->orderBy('id', 'DESC')
                             ->limit(3)
                             ->get();
@@ -318,6 +334,7 @@ public function productSubCat(Request $request){
 
   // Retrieve recent products
   $recent_products = Product::where('status', 'active')
+                            ->where('is_event_item', 0)
                             ->orderBy('id', 'DESC')
                             ->limit(3)
                             ->get();

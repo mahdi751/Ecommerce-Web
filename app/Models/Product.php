@@ -78,5 +78,10 @@ class Product extends Model
         return $this->hasMany(Wishlist::class)->whereNotNull('cart_id');
     }
 
+    public function bids()
+{
+    return $this->hasMany(Bid::class);
+}
+
   
 }

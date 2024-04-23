@@ -174,7 +174,7 @@
                                       <ul class="nav main-menu menu navbar-nav">
                                           <li class="{{Request::path()=='home' ? 'active' : ''}}"><a href="{{route('home')}}">Stores</a></li>
                                           <li class="{{ Request::path() == 'home/'.$store_id ? 'active' : '' }}">
-                                            <a href="{{ route('homestore', ['store_id' => $store_id]) }}">Home</a>
+                                            {{-- <a href="{{ route('homestore', ['store_id' => $store_id]) }}">Home</a> --}}
                                         </li>
                                           
                                           <li class="@if(Request::path()=='product-grids'||Request::path()=='product-lists')  active  @endif"><a href="{{route('product-lists')}}">Products</a><span class="new">New</span></li>												
