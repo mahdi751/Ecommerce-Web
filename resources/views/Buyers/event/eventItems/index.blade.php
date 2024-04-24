@@ -30,19 +30,32 @@
               <p class="card-text">Closing price: ${{ $product->closing_bid }}</p>
               <p class="card-text">Current highest bid: $<span
                   id="currentBid_{{ $product->id }}">{{ optional($product->highestBid)->bid ?? 0 }}</span></p>
-              <p class="card-text">New bid:
-                $<span>{{ optional($product->getBidByUser()->first())->bid ?? 0 }}</span>
+              <p class="card-text">your bid:
+                $<span
+                  id="userBid_{{ $product->id }}">{{ optional($product->getBidByUser()->first())->bid ?? 0 }}</span>
               </p>
-              <form id="bidForm_{{ $product->id }}">
+              @if ($product->bid_status == 'open')
+                <form id="bidForm_{{ $product->id }}">
+                  @csrf
+                  <div class="form-group">
+                    <label for="bidAmount">Place new Bid:</label>
+                    <input type="number" class="form-control" id="bidAmount_{{ $product->id }}" name="bid"
+                      min="{{ (optional($product->highestBid)->bid ?? 0) + 1 }}" required>
+                  </div>
+                  <button type="button" class="btn btn-primary" onclick="placeBid('{{ $product->id }}')">Place
+                    Bid</button>
+                </form>
+              @else
                 @csrf
                 <div class="form-group">
-                  <label for="bidAmount">Your Bid:</label>
-                  <input type="number" class="form-control" id="bidAmount_{{ $product->id }}" name="bid"
-                    min="{{ (optional($product->highestBid)->bid ?? 0) + 1 }}" required>
-                </div>
-                <button type="button" class="btn btn-primary" onclick="placeBid('{{ $product->id }}')">Place
-                  Bid</button>
-              </form>
+
+                  <button type="button" class=" btn-sold" disabled>
+                    Item Sold</button>
+              @endif
+              <div class="bid-message-container">
+                <div id="bidMessage_{{ $product->id }}" class="bid-message">New bid placed!</div>
+              </div>
+
             </div>
           </div>
         </div>
@@ -60,20 +73,51 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
   <script>
     // Initialize Pusher with your app key
-    var pusher = new Pusher('{{ env('PUSHER_APP_KEY') }} ', {
-      cluster: '{{ env('PUSHER_APP_CLUSTER') }}',
-      encrypted: true
+    var pusher = new Pusher('{{ env('PUSHER_APP_KEY') }}', {
+      cluster: '{{ env('PUSHER_APP_CLUSTER') }}'
     });
+    Pusher.logToConsole = true;
+
     var event_id = '{{ $event->id }}';
 
     // Subscribe to the channel for bid updates
-    var channel = pusher.subscribe('event-'.event_id);
+
+    var channel = pusher.subscribe('event-' + event_id);
+
     // Bind to the 'new-bid' event
     channel.bind('NewBid', function(data) {
+      var productId = data.bid.product_id;
+      var newBid = data.bid.bid;
+      var currentBidElement = document.getElementById('currentBid_' + productId);
+      var currentBid = parseFloat(currentBidElement.innerText);
+      var bidDifference = newBid - currentBid;
 
-      var productId = data.product_id;
-      var newBid = data.bid;
-      document.getElementById('currentBid_' + productId).innerText = newBid;
+      // Animate the update of the bid amount
+      $({
+        bidValue: currentBid
+      }).animate({
+        bidValue: newBid
+      }, {
+        duration: 1000, // Duration of the animation in milliseconds
+        step: function() {
+          currentBidElement.innerText = this.bidValue.toFixed(2);
+        }
+      });
+
+      var bidMessage = document.getElementById('bidMessage_' + productId);
+      if (data.bid.user_id === {{ auth()->user()->id }}) {
+        bidMessage.style.backgroundColor = 'rgba(9, 135, 15, 0.9)';
+        bidMessage.innerText = 'your bid was placed!';
+
+      } else {
+        bidMessage.style.backgroundColor = 'rgba(156, 8, 8, 0.9)';
+        bidMessage.innerText = 'Someone outbid you!';
+      }
+      bidMessage.classList.remove('red', 'green');
+      bidMessage.classList.add('show');
+      setTimeout(function() {
+        bidMessage.classList.remove('show');
+      }, 2000);
     });
     // Function to place a bid
     function placeBid(productId) {
@@ -89,13 +133,17 @@
           body: formData,
           headers: {
             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-          }
+          },
         })
         .then(response => {
           if (!response.ok) {
             alert("Invalid request");
+            console.log(response.json());
             throw new Error('Network response was not ok');
           }
+          document.getElementById('userBid_' + productId).innerText = bidAmount;
+          document.getElementById('bidAmount_' + productId).value = '';
+
           return response.json();
         })
         .then(data => {

@@ -5791,6 +5791,59 @@ Version:1.0
     margin-top: 10px;
 }
 
+.bid-message-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    /* Ensure it's above other elements */
+}
+
+.bid-message {
+    background-color: #f0ad4e;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    display: none;
+}
+
+.bid-message.show {
+    display: block;
+    /* Show when 'show' class is applied */
+    animation: flashMessage 2.5s ease-in-out;
+}
+
+
+
+@keyframes flashMessage {
+    0% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+.btn-sold {
+    position: relative;
+    font-weight: 500;
+    font-size: 14px;
+    color: #fff;
+    background: #474747;
+    display: inline-block;
+
+    z-index: 5;
+    padding: 13px 32px;
+    border-radius: 0px;
+    text-transform: uppercase;
+}
+
 /*=============================
 	End Footer CSS
 ===============================*/
