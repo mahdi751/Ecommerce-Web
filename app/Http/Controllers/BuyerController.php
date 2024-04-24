@@ -20,6 +20,8 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\Event;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
+
 
 class BuyerController extends Controller
 {
@@ -29,67 +31,72 @@ class BuyerController extends Controller
     }
 
     public function home(Request $request){
-      // Retrieve the current store ID from the request
-      $storeParameters = $request->route()->parameters();
-      $store_id = $storeParameters['store_id'];
-      session(['current_store_id' => $store_id]);
+        // Retrieve the current store ID from the request
+        $storeParameters = $request->route()->parameters();
+        $store_id = $storeParameters['store_id'];
+        session(['current_store_id' => $store_id]);
+    
+        // Log the current store ID
+        Log::info('Current Store ID: ' . $store_id);
+    
+        // Check if the store ID is greater than 0 and log the action
+        if($store_id > 0)
+        {
+            $newMemory = new Memory();
+            $newMemory->storeId = $store_id;
+            $newMemory->save();
+            Log::info('Memory row stored for Store ID: ' . $store_id);
+        }
+    
+        // Retrieve the latest store ID from the memory table and log it
+        $store_id = Memory::where('storeId', '>', 0)->orderBy('id', 'desc')->value('storeId');
+        Log::info('Latest Store ID from Memory table: ' . $store_id);
+    
+        // Retrieve events, categories, featured products, and products
+        $currentDateTime = Carbon::now();
+        $events = Event::where('store_id', $store_id)
+                        ->where('status','active')
+                        ->where('start_time', '<=', $currentDateTime)
+                        ->where('end_time', '>=', $currentDateTime)
+                        ->orderBy('id','DESC')
+                        ->paginate(10);
+        // Log the retrieved events
+      
+    
+        $category_ids = Category::where('store_id', $store_id)
+                                ->where('status', 'active')
+                                ->where('is_parent', 1)
+                                ->pluck('id');
+        $categories = Category::whereIn('id', $category_ids)->get();
+        // Log the retrieved categories
 
-      //Memory::where('id', 1)->update(['storeId' => $store_id]);
-      if($store_id > 0)
-      {
-        $newMemory = new Memory();
-        $newMemory->storeId = $store_id;
-        $newMemory->save();
-      }
-
-      $store_id = Memory::where('storeId', '>', 0)->orderBy('id', 'desc')->value('storeId');
-
-      //dd($storeId);
-
-
-      $currentDateTime = Carbon::now();
-      $events = Event::where('store_id', $store_id)
-                      ->where('status','active')
-                      ->where('start_time', '<=', $currentDateTime)
-                      ->where('end_time', '>=', $currentDateTime)
-                      ->orderBy('id','DESC')
-                      ->paginate(10);
-
-
-      // Retrieve category IDs associated with the store ID
-      $category_ids = Category::where('store_id', $store_id)
-                              ->where('status', 'active')
-                              ->where('is_parent', 1)
-                              ->pluck('id');
-
-    $categories = Category::whereIn('id', $category_ids)->get();
-
-      // Retrieve featured products
-      $featured = Product::where('status', 'active')
-                         ->where('is_featured', 1)
-                         ->where('is_event_item', 0)
-                         ->orderBy('price', 'DESC')
-                         ->limit(2)
-                         ->get();
-
-      // Retrieve products based on the category IDs
-      $products = Product::whereIn('cat_id', $category_ids)
-                         ->where('status', 'active')
-                         ->where('is_event_item', 0)
-                         ->orderBy('id', 'DESC')
-                         ->limit(8)
-                         ->get();
-
-      // Pass the retrieved data to the frontend view
-      return view('Buyers.index')
-              ->with('store_id', $store_id)
-              ->with('featured', $featured)
-              ->with('product_lists', $products)
-              ->with('categories', $categories)
-              ->with('events',$events);
-
-
-  }
+    
+        $featured = Product::where('status', 'active')
+                           ->where('is_featured', 1)
+                           ->where('is_event_item', 0)
+                           ->orderBy('price', 'DESC')
+                           ->limit(2)
+                           ->get();
+        // Log the retrieved featured products
+      
+    
+        $products = Product::whereIn('cat_id', $category_ids)
+                           ->where('status', 'active')
+                           ->where('is_event_item', 0)
+                           ->orderBy('id', 'DESC')
+                           ->limit(8)
+                           ->get();
+        // Log the retrieved products
+     
+    
+        // Pass the retrieved data to the frontend view
+        return view('Buyers.index')
+                ->with('store_id', $store_id)
+                ->with('featured', $featured)
+                ->with('product_lists', $products)
+                ->with('categories', $categories)
+                ->with('events',$events);
+    }
 
 
 
