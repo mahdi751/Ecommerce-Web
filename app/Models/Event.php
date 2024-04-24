@@ -75,6 +75,21 @@ class Event extends Model
         
         return  Event::orderBy('id','DESC')->paginate(10);
     }
-    
+    public static function countActiveEvents(){
+        $data=Event::where('status','active')->count();
+        if($data){
+            return $data;
+        }
+        return 0;
+    }
+    public static function countStoreActiveEvents(){
+        $storeId = session('current_store_id');
+        $data=Event::where('status','active')->where('store_id', $storeId)->count();
+        if($data){
+            return $data;
+        }
+        return 0;
+    }
+   
 
 }

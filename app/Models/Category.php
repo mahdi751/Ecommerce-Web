@@ -58,5 +58,14 @@ class Category extends Model
         }
         return 0;
     }
+    public static function countStoreActiveCategory(){
+        $storeId = session('current_store_id');
+        $data=Category::where('status','active')->where('store_id', $storeId)->count();
+        if($data){
+            return $data;
+        }
+        return 0;
+    }
+   
 
 }

@@ -74,7 +74,8 @@ class BuyerController extends Controller
         // Log the retrieved categories
 
     
-        $featured = Product::where('status', 'active')
+        $featured = Product::whereIn('cat_id', $category_ids)
+                           ->where('status', 'active')
                            ->where('is_featured', 1)
                            ->where('is_event_item', 0)
                            ->orderBy('price', 'DESC')

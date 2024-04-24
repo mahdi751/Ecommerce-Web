@@ -69,6 +69,22 @@ class Product extends Model
         }
         return 0;
     }
+    public static function countStoreActiveProduct(){
+        $storeId = session('current_store_id');
+
+        $data=Product::whereHas('cat_info', function($query) use ($storeId) {
+            $query->where('store_id', $storeId);
+        })
+        ->orWhereHas('sub_cat_info', function($query) use ($storeId) {
+            $query->where('store_id', $storeId);
+        })->where('status','active')->count();
+
+        
+        if($data){
+            return $data;
+        }
+        return 0;
+    }
 
     public function carts(){
         return $this->hasMany(Cart::class)->whereNotNull('order_id');
