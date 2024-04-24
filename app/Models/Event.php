@@ -16,7 +16,7 @@ class Event extends Model
         $this->save();
     
         // Retrieve all products associated with this event
-        $eventProducts = $this->GetProducts()->where('bid_status', 'active')->get();
+        $eventProducts = $this->GetProducts()->get();
     
         // Loop through each product and update its bidding status
         foreach ($eventProducts as $product) {
@@ -24,10 +24,38 @@ class Event extends Model
             $product->bid_status = 'closed';
     
             // Set the product's price to the current highest bid
-            $product->price = $product->highestBid->bid;
+          if( $product->highestBid){
+                $product->price = $product->highestBid->bid;
+          }
+        
     
             // Save the changes
             $product->save();
+            $this->addProductToCart($product);
+        }
+    }
+
+    private function addProductToCart($product) {
+        // Check if the product has a highest bid and if it's greater than 0
+        if ($product->highestBid && $product->highestBid->bid > 0) {
+            // Check if the user is authenticated
+         
+                
+                $alreadyCart = Cart::where('user_id', $product->highestBid->user_id)
+                                    ->where('product_id', $product->id)
+                                    ->where('order_id', null)
+                                    ->first();
+                
+                if (!$alreadyCart) {
+                    $cart = new Cart;
+                    $cart->user_id = $product->highestBid->user_id;
+                    $cart->product_id = $product->id;
+                    $cart->price = $product->price; // Set the price to the highest bid
+                    $cart->quantity = 1; // Set the quantity to 1
+                    $cart->amount = $product->price; // Set the amount to the highest bid
+                    $cart->save();
+                }
+            
         }
     }
     

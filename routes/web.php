@@ -63,6 +63,7 @@ Route::group(['prefix' => '/seller', 'middleware' => ['auth', 'seller']], functi
 
     Route::get('/store', [\App\Http\Controllers\StoreController::class, 'index'])->name('store.index');
     Route::resource('/store', '\App\Http\Controllers\StoreController');
+    Route::post('/events/{id}/end', '\App\Http\Controllers\EventController@endEvent')->name('end.event');
 
     Route::resource('/event', '\App\Http\Controllers\EventController');
     Route::resource('/category', '\App\Http\Controllers\CategoryController');

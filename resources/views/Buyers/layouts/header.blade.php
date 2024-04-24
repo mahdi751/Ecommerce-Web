@@ -96,8 +96,10 @@
                           $photo = explode(',', $data->product['photo']);
                         @endphp
                         <li>
+
                           <a href="{{ route('wishlist-delete', $data->id) }}" class="remove" title="Remove this item"><i
                               class="fa fa-remove"></i></a>
+
                           <a class="cart-img" href="#"><img src="{{ $photo[0] }}"
                               alt="{{ $photo[0] }}"></a>
                           <h4><a href="{{ route('product-detail', $data->product['slug']) }}"
@@ -138,8 +140,10 @@
                           $photo = explode(',', $data->product['photo']);
                         @endphp
                         <li>
-                          <a href="{{ route('cart-delete', $data->id) }}" class="remove" title="Remove this item"><i
-                              class="fa fa-remove"></i></a>
+                          @if (!$data->product['is_event_item'])
+                            <a href="{{ route('cart-delete', $data->id) }}" class="remove" title="Remove this item"><i
+                                class="fa fa-remove"></i></a>
+                          @endif
                           <a class="cart-img" href="#"><img src="{{ $photo[0] }}"
                               alt="{{ $photo[0] }}"></a>
                           <h4><a href="{{ route('product-detail', $data->product['slug']) }}"
