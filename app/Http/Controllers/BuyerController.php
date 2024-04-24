@@ -40,12 +40,15 @@ class BuyerController extends Controller
         Log::info('Current Store ID: ' . $store_id);
     
         // Check if the store ID is greater than 0 and log the action
-        if($store_id > 0)
-        {
+       
+        if (is_numeric($store_id) && $store_id > 0) {
+            Log::info('Current Store ID inside save: ' . $store_id);
             $newMemory = new Memory();
             $newMemory->storeId = $store_id;
             $newMemory->save();
             Log::info('Memory row stored for Store ID: ' . $store_id);
+        } else {
+            Log::warning('Invalid Store ID: ' . $store_id);
         }
     
         // Retrieve the latest store ID from the memory table and log it
