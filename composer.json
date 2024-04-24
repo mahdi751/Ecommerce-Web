@@ -20,6 +20,7 @@
         "laravel/tinker": "^2.7",
         "laravel/ui": "^4.5",
         "munafio/chatify": "^1.6",
+        "spatie/laravel-newsletter": "^4.11",
         "unisharp/laravel-filemanager": "^2.9"
     },
     "require-dev": {

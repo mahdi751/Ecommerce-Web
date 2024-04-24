@@ -21,7 +21,8 @@ class Helper{
     }
 
     public static function getHeaderCategory(){
-        $store_id = Memory::findOrFail(1)->storeId;
+      
+        $store_id = Memory::where('storeId', '>', 0)->orderBy('id', 'desc')->value('storeId');
         
         $category_ids = Category::where('store_id', $store_id)->pluck('id');
         $categories = Category::whereIn('id', $category_ids)->get();

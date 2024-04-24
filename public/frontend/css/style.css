@@ -27,7 +27,7 @@ Version:1.0
 15. Newslatter CSS
 16. About Us CSS
 17. Team CSS
-18. Blog CSS	
+18. Blog CSS
 	+ Blog Archive
 	+ Blog Sidebar
 	+ Blog Single
@@ -4480,7 +4480,7 @@ Version:1.0
     background: #f7941d;
     color: #fff;
     left: -4px;
-    border-radius: 0 30px 30px 0;
+    /* border-radius: 0 30px 30px 0; */
     font-size: 14px;
     font-weight: 500;
     text-transform: uppercase;
