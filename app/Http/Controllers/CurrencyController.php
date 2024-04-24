@@ -21,6 +21,27 @@ class CurrencyController extends Controller
 
         $rates = $response->json()["rates"];
 
-        dd($rates["USD"]);
+        return $rates;
+    }
+
+
+    public function getRate($cur){
+        $response = Http::get($this->baseUrl . 'rates/latest', [
+            'apikey' => $this->apiKey,
+        ]);
+
+        $rates = $response->json()["rates"];
+
+        return $rates[$cur];
+    }
+
+    public function getAmountConversted($cur, $amount){
+        $response = Http::get($this->baseUrl . 'rates/latest', [
+            'apikey' => $this->apiKey,
+        ]);
+
+        $rates = $response->json()["rates"];
+
+        return $rates[$cur] * $amount;
     }
 }

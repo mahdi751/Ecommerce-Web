@@ -53,7 +53,13 @@ Route::get('user/logout', [\App\Http\Controllers\SellerController::class, 'logou
 
 //Route::get('SellerLogin', [SellerController::class, 'login'])->name('seller.login');
 
+
+
+//Rates
 Route::get("rates", [CurrencyController::class,"getRates"])->name("rates");
+Route::get("rate/{cur}", [CurrencyController::class,"getRate"])->name("rate");
+Route::get("rate/{cur}/{amount}", [CurrencyController::class,"getAmountConversted"])->name("convert");
+
 
 Route::group(['prefix' => '/seller', 'middleware' => ['auth', 'seller']], function () {
 
