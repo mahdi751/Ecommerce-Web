@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\GithubController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\SubscriberController;
@@ -52,7 +53,7 @@ Route::get('user/logout', [\App\Http\Controllers\SellerController::class, 'logou
 
 //Route::get('SellerLogin', [SellerController::class, 'login'])->name('seller.login');
 
-
+Route::get("rates", [CurrencyController::class,"getRates"])->name("rates");
 
 Route::group(['prefix' => '/seller', 'middleware' => ['auth', 'seller']], function () {
 
