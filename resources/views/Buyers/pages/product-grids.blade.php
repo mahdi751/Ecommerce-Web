@@ -23,12 +23,12 @@
     <!-- Product Style -->
     <form action="{{route('shop.filter')}}" method="POST">
         @csrf
-        
-        
+
+
         <section class="product-area shop-sidebar shop section">
             <div class="container">
                 <div class="row">
-                    
+
 
 
 
@@ -38,7 +38,7 @@
                                 <div class="single-widget category">
                                     <h3 class="title">Categories</h3>
                                     <ul class="categor-list">
-										
+
 										@if($categories)
 										<li>
 											@foreach($categories as $cat_info)
@@ -56,7 +56,7 @@
 											@endforeach
 										</li>
 										@endif
-                                        
+
                                     </ul>
                                 </div>
                                 <!--/ End Single Widget -->
@@ -84,9 +84,9 @@
 
                                     </div>
                                     <!--/ End Shop By Price -->
-                                
+
                     </div>
-                    
+
                 </div>
                 <div class="col-lg-9 col-md-8 col-12">
                     <div class="row">
@@ -111,7 +111,7 @@
                                             <option value="title" @if(!empty($_GET['sortBy']) && $_GET['sortBy']=='title') selected @endif>Name</option>
                                             <option value="price" @if(!empty($_GET['sortBy']) && $_GET['sortBy']=='price') selected @endif>Price</option>
                                             <option value="category" @if(!empty($_GET['sortBy']) && $_GET['sortBy']=='category') selected @endif>Category</option>
-                                            
+
                                         </select>
                                     </div>
                                 </div>
@@ -134,8 +134,8 @@
                                                 @php
                                                     $photo=explode(',',$product->photo);
                                                 @endphp
-                                                <img class="default-img" src="{{$photo[0]}}" alt="{{$photo[0]}}">
-                                                <img class="hover-img" src="{{$photo[0]}}" alt="{{$photo[0]}}">
+                                                <img class="default-img product-image" src="{{$photo[0]}}" alt="{{$photo[0]}}">
+                                                <img class="hover-img product-image" src="{{$photo[0]}}" alt="{{$photo[0]}}">
                                                 @if($product->discount)
                                                             <span class="price-dec">{{$product->discount}} % Off</span>
                                                 @endif
@@ -164,21 +164,21 @@
                         @else
                                 <h4 class="text-warning" style="margin:100px auto;">There are no products.</h4>
                         @endif
-    
-    
-                        
-    
+
+
+
+
                     </div>
                     <div class="row">
                         <div class="col-md-12 justify-content-center d-flex">
                             {{$products->appends($_GET)->links()}}
                         </div>
-                   
+
                       </div>
-                      
+
 
                 </div>
-                
+
             </div>
         </section>
     </form>
@@ -208,7 +208,7 @@
                                                     @endphp
                                                     @foreach($photo as $data)
                                                         <div class="single-slider">
-                                                            <img src="{{$data}}" alt="{{$data}}">
+                                                            <img src="{{$data}}" alt="{{$data}}" class="product-image">
                                                         </div>
                                                     @endforeach
                                                 </div>

@@ -2,7 +2,6 @@
 @section('title','E-SHOP')
 @section('main-content')
 
-
 <!-- Start events area -->
 @if(count($events) > 0)
 <section class="shop-home-list event_section section">
@@ -18,7 +17,7 @@
                 </div>
                 </div>
                 <div class="row">
-                    
+
                     @foreach($events as $event)
                         <div class="col-md-4">
                             <!-- Start Single List  -->
@@ -31,12 +30,12 @@
                                             // dd($photo);
                                         @endphp
                                         <img src="{{$photo[0]}}" alt="{{$photo[0]}}">
-                                      
+
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-12 no-padding">
                                     <div class="content">
-                                   
+
                                         <h4 class="title">  <a href="{{ route('products.show', ['event_id' => $event->id]) }}">{{$event->title}}</a></h4>
                                         <p class="price with-discount">  <a href="{{ route('products.show', ['event_id' => $event->id]) }}">view</a></p>
                                     </div>
@@ -70,7 +69,7 @@
                         <div class="nav-main">
                             <!-- Tab Nav -->
                             <ul class="nav nav-tabs filter-tope-group" id="myTab" role="tablist">
-                               
+
                                 @if($categories)
                                 <button class="btn" style="background:black"data-filter="*">
                                     All Products
@@ -97,8 +96,8 @@
                                                     $photo=explode(',',$product->photo);
                                                 // dd($photo);
                                                 @endphp
-                                                <img class="default-img" src="{{$photo[0]}}" alt="{{$photo[0]}}">
-                                                <img class="hover-img" src="{{$photo[0]}}" alt="{{$photo[0]}}">
+                                                <img class="product-image default-img" src="{{$photo[0]}}" alt="{{$photo[0]}}">
+                                                <img class="product-image hover-img" src="{{$photo[0]}}" alt="{{$photo[0]}}">
                                                 @if($product->stock<=0)
                                                     <span class="out-of-stock">Sale out</span>
                                                 @elseif($product->condition=='new')
@@ -159,7 +158,7 @@
                     <h2>Discounts</h2>
                 </div>
             </div>
-            
+
             @if($featured)
                 @foreach($featured as $data)
                     <!-- Single Banner  -->
@@ -168,7 +167,7 @@
                             @php
                                 $photo=explode(',',$data->photo);
                             @endphp
-                            <img src="{{$photo[0]}}" alt="{{$photo[0]}}">
+                            <img src="{{$photo[0]}}" alt="{{$photo[0]}}" class="product-image">
                             <div class="content">
                                 <p>{{$data->cat_info['title']}}</p>
                                 <h3>{{$data->title}} <br>Up to<span> {{$data->discount}}%</span></h3>
@@ -255,7 +254,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    
+
                     @foreach($product_lists as $product)
                         <div class="col-md-4">
                             <!-- Start Single List  -->
@@ -267,7 +266,7 @@
                                             $photo=explode(',',$product->photo);
                                             // dd($photo);
                                         @endphp
-                                        <img src="{{$photo[0]}}" alt="{{$photo[0]}}">
+                                        <img src="{{$photo[0]}}" alt="{{$photo[0]}}"  class="product-image">
                                         <a  class="buy"><i class="fa fa-shopping-bag"></i></a>
                                     </div>
                                 </div>
@@ -363,7 +362,7 @@
                                                 @endphp
                                                 @foreach($photo as $data)
                                                     <div class="single-slider">
-                                                        <img src="{{$data}}" alt="{{$data}}">
+                                                        <img src="{{$data}}" alt="{{$data}}" class=".product-image ">
                                                     </div>
                                                 @endforeach
                                             </div>
@@ -462,7 +461,7 @@
                                                 <a class="btn min"><i class="ti-heart"></i></a>
                                             </div>
                                         </form>
-                                        
+
                                     </div>
                                 </div>
                             </div>

@@ -56,7 +56,11 @@
     margin-top: 0px;
     margin-left: 0px;
     }
-
+    .product-image {
+        width: 300px !important;
+        height: 250px!important;
+        object-fit: cover;
+    }
     /*
 </style>
 @stack('styles')

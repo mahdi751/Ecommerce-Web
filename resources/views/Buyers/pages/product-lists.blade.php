@@ -24,9 +24,9 @@
 		<form action="{{route('shop.filter')}}" method="POST">
 		@csrf
 		<input type="hidden" name="store_id" value="{{ request('store_id') }}">
-		
+
 		<input type="hidden" name="store_id" value="{{ session('current_store_id') }}">
-		
+
 			<!-- Product Style 1 -->
 			<section class="product-area shop-sidebar shop-list shop section">
 				<div class="container">
@@ -37,8 +37,8 @@
                                 <div class="single-widget category">
                                     <h3 class="title">Categories</h3>
                                     <ul class="categor-list">
-										
-										
+
+
 										@if($categories)
 										<li>
 											@foreach($categories as $cat_info)
@@ -56,7 +56,7 @@
 											@endforeach
 										</li>
 										@endif
-                                        
+
                                     </ul>
                                 </div>
                                 <!--/ End Single Widget -->
@@ -101,8 +101,8 @@
 								</div>
 								<!--/ End Shop By Price -->
                                 <!-- Single Widget -->
-                                
-                                
+
+
                         	</div>
 						</div>
 						<div class="col-lg-9 col-md-8 col-12">
@@ -138,7 +138,7 @@
 										</ul>
 									</div>
 										<!--Display Products-->
-							
+
 							<div class="row">
 								@if(count($products))
 									@foreach($products as $product)
@@ -152,10 +152,10 @@
 															<a href="{{route('product-detail',$product->slug)}}">
 																@php
 																$photo=explode(',',$product->photo);
-														
+
 														@endphp
-															<img class="default-img" src="{{$photo[0]}}" alt="{{$photo[0]}}">
-															<img class="hover-img" src="{{$photo[0]}}" alt="{{$photo[0]}}">
+															<img class="default-img product-image"src="{{$photo[0]}}" alt="{{$photo[0]}}">
+															<img class="hover-img product-image" src="{{$photo[0]}}" alt="{{$photo[0]}}">
 															</a>
 															<div class="button-head">
 																<div class="product-action">
@@ -215,16 +215,16 @@
 									<!--/ End Shop Top -->
 								</div>
 							</div>
-							
-							
-							
-							
-							
-							
-						
+
+
+
+
+
+
+
                           </div>
 						</div>
-						
+
 					</div>
 				</div>
 			</section>
@@ -251,7 +251,7 @@
 														@endphp
 														@foreach($photo as $data)
 															<div class="single-slider">
-																<img src="{{$data}}" alt="{{$data}}">
+																<img src="{{$data}}" alt="{{$data}}" class="product-image">
 															</div>
 														@endforeach
 													</div>
@@ -364,7 +364,7 @@
         margin-top:10px;
         color: white;
     }
-		
+
 </style>
 @endpush
 @push('scripts')
