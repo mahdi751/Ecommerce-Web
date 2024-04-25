@@ -37,7 +37,7 @@ class EventController extends Controller
             'photo'=>'string|nullable',
             'store_id'=>'required',
             'start_time'=>'required',
-            'end_time'=>'required',
+            'end_time' => 'required|date|after:start_time'
         ]);
 
         $data= $request->all();
@@ -100,7 +100,7 @@ class EventController extends Controller
             'photo'=>'string|nullable',
             'store_id'=>'required',
             'start_time'=>'required',
-            'end_time'=>'required',
+            'end_time' => 'required|date|after:start_time'
         ]);
 
         $data= $request->all();
@@ -139,6 +139,7 @@ class EventController extends Controller
     public function endEvent($eventId) {
         $event = Event::findOrFail($eventId);
         $event->endEvent();
+        return redirect()->route('event.index');
         // You may want to redirect or return a response after ending the event
     }
 

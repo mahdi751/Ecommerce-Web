@@ -27,7 +27,6 @@
               <h5 class="card-title">{{ $product->title }}</h5>
               <p class="card-text">{{ $product->description }}</p>
               <p class="card-text">Starting price: ${{ $product->starting_bid_price }}</p>
-              <p class="card-text">Closing price: ${{ $product->closing_bid }}</p>
               <p class="card-text">Current highest bid: $<span
                   id="currentBid_{{ $product->id }}">{{ optional($product->highestBid)->bid ?? 0 }}</span></p>
               <p class="card-text">your bid:
@@ -44,6 +43,10 @@
                   </div>
                   <button type="button" class="btn btn-primary" onclick="placeBid('{{ $product->id }}')">Place
                     Bid</button>
+                  <button type="button" class="btn btn-primary"
+                    onclick="grabItem('{{ $product->id }}','{{ $product->closing_bid }}')">Grab it for
+                    ${{ $product->closing_bid }}
+                  </button>
                 </form>
               @else
                 @csrf
@@ -83,6 +86,9 @@
     // Subscribe to the channel for bid updates
 
     var channel = pusher.subscribe('event-' + event_id);
+    channel.bind('pusher:subscription_succeeded', function(members) {
+      console.log('successfully subscribed!');
+    });
 
     // Bind to the 'new-bid' event
     channel.bind('NewBid', function(data) {
@@ -91,6 +97,7 @@
       var currentBidElement = document.getElementById('currentBid_' + productId);
       var currentBid = parseFloat(currentBidElement.innerText);
       var bidDifference = newBid - currentBid;
+      var user_bid = '';
 
       // Animate the update of the bid amount
       $({
@@ -111,7 +118,7 @@
 
       } else {
         bidMessage.style.backgroundColor = 'rgba(156, 8, 8, 0.9)';
-        bidMessage.innerText = 'Someone outbid you!';
+        bidMessage.innerText = 'Higher bid placed!';
       }
       bidMessage.classList.remove('red', 'green');
       bidMessage.classList.add('show');
@@ -123,6 +130,43 @@
     function placeBid(productId) {
 
       var bidAmount = document.getElementById('bidAmount_' + productId).value;
+      var formData = new FormData();
+      formData.append('bid', bidAmount);
+      formData.append('product_id', productId);
+      formData.append('event_id', event_id);
+
+      fetch('{{ route('bids.store') }}', { // Updated route to match the store action
+          method: 'POST',
+          body: formData,
+          headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+          },
+        })
+        .then(response => {
+          if (!response.ok) {
+            alert("Invalid request");
+            console.log(response.json());
+            throw new Error('Network response was not ok');
+          }
+          document.getElementById('userBid_' + productId).innerText = bidAmount;
+          document.getElementById('bidAmount_' + productId).value = '';
+
+          return response.json();
+        })
+        .then(data => {
+          if (data.message === 'Bid placed successfully') {
+            // Optional: Update the UI to show the success message or update bid information
+          } else {
+            // Optional: Handle error scenario
+            alert(data.error);
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    }
+
+    function grabItem(productId, bidAmount) {
       var formData = new FormData();
       formData.append('bid', bidAmount);
       formData.append('product_id', productId);
