@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\GithubController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\SubscriberController;
@@ -53,6 +54,15 @@ Route::get('user/logout', [\App\Http\Controllers\SellerController::class, 'logou
 //Route::get('SellerLogin', [SellerController::class, 'login'])->name('seller.login');
 
 
+
+//Rates
+Route::get("rates", [CurrencyController::class,"getRates"])->name("rates");
+Route::get("rate/{cur}", [CurrencyController::class,"getRate"])->name("rate");
+Route::get("rate/{cur}/{amount}", [CurrencyController::class,"getAmountConversted"])->name("convert");
+
+
+//Currency
+Route::post('/update-currency', [BuyerController::class, 'updateCurrency'])->name('updateCurrency');
 
 Route::group(['prefix' => '/seller', 'middleware' => ['auth', 'seller']], function () {
 
@@ -169,7 +179,7 @@ Route::post('/add-to-cart', [CartController::class, 'singleAddToCart'])->name('s
 Route::get('cart-delete/{id}', [CartController::class, 'cartDelete'])->name('cart-delete');
 Route::post('cart-update', [CartController::class, 'cartUpdate'])->name('cart.update');
 
-Route::get('/cart', function () {return view('Buyers.pages.cart');})->name('cart');
+Route::get('/cart', [CartController::class, 'index'])->name('cart');
 
 Route::get("auth/github", [GithubController::class,"redirect"])->name("github-auth");
 Route::get("auth/github/call-back", [GithubController::class,"callBack"]);
