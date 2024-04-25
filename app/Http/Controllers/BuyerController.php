@@ -60,16 +60,16 @@ class BuyerController extends Controller
         $selectedCurrencySign = "";
         switch ($selectedCurrency) {
             case 'LBP':
-                $selectedCurrencySign = 'L.L'; // Assign the currency sign for LBP
+                $selectedCurrencySign = 'L.L '; // Assign the currency sign for LBP
                 break;
             case 'USD':
-                $selectedCurrencySign = '$'; // Assign the currency sign for USD
+                $selectedCurrencySign = '$ '; // Assign the currency sign for USD
                 break;
             case 'EUR':
-                $selectedCurrencySign = '€'; // Assign the currency sign for EUR
+                $selectedCurrencySign = '€ '; // Assign the currency sign for EUR
                 break;
             case 'KWD':
-                $selectedCurrencySign = 'د.ك'; // Assign the currency sign for KWD
+                $selectedCurrencySign = 'KWD '; // Assign the currency sign for KWD
                 break;
             // Add more cases for other currencies if needed
             default:
@@ -144,16 +144,16 @@ class BuyerController extends Controller
         $selectedCurrencySign = "";
         switch ($selectedCurrency) {
             case 'LBP':
-                $selectedCurrencySign = 'L.L'; // Assign the currency sign for LBP
+                $selectedCurrencySign = 'L.L '; // Assign the currency sign for LBP
                 break;
             case 'USD':
-                $selectedCurrencySign = '$'; // Assign the currency sign for USD
+                $selectedCurrencySign = '$ '; // Assign the currency sign for USD
                 break;
             case 'EUR':
-                $selectedCurrencySign = '€'; // Assign the currency sign for EUR
+                $selectedCurrencySign = '€ '; // Assign the currency sign for EUR
                 break;
             case 'KWD':
-                $selectedCurrencySign = 'د.ك'; // Assign the currency sign for KWD
+                $selectedCurrencySign = 'KWD '; // Assign the currency sign for KWD
                 break;
             // Add more cases for other currencies if needed
             default:
@@ -178,16 +178,16 @@ class BuyerController extends Controller
       $selectedCurrencySign = "";
       switch ($selectedCurrency) {
           case 'LBP':
-              $selectedCurrencySign = 'L.L'; // Assign the currency sign for LBP
+              $selectedCurrencySign = 'L.L '; // Assign the currency sign for LBP
               break;
           case 'USD':
-              $selectedCurrencySign = '$'; // Assign the currency sign for USD
+              $selectedCurrencySign = '$ '; // Assign the currency sign for USD
               break;
           case 'EUR':
-              $selectedCurrencySign = '€'; // Assign the currency sign for EUR
+              $selectedCurrencySign = '€ '; // Assign the currency sign for EUR
               break;
           case 'KWD':
-              $selectedCurrencySign = 'د.ك'; // Assign the currency sign for KWD
+              $selectedCurrencySign = 'KWD '; // Assign the currency sign for KWD
               break;
           // Add more cases for other currencies if needed
           default:
@@ -258,16 +258,16 @@ class BuyerController extends Controller
     $selectedCurrencySign = "";
     switch ($selectedCurrency) {
         case 'LBP':
-            $selectedCurrencySign = 'L.L'; // Assign the currency sign for LBP
+            $selectedCurrencySign = 'L.L '; // Assign the currency sign for LBP
             break;
         case 'USD':
-            $selectedCurrencySign = '$'; // Assign the currency sign for USD
+            $selectedCurrencySign = '$ '; // Assign the currency sign for USD
             break;
         case 'EUR':
-            $selectedCurrencySign = '€'; // Assign the currency sign for EUR
+            $selectedCurrencySign = '€ '; // Assign the currency sign for EUR
             break;
         case 'KWD':
-            $selectedCurrencySign = 'د.ك'; // Assign the currency sign for KWD
+            $selectedCurrencySign = 'KWD '; // Assign the currency sign for KWD
             break;
         // Add more cases for other currencies if needed
         default:
@@ -380,16 +380,16 @@ public function productSearch(Request $request){
     $selectedCurrencySign = "";
     switch ($selectedCurrency) {
         case 'LBP':
-            $selectedCurrencySign = 'L.L'; // Assign the currency sign for LBP
+            $selectedCurrencySign = 'L.L '; // Assign the currency sign for LBP
             break;
         case 'USD':
-            $selectedCurrencySign = '$'; // Assign the currency sign for USD
+            $selectedCurrencySign = '$ '; // Assign the currency sign for USD
             break;
         case 'EUR':
-            $selectedCurrencySign = '€'; // Assign the currency sign for EUR
+            $selectedCurrencySign = '€ '; // Assign the currency sign for EUR
             break;
         case 'KWD':
-            $selectedCurrencySign = 'د.ك'; // Assign the currency sign for KWD
+            $selectedCurrencySign = 'KWD '; // Assign the currency sign for KWD
             break;
         // Add more cases for other currencies if needed
         default:
@@ -445,16 +445,16 @@ public function productCat(Request $request){
   $selectedCurrencySign = "";
   switch ($selectedCurrency) {
       case 'LBP':
-          $selectedCurrencySign = 'L.L'; // Assign the currency sign for LBP
+          $selectedCurrencySign = 'L.L '; // Assign the currency sign for LBP
           break;
       case 'USD':
-          $selectedCurrencySign = '$'; // Assign the currency sign for USD
+          $selectedCurrencySign = '$ '; // Assign the currency sign for USD
           break;
       case 'EUR':
-          $selectedCurrencySign = '€'; // Assign the currency sign for EUR
+          $selectedCurrencySign = '€ '; // Assign the currency sign for EUR
           break;
       case 'KWD':
-          $selectedCurrencySign = 'د.ك'; // Assign the currency sign for KWD
+          $selectedCurrencySign = 'KWD '; // Assign the currency sign for KWD
           break;
       // Add more cases for other currencies if needed
       default:
@@ -496,16 +496,16 @@ public function productSubCat(Request $request){
   $selectedCurrencySign = "";
   switch ($selectedCurrency) {
       case 'LBP':
-          $selectedCurrencySign = 'L.L'; // Assign the currency sign for LBP
+          $selectedCurrencySign = 'L.L '; // Assign the currency sign for LBP
           break;
       case 'USD':
-          $selectedCurrencySign = '$'; // Assign the currency sign for USD
+          $selectedCurrencySign = '$ '; // Assign the currency sign for USD
           break;
       case 'EUR':
-          $selectedCurrencySign = '€'; // Assign the currency sign for EUR
+          $selectedCurrencySign = '€ '; // Assign the currency sign for EUR
           break;
       case 'KWD':
-          $selectedCurrencySign = 'د.ك'; // Assign the currency sign for KWD
+          $selectedCurrencySign = 'KWD '; // Assign the currency sign for KWD
           break;
       // Add more cases for other currencies if needed
       default:

@@ -50,7 +50,7 @@
                             target="_blank">{{ $cart->product['title'] }}</a></p>
                         <p class="product-des">{!! $cart['summary'] !!}</p>
                       </td>
-                      <td class="price" data-title="Price"><span>${{ number_format($cart['price'], 2) }}</span></td>
+                      <td class="price" data-title="Price"><span>{{$selectedCurrencySign}}{{ number_format(Helper::getAmountConverted($selectedCurrency ,$cart['price']), 2) }}</span></td>
                       <td class="qty" data-title="Qty"><!-- Input Order -->
 
                         @if (!$cart->product['is_event_item'])
@@ -76,7 +76,7 @@
                         <!--/ End Input Order -->
                       </td>
                       <td class="total-amount cart_single_price" data-title="Total"><span
-                          class="money">${{ $cart['amount'] }}</span></td>
+                          class="money">{{$selectedCurrencySign}}{{ number_format(Helper::getAmountConverted($selectedCurrency ,$cart['amount']),2) }}</span></td>
 
                       <td class="action" data-title="Remove">
                         @if (!$cart->product['is_event_item'])

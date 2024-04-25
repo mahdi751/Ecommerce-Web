@@ -7,12 +7,57 @@ use App\Models\Product;
 use App\Models\Wishlist;
 use App\Models\Cart;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Cache;
 use Helper;
 class CartController extends Controller
 {
+
+    protected $apiKey;
+    protected $baseUrl;
+
     protected $product=null;
     public function __construct(Product $product){
         $this->product=$product;
+        $this->apiKey = config('currency_freaks.api_key');
+        $this->baseUrl = 'https://api.currencyfreaks.com/v2.0/';
+    }
+
+    public function index()
+    {
+        // Get the selected currency from the cache
+        $selectedCurrency = Cache::get('selected_currency_' . auth()->id());
+
+        // Initialize the variable to hold the currency sign
+        $selectedCurrencySign = "";
+
+        // Assign the currency sign based on the selected currency
+        switch ($selectedCurrency) {
+            case 'LBP':
+                $selectedCurrencySign = 'L.L '; // Assign the currency sign for LBP
+                break;
+            case 'USD':
+                $selectedCurrencySign = '$ '; // Assign the currency sign for USD
+                break;
+            case 'EUR':
+                $selectedCurrencySign = '€ '; // Assign the currency sign for EUR
+                break;
+            case 'KWD':
+                $selectedCurrencySign = 'KWD '; // Assign the currency sign for KWD
+                break;
+            default:
+                $selectedCurrencySign = ''; // Default value if no currency is selected
+        }
+        
+        // If no currency is selected, default to USD
+        if ($selectedCurrency == null) {
+            $selectedCurrency = "USD";
+        }
+
+        // Pass the selected currency and its sign to the view
+        return view('Buyers.pages.cart', [
+            'selectedCurrency' => $selectedCurrency,
+            'selectedCurrencySign' => $selectedCurrencySign
+        ]);
     }
 
     public function addToCart(Request $request){
@@ -252,4 +297,6 @@ class CartController extends Controller
         // }
         return view('frontend.pages.checkout');
     }
+
+
 }

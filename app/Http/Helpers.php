@@ -10,6 +10,7 @@ use App\Models\Shipping;
 use App\Models\Cart;
 // use Auth;
 class Helper{
+
     public static function messageList()
     {
         return Messages::whereNull('read_at')->orderBy('created_at', 'desc')->get();
@@ -103,6 +104,32 @@ class Helper{
         }
         else{
             return 0;
+        }
+    }
+
+    public static function getAmountConverted($cur, $amount) {
+        $apiKey = config('currency_freaks.api_key');
+        $baseUrl = 'https://api.currencyfreaks.com/v2.0/';
+        if (Cache::has('currency_conversion_rates')) {
+            $rates = Cache::get('currency_conversion_rates');
+        } else {
+            $response = Http::get($baseUrl . 'rates/latest', [
+                'apikey' => $apiKey,
+            ]);
+    
+            if ($response->successful() && isset($response->json()["rates"])) {
+                $rates = $response->json()["rates"];
+    
+                Cache::put('currency_conversion_rates', $rates, now()->addHours(6)); 
+            } else {
+                return "Failed to fetch conversion rates";
+            }
+        }
+    
+        if (isset($rates[$cur])) {
+            return $rates[$cur] * $amount;
+        } else {
+            return "Currency not supported";
         }
     }
     // Wishlist Count
