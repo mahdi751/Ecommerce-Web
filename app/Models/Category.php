@@ -52,7 +52,10 @@ class Category extends Model
     }
 
     public static function countActiveCategory(){
-        $data=Category::where('status','active')->count();
+        $user_id = auth()->user()->id;
+        $storeIds = Store::where('owner_id', $user_id)->pluck('id');
+        
+        $data=Category::where('status','active')->whereIn('store_id', $storeIds)->count();
         if($data){
             return $data;
         }
