@@ -13,7 +13,7 @@ class SubscriberController extends Controller
 {
     public function SendEmails()
     {
-        $store_id = Memory::findOrFail(1)->storeId;
+        $store_id = session('current_store_id');
         $store = Store::find($store_id);
 
         $storeEmail = $store->email;
