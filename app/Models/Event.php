@@ -72,11 +72,12 @@ class Event extends Model
         return  Event::orderBy('id','DESC')->paginate(10)->where('store_id',$storeId);
     }
     public static function getAllEventsBuyer(){
-        
         return  Event::orderBy('id','DESC')->paginate(10);
     }
-    public static function countActiveEvents(){
-        $data=Event::where('status','active')->count();
+    public static function countActiveEvents(){  
+        $user_id = auth()->user()->id;
+        $storeIds = Store::where('owner_id', $user_id)->pluck('id');
+        $data=Event::where('status','active')->whereIn('store_id', $storeIds)->count();
         if($data){
             return $data;
         }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use App\Http\Controllers\SubscriberController; 
 
 class EventController extends Controller
 {
@@ -52,6 +53,9 @@ class EventController extends Controller
 
         $status=Event::create($data);
         if($status){
+
+            $subscriberController = new SubscriberController();
+            $subscriberController->SendEmails();
             request()->session()->flash('success','Event successfully added');
         }
         else{

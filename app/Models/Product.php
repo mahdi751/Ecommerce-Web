@@ -62,13 +62,24 @@ class Product extends Model
     public static function getProductBySlug($slug){
         return Product::with(['cat_info','rel_prods','getReview'])->where('slug',$slug)->first();
     }
-    public static function countActiveProduct(){
-        $data=Product::where('status','active')->count();
-        if($data){
-            return $data;
-        }
-        return 0;
-    }
+    public static function countActiveProduct()
+{
+    $user_id = auth()->user()->id;
+    $storeIds = Store::where('owner_id', $user_id)->pluck('id');
+
+    $data = Product::where(function ($query) use ($storeIds) {
+                $query->whereHas('cat_info', function ($query) use ($storeIds) {
+                    $query->whereIn('store_id', $storeIds);
+                })
+                ->orWhereHas('sub_cat_info', function ($query) use ($storeIds) {
+                    $query->whereIn('store_id', $storeIds);
+                });
+            })
+            ->where('status', 'active')
+            ->count();
+
+    return $data;
+}
     public static function countStoreActiveProduct(){
         $storeId = session('current_store_id');
 

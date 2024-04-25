@@ -8,12 +8,13 @@ use App\Models\Subscriber;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 
 class SubscriberController extends Controller
 {
     public function SendEmails()
     {
-        $store_id = Memory::findOrFail(1)->storeId;
+        $store_id = session('current_store_id');
         $store = Store::find($store_id);
 
         $storeEmail = $store->email;
@@ -21,7 +22,7 @@ class SubscriberController extends Controller
         $subscribers = Subscriber::where('store_id', $store_id)->get();
 
         foreach ($subscribers as $subscriber) {
-
+            Log::info('email sent from store to: ' . $subscriber->email);
             $user = User::where('email', $subscriber->email)->first();
             //dd($user);
             $emailContent = "Hello {$user->name}\n\n";
@@ -33,6 +34,7 @@ class SubscriberController extends Controller
 
             Mail::raw($emailContent, function ($message) use ($subscriber, $storeEmail) {
                 $message->to($subscriber->email)->from($storeEmail)->subject('New Event for Bidding!');
+                
             });
         }
 
@@ -45,7 +47,7 @@ class SubscriberController extends Controller
     {
         $userEmail = auth()->user()->email;
 
-        $store_id = Memory::findOrFail(1)->storeId;
+        $store_id = Memory::where('storeId', '>', 0)->orderBy('id', 'desc')->value('storeId');
 
         $existingSubscriber = Subscriber::where('email', $userEmail)->where('store_id', $store_id)->first();
 
@@ -65,7 +67,7 @@ class SubscriberController extends Controller
 
     public function SendThankyouEmail($email)
     {
-        $store_id = Memory::findOrFail(1)->storeId;
+        $store_id = Memory::where('storeId', '>', 0)->orderBy('id', 'desc')->value('storeId');
         $store = Store::find($store_id);
 
         $storeEmail = $store->email;
