@@ -5,9 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Cache;
 class Product extends Model
 {
     use HasFactory;
+    protected $apiKey;
+    protected $baseUrl;
+
+    public function __construct(){
+        $this->apiKey = config('currency_freaks.api_key');
+        $this->baseUrl = 'https://api.currencyfreaks.com/v2.0/';
+    }
     protected $fillable = ['title', 'slug', 'summary', 'description', 'photo', 'stock', 'size', 'condition', 'status', 'price', 'discount', 'is_featured', 'cat_id', 'child_cat_id','starting_bid_price','minimum_bid_increment','highest_bid_id','closing_bid','bid_status','event_id','is_event_item'];
     
 
@@ -118,6 +127,32 @@ public function getBidByUser()
     $user = Auth::user();
     return $this->hasMany(Bid::class)->where('user_id', $user->id)->orderByDesc('bid');
 }
+
+
+public function getAmountConverted($cur, $amount) {
+    if (Cache::has('currency_conversion_rates')) {
+        $rates = Cache::get('currency_conversion_rates');
+    } else {
+        $response = Http::get($this->baseUrl . 'rates/latest', [
+            'apikey' => $this->apiKey,
+        ]);
+
+        if ($response->successful() && isset($response->json()["rates"])) {
+            $rates = $response->json()["rates"];
+
+            Cache::put('currency_conversion_rates', $rates, now()->addHours(6)); 
+        } else {
+            return "Failed to fetch conversion rates";
+        }
+    }
+
+    if (isset($rates[$cur])) {
+        return $rates[$cur] * $amount;
+    } else {
+        return "Currency not supported";
+    }
+}
+
 
   
 }

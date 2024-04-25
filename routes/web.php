@@ -61,6 +61,9 @@ Route::get("rate/{cur}", [CurrencyController::class,"getRate"])->name("rate");
 Route::get("rate/{cur}/{amount}", [CurrencyController::class,"getAmountConversted"])->name("convert");
 
 
+//Currency
+Route::post('/update-currency', [BuyerController::class, 'updateCurrency'])->name('updateCurrency');
+
 Route::group(['prefix' => '/seller', 'middleware' => ['auth', 'seller']], function () {
 
     Route::get('/', [\App\Http\Controllers\SellerController::class, 'index'])->name('seller');
