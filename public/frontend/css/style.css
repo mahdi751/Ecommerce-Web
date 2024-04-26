@@ -5857,6 +5857,10 @@ Version:1.0
     border-radius: 0.35rem;
 }
 
+.hideitem {
+    display: none;
+}
+
 /*=============================
 	End Footer CSS
 ===============================*/

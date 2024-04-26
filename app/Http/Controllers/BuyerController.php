@@ -562,7 +562,7 @@ public function updateCurrency(Request $request) {
     Cache::put('selected_currency_' . auth()->id(), $selectedCurrency, now()->addHours(24)); 
     $store_id = Memory::where('storeId', '>', 0)->orderBy('id', 'desc')->value('storeId');
     Log::info('Latest Store ID from Memory table: ' . $store_id);
-    return redirect()->route('homestore', ['store_id' => $store_id]);
+    return redirect()->back();
 
 }
 
