@@ -87,7 +87,15 @@ class BuyerController extends Controller
                         ->orderBy('id','DESC')
                         ->paginate(10);
         // Log the retrieved events
-      
+       // Retrieve the upcoming event (starts within the next week excluding the ongoing event)
+    $endOfWeek = $currentDateTime->copy()->addDays(7);
+
+    $uevents = Event::where('store_id', $store_id)
+    ->where('status', 'active')
+    ->where('start_time', '>', $currentDateTime->format('Y-m-d H:i:s'))
+    ->where('start_time', '<=', $endOfWeek->format('Y-m-d H:i:s'))
+    ->orderBy('start_time')
+                    ->paginate(10);
     
         $category_ids = Category::where('store_id', $store_id)
                                 ->where('status', 'active')
@@ -124,7 +132,8 @@ class BuyerController extends Controller
                 ->with('featured', $featured)
                 ->with('product_lists', $products)
                 ->with('categories', $categories)
-                ->with('events',$events);
+                ->with('events',$events)
+                ->with('uevents', $uevents);
     }
 
 

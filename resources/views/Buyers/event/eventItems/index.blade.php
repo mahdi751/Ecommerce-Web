@@ -8,65 +8,75 @@
 
 @section('title', 'E-SHOP')
 @section('main-content')
+  <div style="width: 100%">
 
-  <div class="row">
-    <div class="col-12">
-      <div class="section-title">
-        <h2>{{ $event->title }}</h2>
+    <div class="row">
+      <div class="col-12">
+        <div class="section-title">
+          <h2>{{ $event->title }}</h2>
 
+        </div>
+      </div>
+    </div>
+    <div style="width: 100%">
+      <div class="row ">
+        <div class="container " style="width: 100%; display:flex; ">
+          @foreach ($products as $product)
+            <div style="margin: 20px 10px; width:30%">
+              <!-- Start Single List  -->
+              <div class="single-list">
+
+                <div class="card .card-bid">
+                  <img style="width: 200px; height:100px;" src="{{ $product->photo }}" class="event-item-img"
+                    alt="{{ $product->title }}">
+                  <div class="card-body">
+                    <h5 class="card-title">{{ $product->title }}</h5>
+                    <p class="card-text">{{ $product->description }}</p>
+                    <p class="card-text">Starting price: ${{ $product->starting_bid_price }}</p>
+                    <p class="card-text">Current highest bid: $<span
+                        id="currentBid_{{ $product->id }}">{{ optional($product->highestBid)->bid ?? 0 }}</span></p>
+                    <p class="card-text">your bid:
+                      $<span
+                        id="userBid_{{ $product->id }}">{{ optional($product->getBidByUser()->first())->bid ?? 0 }}</span>
+                    </p>
+                    @if ($product->bid_status == 'open')
+                      <form id="bidForm_{{ $product->id }}">
+                        @csrf
+                        <div class="form-group">
+                          <label for="bidAmount">Place new Bid:</label>
+                          <input type="number" class="form-control" id="bidAmount_{{ $product->id }}" name="bid"
+                            min="{{ (optional($product->highestBid)->bid ?? 0) + 1 }}" required>
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="placeBid('{{ $product->id }}')">Place
+                          Bid</button>
+                        <button type="button" class="btn btn-primary"
+                          onclick="grabItem('{{ $product->id }}','{{ $product->closing_bid }}')">Grab it for
+                          ${{ $product->closing_bid }}
+                        </button>
+                      </form>
+                    @else
+                      @csrf
+                      <div class="form-group">
+
+                        <button type="button" class=" btn-sold" disabled>
+                          Item Sold</button>
+                    @endif
+                    <div class="bid-message-container">
+                      <div id="bidMessage_{{ $product->id }}" class="bid-message">New bid placed!</div>
+                    </div>
+
+                  </div>
+                </div>
+
+              </div>
+            </div>
+        </div>
+        @endforeach
       </div>
     </div>
   </div>
-  <div class="container">
-    <div class="row">
-      @foreach ($products as $product)
-        <div class="col-md-4 mb-4">
-          <div class="card">
-            <img src="{{ $product->photo }}" class="event-item-img" alt="{{ $product->title }}">
-            <div class="card-body">
-              <h5 class="card-title">{{ $product->title }}</h5>
-              <p class="card-text">{{ $product->description }}</p>
-              <p class="card-text">Starting price: ${{ $product->starting_bid_price }}</p>
-              <p class="card-text">Current highest bid: $<span
-                  id="currentBid_{{ $product->id }}">{{ optional($product->highestBid)->bid ?? 0 }}</span></p>
-              <p class="card-text">your bid:
-                $<span
-                  id="userBid_{{ $product->id }}">{{ optional($product->getBidByUser()->first())->bid ?? 0 }}</span>
-              </p>
-              @if ($product->bid_status == 'open')
-                <form id="bidForm_{{ $product->id }}">
-                  @csrf
-                  <div class="form-group">
-                    <label for="bidAmount">Place new Bid:</label>
-                    <input type="number" class="form-control" id="bidAmount_{{ $product->id }}" name="bid"
-                      min="{{ (optional($product->highestBid)->bid ?? 0) + 1 }}" required>
-                  </div>
-                  <button type="button" class="btn btn-primary" onclick="placeBid('{{ $product->id }}')">Place
-                    Bid</button>
-                  <button type="button" class="btn btn-primary"
-                    onclick="grabItem('{{ $product->id }}','{{ $product->closing_bid }}')">Grab it for
-                    ${{ $product->closing_bid }}
-                  </button>
-                </form>
-              @else
-                @csrf
-                <div class="form-group">
 
-                  <button type="button" class=" btn-sold" disabled>
-                    Item Sold</button>
-              @endif
-              <div class="bid-message-container">
-                <div id="bidMessage_{{ $product->id }}" class="bid-message">New bid placed!</div>
-              </div>
-
-            </div>
-          </div>
-        </div>
-      @endforeach
-    </div>
   </div>
-
-
 
 @endsection
 
