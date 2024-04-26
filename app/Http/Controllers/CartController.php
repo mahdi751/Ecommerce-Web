@@ -194,7 +194,6 @@ class CartController extends Controller
         }    
     }
 
-    // public function addToCart(Request $request){
     //     // return $request->all();
     //     if(Auth::check()){
     //         $qty=$request->quantity;
@@ -276,52 +275,29 @@ class CartController extends Controller
     // }
 
     public function checkout(Request $request){
-        // $cart=session('cart');
-        // $cart_index=\Str::random(10);
-        // $sub_total=0;
-        // foreach($cart as $cart_item){
-        //     $sub_total+=$cart_item['amount'];
-        //     $data=array(
-        //         'cart_id'=>$cart_index,
-        //         'user_id'=>$request->user()->id,
-        //         'product_id'=>$cart_item['id'],
-        //         'quantity'=>$cart_item['quantity'],
-        //         'amount'=>$cart_item['amount'],
-        //         'status'=>'new',
-        //         'price'=>$cart_item['price'],
-        //     );
-
-        //     $cart=new Cart();
-        //     $cart->fill($data);
-        //     $cart->save();
-        // }
 
 
-                // Get the selected currency from the cache
                 $selectedCurrency = Cache::get('selected_currency_' . auth()->id());
 
-                // Initialize the variable to hold the currency sign
                 $selectedCurrencySign = "";
         
-                // Assign the currency sign based on the selected currency
                 switch ($selectedCurrency) {
                     case 'LBP':
-                        $selectedCurrencySign = 'L.L '; // Assign the currency sign for LBP
+                        $selectedCurrencySign = 'L.L ';
                         break;
                     case 'USD':
-                        $selectedCurrencySign = '$ '; // Assign the currency sign for USD
+                        $selectedCurrencySign = '$ ';
                         break;
                     case 'EUR':
-                        $selectedCurrencySign = '€ '; // Assign the currency sign for EUR
+                        $selectedCurrencySign = '€ '; 
                         break;
                     case 'KWD':
-                        $selectedCurrencySign = 'KWD '; // Assign the currency sign for KWD
+                        $selectedCurrencySign = 'KWD '; 
                         break;
                     default:
-                        $selectedCurrencySign = ''; // Default value if no currency is selected
+                        $selectedCurrencySign = ''; 
                 }
                 
-                // If no currency is selected, default to USD
                 if ($selectedCurrency == null) {
                     $selectedCurrency = "USD";
                 }

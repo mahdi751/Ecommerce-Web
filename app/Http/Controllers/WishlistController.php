@@ -5,11 +5,39 @@ use Auth;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Wishlist;
+use Illuminate\Support\Facades\Cache;
 class WishlistController extends Controller
 {
     protected $product=null;
     public function __construct(Product $product){
         $this->product=$product;
+    }
+
+    public function index(){
+        $selectedCurrency = Cache::get('selected_currency_' . auth()->id());
+        $selectedCurrencySign = "";
+        switch ($selectedCurrency) {
+            case 'LBP':
+                $selectedCurrencySign = 'L.L '; // Assign the currency sign for LBP
+                break;
+            case 'USD':
+                $selectedCurrencySign = '$ '; // Assign the currency sign for USD
+                break;
+            case 'EUR':
+                $selectedCurrencySign = '€ '; // Assign the currency sign for EUR
+                break;
+            case 'KWD':
+                $selectedCurrencySign = 'KWD '; // Assign the currency sign for KWD
+                break;
+            // Add more cases for other currencies if needed
+            default:
+                $selectedCurrencySign = ''; // Default value if no currency is selected
+        }
+        if($selectedCurrency == null){
+            $selectedCurrency = "USD";
+        }
+
+        return view("Buyers.pages.wishlist")->with("selectedCurrency",$selectedCurrency)->with("selectedCurrencySign",$selectedCurrencySign);
     }
 
     public function wishlist(Request $request){

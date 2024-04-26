@@ -142,9 +142,7 @@ Route::get('/about-us', [BuyerController::class, 'aboutUs'])->name('about-us');
     Route::get('/product-grids', [BuyerController::class, 'productGrids'])->name('product-grids');
     Route::get('/product-lists', [BuyerController::class, 'productLists'])->name('product-lists');
     Route::match(['get', 'post'], '/filter', [BuyerController::class, 'productFilter'])->name('shop.filter');
-    Route::get('/wishlist', function () {
-        return view('Buyers.pages.wishlist');
-    })->name('wishlist');
+    Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
     Route::get('/wishlist/{slug}', [WishlistController::class, 'wishlist'])->name('add-to-wishlist');
     Route::get('wishlist-delete/{id}', [WishlistController::class, 'wishlistDelete'])->name('wishlist-delete');
 

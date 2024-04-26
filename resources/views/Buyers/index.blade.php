@@ -177,8 +177,6 @@
                         </a>
                         <div class="button-head">
                           <div class="product-action">
-                            <a data-toggle="modal" data-target="#{{ $product->id }}" title="Quick View"
-                              href="#"><i class=" ti-eye"></i><span>Quick Shop</span></a>
                             <a title="Wishlist"href="{{ route('add-to-wishlist', $product->slug) }}"><i
                                 class=" ti-heart "></i><span>Add to Wishlist</span></a>
                           </div>
@@ -284,8 +282,7 @@
                     </a>
                     <div class="button-head">
                       <div class="product-action">
-                        <a data-toggle="modal" data-target="#{{ $product->id }}" title="Quick View"
-                          href="#"><i class=" ti-eye"></i><span>Quick Shop</span></a>
+
                         <a title="Wishlist" href="{{ route('add-to-wishlist', $product->slug) }}"><i
                             class=" ti-heart "></i><span>Add to Wishlist</span></a>
                       </div>
@@ -345,7 +342,7 @@
                           // dd($photo);
                         @endphp
                         <img src="{{ $photo[0] }}" alt="{{ $photo[0] }}" class="product-image">
-                        <a class="buy"><i class="fa fa-shopping-bag"></i></a>
+                        <a href="{{route('product-detail',$product->slug)}}" class="buy"><i class="fa fa-shopping-bag"></i></a>
                       </div>
                     </div>
                     @php

@@ -10,15 +10,11 @@
             <!-- Top Right -->
             <div class="right-content">
               <ul class="list-main">
-                <li><i class="ti-location-pin"></i> <a>Track Order</a></li>
                 {{-- <li><i class="ti-alarm-clock"></i> <a href="#">Daily deal</a></li> --}}
                 @auth
-                  @if (Auth::user()->role == 'admin')
-                    <li><i class="ti-user"></i> <a href="{{ route('admin') }}" target="_blank">Dashboard</a></li>
-                  @else
-                    <li><i class="ti-user"></i> <a href="{{ route('user') }}" target="_blank">Dashboard</a></li>
-                  @endif
-                  <li><i class="ti-power-off"></i> <a href="{{ route('user.logout') }}">Logout</a></li>
+                    <li><i class="ti-user"></i> <a href="{{ route('user-profile') }}" target="_blank">Dashboard</a></li>
+                  
+                  <li><i class="ti-power-off"></i> <a href="{{ route('logout') }}">Logout</a></li>
                 @else
                   <li><i class="ti-power-off"></i><a>Login /</a> <a>Register</a></li>
                 @endauth
@@ -125,7 +121,7 @@
                         <span>Total</span>
                         <span class="total-amount">${{ number_format(Helper::totalWishlistPrice(), 2) }}</span>
                       </div>
-                      <a class="btn animate">Cart</a>
+                      <a href="{{ route('cart') }}" class="btn animate">Cart</a>
                     </div>
                   </div>
                 @endauth

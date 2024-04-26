@@ -135,10 +135,6 @@
                       </select>
                     </div>
                   </div>
-                  <ul class="view-mode">
-                    <li><a href="{{ route('product-grids') }}"><i class="fa fa-th-large"></i></a></li>
-                    <li class="active"><a href="javascript:void(0)"><i class="fa fa-th-list"></i></a></li>
-                  </ul>
                 </div>
                 <!--Display Products-->
 
@@ -164,8 +160,6 @@
                                 </a>
                                 <div class="button-head">
                                   <div class="product-action">
-                                    <a data-toggle="modal" data-target="#{{ $product->id }}" title="Quick View"
-                                      href="#"><i class=" ti-eye"></i><span>Quick Shop</span></a>
                                     <a href="{{ route('add-to-wishlist', $product->slug) }}" title="Wishlist"
                                       class="wishlist" data-id="{{ $product->id }}"><i class=" ti-heart "></i><span>Add
                                         to Wishlist</span></a>
@@ -196,7 +190,7 @@
                                 {{-- <p>{!! html_entity_decode($product->summary) !!}</p> --}}
                               </div>
                               <p class="des pt-2">{!! html_entity_decode($product->summary) !!}</p>
-                              <a href="javascript:void(0)" class="btn cart" data-id="{{ $product->id }}">Buy Now!</a>
+                              <a href="{{route('product-detail',$product->slug)}}" class="btn cart" data-id="{{ $product->id }}">Buy Now!</a>
                             </div>
                           </div>
                         </div>
