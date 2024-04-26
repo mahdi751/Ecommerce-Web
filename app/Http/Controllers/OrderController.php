@@ -28,7 +28,74 @@ class OrderController extends Controller
         $orders=Order::orderBy('id','DESC')->where('store_id', $storeId)->paginate(10);
         return view('Sellers.order.index')->with('orders',$orders);
     }
+    public function createStripeSession(Request $request){
+        // dd($request->all());
+        \Stripe\Stripe::setApiKey(config("stripe.sk"));
+        $order = $request->all();
+        $selectedCurrency = Cache::get('selected_currency_' . auth()->id());
+        $order['quantity']=count(Helper::getAllProductFromCart());
+        if($request->shipping){
+            $order['shipping_id']=$request->shipping;
+            $shipping=Shipping::where('id',$order['shipping_id'])->pluck('price');
+            if(session('coupon')){
+                $order['total_amount']=Helper::totalCartPrice()+$shipping[0]-session('coupon')['value'];
+            }
+            else{
+                $order['total_amount']=Helper::totalCartPrice()+$shipping[0];
+            }
+        }
+        else{
+            
+            $store_id = Memory::where('storeId', '>', 0)->orderBy('id', 'desc')->value('storeId');
+            $shipping = Shipping::create([
+                'type' => 'Free', 
+                'price' => 0, 
+                'status' => 'active', 
+                'store_id' => $store_id,
+            ]);
 
+            $order['shipping_id']=$shipping->id;
+            if(session('coupon')){
+                $order['total_amount']=Helper::totalCartPrice()-session('coupon')['value'];
+            }
+            else{
+                $order['total_amount']=Helper::totalCartPrice();
+            }
+        }
+        
+        $session = \Stripe\Checkout\Session::create([
+            'line_items' => [
+                [
+                    'price_data' =>[
+                        'currency' => $selectedCurrency,
+                        'product_data' => [
+                            'name' => "anything for now",
+                        ],
+                        'unit_amount' => round(Helper::getAmountConverted($selectedCurrency, ($order['total_amount'])) * 100),
+                    ],
+                    'quantity' => $order['quantity'],
+                ],
+            ],
+            'mode' => 'payment',
+            'success_url' => route('payment.success'), 
+            'cancel_url' => route('payment.cancel'), 
+        ]);
+
+        $request->session()->put('order', $order);
+        return $session;
+    }
+
+
+
+    public function stripeSuccess(Request $request)
+    {
+        return true;
+    }
+
+    public function stripeCancel(Request $request)
+    {
+        return false;
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -57,6 +124,17 @@ class OrderController extends Controller
             'post_code'=>'string|nullable',
             'email'=>'string|required'
         ]);
+
+        if(request('payment_method')=='stripe'){
+            $orderStripe = new Order();
+            $orderStripe = $request->all();
+            $session = $this->createStripeSession($request);
+
+            return redirect()->away($session->url);
+        }
+        else{
+
+        }
 
         
         $store_id = Memory::where('storeId', '>', 0)->orderBy('id', 'desc')->value('storeId');
@@ -296,5 +374,10 @@ class OrderController extends Controller
         }
         return $data;
     }
+
+
+
+
+
 }
 

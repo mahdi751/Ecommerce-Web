@@ -23,6 +23,7 @@
         "laravel/ui": "^4.5",
         "munafio/chatify": "^1.6",
         "spatie/laravel-newsletter": "^4.11",
+        "stripe/stripe-php": "^14.4",
         "unisharp/laravel-filemanager": "^2.9",
         "worksome/exchange": "^1.3"
     },
