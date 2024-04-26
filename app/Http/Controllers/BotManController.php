@@ -68,10 +68,8 @@ class BotManController extends Controller
 
     public function checkStore($botman, $store)
     {
-        // Retrieve store information from the database
         $storeExists = DB::table('stores')->where('name', $store)->exists();
 
-        // Generate response
         $response = $storeExists ? "Yes, the store '{$store}' exists." : "No, the store '{$store}' does not exist.";
 
         $botman->reply($response);
@@ -82,7 +80,6 @@ class BotManController extends Controller
      */
     public function provideStoreInformation($botman)
     {
-        // Retrieve store information from the database
         $stores = DB::table('stores')->select('name')->get();
 
         $storeCount = $stores->count();
@@ -100,17 +97,13 @@ class BotManController extends Controller
      */
     public function checkCategory($botman, $category)
     {
-        // Debugging: Output the received category name
         \Log::info("Received category: " . $category);
 
-        // Retrieve category information from the database
         $categoryExists = DB::table('categories')->where('title', $category)->exists();
 
-        // Debugging: Output whether the category exists
         \Log::info("Category exists: " . ($categoryExists ? 'true' : 'false'));
 
         if ($categoryExists) {
-            // Retrieve stores where the category is present
             $stores = DB::table('categories')
                 ->join('stores', 'categories.store_id', '=', 'stores.id')
                 ->where('categories.title', $category)
@@ -138,7 +131,6 @@ class BotManController extends Controller
      */
     public function getProductsOfStore($botman, $store)
 {
-    // Retrieve products of the specified store from the database
     $products = DB::table('products')
         ->join('categories', 'products.cat_id', '=', 'categories.id')
         ->join('stores', 'categories.store_id', '=', 'stores.id')
@@ -160,11 +152,9 @@ class BotManController extends Controller
 
 public function checkProduct($botman, $product)
 {
-    // Retrieve product information from the database
     $productExists = DB::table('products')->where('title', $product)->exists();
 
     if ($productExists) {
-        // Retrieve stores where the product is present
         $stores = DB::table('products')
             ->join('categories', 'products.cat_id', '=', 'categories.id')
             ->join('stores', 'categories.store_id', '=', 'stores.id')
@@ -192,13 +182,10 @@ public function checkProduct($botman, $product)
 
 public function redirectToHomepage(BotMan $botman)
 {
-    // Homepage URL
     $homepageUrl = 'http://127.0.0.1:8000/home';
 
-    // Create a message with the clickable URL
     $messageText = "Redirecting you to the homepage: $homepageUrl";
 
-    // Reply to the user with the message
     $botman->reply('click <a href="http://127.0.0.1:8000/home">here</a> for answers.');;
 }
 
@@ -221,7 +208,6 @@ public function listAvailableHears($botman)
     );
 
     $botman->ask($question, function ($answer) {
-        // Handle the user's response if needed
     });
 }
 
