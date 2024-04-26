@@ -207,3 +207,6 @@ Route::get('/coin-gate/callback/{order_id}/{?token}',[OrderController::class,'ca
 Route::get('/coin-gate/cancel/{order_id}',[OrderController::class,'cancelCoinGate']);
 Route::get('/coin-gate/success/{order_id}',[OrderController::class,'successCoinGate']);
 Route::get('/coin-gate/fail',[OrderController::class,'failCoinGate']);
+
+Route::get('order/pdf/{id}', [OrderController::class, 'pdf'])->name('order.pdf');
+Route::get('/income', [OrderController::class, 'incomeChart'])->name('product.order.income');
