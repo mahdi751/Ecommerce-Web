@@ -20,9 +20,9 @@
     </div>
     <div style="width: 100%">
       <div class="row ">
-        <div class="container " style="width: 100%; display:flex; ">
+        <div class="container " style="width: 100%; display:flex; flex-wrap:wrap ">
           @foreach ($products as $product)
-            <div style="margin: 20px 10px; width:30%">
+            <div style="margin: 20px 10px; width:330px">
               <!-- Start Single List  -->
               <div class="single-list">
 
@@ -31,7 +31,7 @@
                     alt="{{ $product->title }}">
                   <div class="card-body">
                     <h5 class="card-title">{{ $product->title }}</h5>
-                    <p class="card-text">{{ $product->description }}</p>
+                    <p class="card-text">{!! html_entity_decode($product->summary) !!}</p>
                     <p class="card-text">Starting price: ${{ $product->starting_bid_price }}</p>
                     <p class="card-text">Current highest bid: $<span
                         id="currentBid_{{ $product->id }}">{{ optional($product->highestBid)->bid ?? 0 }}</span></p>
