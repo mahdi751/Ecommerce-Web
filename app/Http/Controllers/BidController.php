@@ -13,6 +13,10 @@ class BidController extends Controller
     // Store a newly created bid in storage
     public function store(Request $request)
     {
+
+        if( ( $product->bid_status == 'closed')) {
+            return response()->json(['error' => 'this item was sold'], 422);
+        }
         // Validate the request data
         $request->validate([
             'bid' => 'required|numeric|min:0',
