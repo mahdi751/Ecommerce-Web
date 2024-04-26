@@ -616,12 +616,10 @@
 @push('scripts')
   <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
   <script>
-    /*==================================================================
-                                                                                                                    [ Isotope ]*/
     var $topeContainer = $('.isotope-grid');
     var $filter = $('.filter-tope-group');
 
-    // filter items on button click
+
     $filter.each(function() {
       $filter.on('click', 'button', function() {
         var filterValue = $(this).attr('data-filter');
@@ -630,19 +628,28 @@
         });
       });
 
-    });
+      // filter items on button click
+      $filter.each(function() {
+        $filter.on('click', 'button', function() {
+          var filterValue = $(this).attr('data-filter');
+          $topeContainer.isotope({
+            filter: filterValue
+          });
+        });
 
-    // init Isotope
-    $(window).on('load', function() {
-      var $grid = $topeContainer.each(function() {
-        $(this).isotope({
-          itemSelector: '.isotope-item',
-          layoutMode: 'fitRows',
-          percentPosition: true,
-          animationEngine: 'best-available',
-          masonry: {
-            columnWidth: '.isotope-item'
-          }
+
+        $(window).on('load', function() {
+          var $grid = $topeContainer.each(function() {
+            $(this).isotope({
+              itemSelector: '.isotope-item',
+              layoutMode: 'fitRows',
+              percentPosition: true,
+              animationEngine: 'best-available',
+              masonry: {
+                columnWidth: '.isotope-item'
+              }
+            });
+          });
         });
       });
     });
@@ -662,9 +669,9 @@
   <script>
     function cancelFullScreen(el) {
       var requestMethod = el.cancelFullScreen || el.webkitCancelFullScreen || el.mozCancelFullScreen || el.exitFullscreen;
-      if (requestMethod) { // cancel full screen.
+      if (requestMethod) {
         requestMethod.call(el);
-      } else if (typeof window.ActiveXObject !== "undefined") { // Older IE.
+      } else if (typeof window.ActiveXObject !== "undefined") {
         var wscript = new ActiveXObject("WScript.Shell");
         if (wscript !== null) {
           wscript.SendKeys("{F11}");
@@ -673,13 +680,13 @@
     }
 
     function requestFullScreen(el) {
-      // Supports most browsers and their versions.
+
       var requestMethod = el.requestFullScreen || el.webkitRequestFullScreen || el.mozRequestFullScreen || el
         .msRequestFullscreen;
 
-      if (requestMethod) { // Native full screen.
+      if (requestMethod) {
         requestMethod.call(el);
-      } else if (typeof window.ActiveXObject !== "undefined") { // Older IE.
+      } else if (typeof window.ActiveXObject !== "undefined") {
         var wscript = new ActiveXObject("WScript.Shell");
         if (wscript !== null) {
           wscript.SendKeys("{F11}");
@@ -687,5 +694,6 @@
       }
       return false
     }
-  </script>
-@endpush
+    }
+    }
+  @endpush

@@ -1,45 +1,47 @@
 <header class="header shop">
   <!-- Topbar -->
   <div class="topbar">
-  <div class="container">
-    <div class="row">
+    <div class="container">
+      <div class="row">
         <div class="col-lg-6 col-md-12 col-12">
+          <!-- Top Left -->
+
+          <div class="col-lg-6 col-md-12 col-12">
             <!-- Top Right -->
             <div class="right-content">
-                <ul class="list-main">
-                    <li><i class="ti-location-pin"></i> <a>Track Order</a></li>
-                    {{-- <li><i class="ti-alarm-clock"></i> <a href="#">Daily deal</a></li> --}}
-                    @auth
-                    @if (Auth::user()->role == 'admin')
+              <ul class="list-main">
+                <li><i class="ti-location-pin"></i> <a>Track Order</a></li>
+                {{-- <li><i class="ti-alarm-clock"></i> <a href="#">Daily deal</a></li> --}}
+                @auth
+                  @if (Auth::user()->role == 'admin')
                     <li><i class="ti-user"></i> <a href="{{ route('admin') }}" target="_blank">Dashboard</a></li>
-                    @else
+                  @else
                     <li><i class="ti-user"></i> <a href="{{ route('user') }}" target="_blank">Dashboard</a></li>
-                    @endif
-                    <li><i class="ti-power-off"></i> <a href="{{ route('user.logout') }}">Logout</a></li>
-                    @else
-                    <li><i class="ti-power-off"></i><a>Login /</a> <a>Register</a></li>
-                    @endauth
-                </ul>
-
-                <form id="currencyForm" action="{{ route('updateCurrency') }}" method="POST" class="form-inline">
-                    @csrf
-                    <div class="form-group mr-2">
-                        <label class="mr-2" for="currency">Choose a currency:</label>
-                        <select name="cur" id="currency" class="form-control">
-                            <option value="LBP" {{ session('selected_currency') === 'LBP' ? 'selected' : '' }}>LBP</option>
-                            <option value="USD" {{ session('selected_currency') === 'USD' ? 'selected' : '' }}>USD</option>
-                            <option value="EUR" {{ session('selected_currency') === 'EUR' ? 'selected' : '' }}>EUR</option>
-                            <option value="KWD" {{ session('selected_currency') === 'KWD' ? 'selected' : '' }}>KWD</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Save Currency</button>
-                </form>
+                  @endif
+                  <li><i class="ti-power-off"></i> <a href="{{ route('user.logout') }}">Logout</a></li>
+                @else
+                  <li><i class="ti-power-off"></i><a>Login /</a> <a>Register</a></li>
+                @endauth
+              </ul>
+              <form id="currencyForm" action="{{ route('updateCurrency') }}" method="POST" class="form-inline">
+                @csrf
+                <div class="form-group mr-2">
+                  <label class="mr-2" for="currency">Choose a currency:</label>
+                  <select name="cur" id="currency" class="form-control">
+                    <option value="LBP" {{ session('selected_currency') === 'LBP' ? 'selected' : '' }}>LBP</option>
+                    <option value="USD" {{ session('selected_currency') === 'USD' ? 'selected' : '' }}>USD</option>
+                    <option value="EUR" {{ session('selected_currency') === 'EUR' ? 'selected' : '' }}>EUR</option>
+                    <option value="KWD" {{ session('selected_currency') === 'KWD' ? 'selected' : '' }}>KWD</option>
+                  </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Save Currency</button>
+              </form>
             </div>
             <!-- End Top Right -->
+          </div>
         </div>
+      </div>
     </div>
-</div>
-
     <!-- End Topbar -->
     <div class="middle-inner">
       <div class="container">
@@ -107,10 +109,8 @@
                           $photo = explode(',', $data->product['photo']);
                         @endphp
                         <li>
-
                           <a href="{{ route('wishlist-delete', $data->id) }}" class="remove" title="Remove this item"><i
                               class="fa fa-remove"></i></a>
-
                           <a class="cart-img" href="#"><img src="{{ $photo[0] }}"
                               alt="{{ $photo[0] }}"></a>
                           <h4><a href="{{ route('product-detail', $data->product['slug']) }}"
@@ -151,16 +151,15 @@
                           $photo = explode(',', $data->product['photo']);
                         @endphp
                         <li>
-                          @if (!$data->product['is_event_item'])
-                            <a href="{{ route('cart-delete', $data->id) }}" class="remove" title="Remove this item"><i
-                                class="fa fa-remove"></i></a>
-                          @endif
+                          <a href="{{ route('cart-delete', $data->id) }}" class="remove" title="Remove this item"><i
+                              class="fa fa-remove"></i></a>
                           <a class="cart-img" href="#"><img src="{{ $photo[0] }}"
                               alt="{{ $photo[0] }}"></a>
                           <h4><a href="{{ route('product-detail', $data->product['slug']) }}"
                               target="_blank">{{ $data->product['title'] }}</a></h4>
                           <p class="quantity">{{ $data->quantity }} x - <span
-                              class="amount">{{$selectedCurrencySign}}{{ number_format(Helper::getAmountConverted($selectedCurrency ,$data->price), 2) }}</span></p>
+                              class="amount">{{ $selectedCurrencySign }}{{ number_format(Helper::getAmountConverted($selectedCurrency, $data->price), 2) }}</span>
+                          </p>
                         </li>
                       @endforeach
                     </ul>
@@ -169,7 +168,7 @@
                         <span>Total</span>
                         <span class="total-amount">${{ number_format(Helper::totalCartPrice(), 2) }}</span>
                       </div>
-                      <a href="{{route('checkout')}}" class="btn animate">Checkout</a>
+                      <a href="{{ route('checkout') }}" class="btn animate">Checkout</a>
                     </div>
                   </div>
                 @endauth
@@ -219,17 +218,14 @@
         </div>
       </div>
     </div>
-
-
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
+      document.addEventListener('DOMContentLoaded', function() {
         // Add an event listener to the currency select element
         document.getElementById('currency').addEventListener('change', function() {
-            // Submit the form when the currency selection changes
-            document.getElementById('currencyForm').submit();
+          // Submit the form when the currency selection changes
+          document.getElementById('currencyForm').submit();
         });
-    });
-</script>
-
+      });
+    </script>
     <!--/ End Header Inner -->
 </header>
