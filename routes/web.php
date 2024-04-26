@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CoinGateController;
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\GithubController;
 use App\Http\Controllers\GoogleAuthController;
@@ -199,3 +200,10 @@ Route::post('cart/order', [OrderController::class, 'store'])->name('cart.order')
 //Stripe
 Route::get('/success/{order_id}', [OrderController::class,'stripeSuccess'])->name('payment.success');
 Route::get('/cancel/{order_id}', [OrderController::class,'stripeCancel'])->name('payment.cancel');
+
+
+//CoinGate
+Route::get('/coin-gate/callback/{order_id}/{?token}',[OrderController::class,'callBackCoinGate']);
+Route::get('/coin-gate/cancel/{order_id}',[OrderController::class,'cancelCoinGate']);
+Route::get('/coin-gate/success/{order_id}',[OrderController::class,'successCoinGate']);
+Route::get('/coin-gate/fail',[OrderController::class,'failCoinGate']);

@@ -11,6 +11,8 @@ use App\Models\User;
 use PDF;
 use Notification;
 use Helper;
+use CoinGate\Client;
+use CoinGate\CoinGate;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Cache;
 use App\Notifications\StatusNotification;
@@ -102,7 +104,9 @@ class OrderController extends Controller
 
     public function stripeSuccess($order_id)
     {
-
+        $order = Order::find($order_id);
+        $order['payment_status'] = 'paid';
+        $order->save();
         Cart::where('user_id', auth()->user()->id)->where('order_id', null)->update(['order_id' => $order_id]);
         request()->session()->flash('success','Your product successfully placed in order');
         return redirect()->route('home');
@@ -209,13 +213,16 @@ class OrderController extends Controller
             }
         }
         $order_data['status']="new";
-        if(request('payment_method')=='paypal'){
-            $order_data['payment_method']='paypal';
-            $order_data['payment_status']='paid';
+        if(request('payment_method')=='stripe'){
+            $order_data['payment_method']='stripe';
+            $order_data['payment_status']='unpaid';
         }
-        else{
+        else if(request('payment_method')=='coingate'){
+            $order_data['payment_method']='coingate';
+            $order_data['payment_status']='unpaid';
+        }else {
             $order_data['payment_method']='cod';
-            $order_data['payment_status']='Unpaid';
+            $order_data['payment_status']='unpaid';
         }
 
         // Notification::send($users, new StatusNotification($details));
@@ -244,7 +251,22 @@ class OrderController extends Controller
             return redirect()->away($session->url);
         }
         else if(request('payment_method')=='coingate'){
-
+            $client = new Client('kUgJ_pWh5fpMDyzxCnvWZhxCDt2SriVw_zeGEtbY', true); 
+            $token = hash('sha512', 'coingate' . rand());
+    
+            $params = array(
+                'order_id'          => $order->id,
+                'price_amount'      => Helper::getAmountConverted($selectedCurrency, Helper::totalCartPrice()+$shipping[0]),
+                'price_currency'    => $selectedCurrency ,
+                'receive_currency'  => 'EUR',
+                'callback_url'      => 'http://127.0.0.1:8000/coin-gate/callback/' . $order->id . '&token=' . $token,
+                'cancel_url'        => 'http://127.0.0.1:8000/coin-gate/cancel/' . $order->id,
+                'success_url'       => 'http://127.0.0.1:8000/coin-gate/success/' . $order->id,
+                'title'             => 'Order #' . $order->id,
+                'description'       => "New Order" ,
+            );
+            $ordernew = $client->order->create($params);
+            return redirect()->away($ordernew->payment_url);
         }
 
 
@@ -410,8 +432,36 @@ class OrderController extends Controller
     }
 
 
+    public function callBackCoinGate($order_id)
+    {
+        dd('HI callBackCoinGate');
+    }
+
+    public function successCoinGate($order_id)
+    {
+        $order = Order::find($order_id);
+        $order['payment_status'] = 'paid';
+        $order->save();
+        Cart::where('user_id', auth()->user()->id)->where('order_id', null)->update(['order_id' => $order_id]);
+        request()->session()->flash('success','Your product successfully placed in order');
+        return redirect()->route('home');
+    }
 
 
+    public function cancelCoinGate($order_id)
+    {
+        $order = Order::find($order_id);
+        if ($order) {
+            $order->delete();
+            request()->session()->flash('error', 'Your order has been canceled and deleted');
+        }
+        request()->session()->flash('error','Your product was not placed in an order');
+        return redirect()->route('home');
+    }
 
+    public function failCoinGate()
+    {
+        dd('HI failCoinGate');
+    }
 }
 

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->double('sub_total', 8, 2);
             $table->double('coupon', 8, 2)->nullable();
             $table->double('total_amount', 12, 2);
-            $table->enum('payment_method', ['cod', 'paypal', 'crypto'])->default('cod');
+            $table->enum('payment_method', ['cod', 'stripe', 'coingate'])->default('cod');
             $table->enum('payment_status', ['paid', 'unpaid'])->default('unpaid');
             $table->enum('status', ['new', 'process', 'delivered', 'cancel'])->default('new');
             $table->string('first_name');
