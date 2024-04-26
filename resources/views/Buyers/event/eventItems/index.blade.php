@@ -50,7 +50,7 @@
                             min="{{ (optional($product->highestBid)->bid ?? 0) + 1 }}" required>
                         </div>
                         <button style="margin: 10px 0" type="button" class="btn btn-primary"
-                          onclick="placeBid('{{ $product->id }}')">Place
+                          onclick="placeBid('{{ $product->id }}','{{ $product->closing_bid }}')">Place
                           Bid</button>
                         <button type="button" class="btn btn-primary"
                           onclick="grabItem('{{ $product->id }}','{{ $product->closing_bid }}')">Grab it for
@@ -140,7 +140,7 @@
       }, 2000);
     });
     // Function to place a bid
-    function placeBid(productId) {
+    function placeBid(productId, closing) {
 
       var bidAmount = document.getElementById('bidAmount_' + productId).value;
       var formData = new FormData();
@@ -161,9 +161,8 @@
             console.log(response.json());
             throw new Error('Network response was not ok');
           }
-
-          if (parseInt(bidAmount) >= parseInt('{{ $product->closing_bid }}')) {
-            document.getElementById('userBid_' + productId).innerText = parseFloat('{{ $product->closing_bid }}');
+          if (parseInt(bidAmount) >= closing) {
+            document.getElementById('userBid_' + productId).innerText = closing;
           } else {
             document.getElementById('userBid_' + productId).innerText = bidAmount;
           }

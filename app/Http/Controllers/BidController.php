@@ -14,9 +14,7 @@ class BidController extends Controller
     public function store(Request $request)
     {
 
-        if( ( $product->bid_status == 'closed')) {
-            return response()->json(['error' => 'this item was sold'], 422);
-        }
+       
         // Validate the request data
         $request->validate([
             'bid' => 'required|numeric|min:0',
@@ -46,7 +44,9 @@ if ($previousBid && $request->bid <= $previousBid->bid) {
 return response()->json(['error' => 'Your bid must be higher than your previous bid'], 422);
 }
 $product = Product::findOrFail($request->product_id);
-
+if( ( $product->bid_status == 'closed')) {
+    return response()->json(['error' => 'this item was sold'], 422);
+}
 $minimumBidAmount = ($product->highestBid->bid ?? $product->starting_bid_price) + $product->minimum_bid_increment;
 
 // Ensure the bid amount is higher than the minimum bid amount
