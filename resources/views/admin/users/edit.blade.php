@@ -18,7 +18,8 @@
 
             <div class="form-group">
                 <label for="inputEmail" class="col-form-label">Email</label>
-                <input id="inputEmail" type="email" name="email" placeholder="Enter email" value="{{$user->email}}" class="form-control">
+                <input id="inputEmail" type="email" name="email" placeholder="Enter email" value="{{$user->email}}" class="form-control" disabled>
+                <input id="inputEmail" type="email" name="email" placeholder="Enter email" value="{{$user->email}}" class="form-control" hidden>
                 @error('email')
                 <span class="text-danger">{{$message}}</span>
                 @enderror
@@ -61,16 +62,15 @@
                 <label for="role" class="col-form-label">Role</label>
                 <select name="role" class="form-control">
                     <option value="">-----Select Role-----</option>
-                    @foreach($roles as $role)
-                    <option value="{{$role->role}}" {{(($role->role=='admin') ? 'selected' : '')}}>Admin</option>
-                    <option value="{{$role->role}}" {{(($role->role=='seller') ? 'selected' : '')}}>Seller</option>
-                    <option value="{{$role->role}}" {{(($role->role=='user') ? 'selected' : '')}}>User</option>
-                    @endforeach
+                    <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>Admin</option>
+                    <option value="seller" {{ $user->role == 'seller' ? 'selected' : '' }}>Seller</option>
+                    <option value="user" {{ $user->role == 'user' ? 'selected' : '' }}>User</option>
                 </select>
                 @error('role')
                 <span class="text-danger">{{$message}}</span>
                 @enderror
             </div>
+
 
             <div class="form-group">
                 <label for="status" class="col-form-label">Status</label>

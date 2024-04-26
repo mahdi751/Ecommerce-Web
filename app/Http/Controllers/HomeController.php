@@ -26,13 +26,12 @@ class HomeController extends Controller
      */
     public function index()
     {
-         $stores = Store::all();
-        // ->where('status','active');
+         $stores = Store::all()->where('status','active');
         return view('home')->with('stores', $stores);
     }
 
 
-    
+
 
 
 }
