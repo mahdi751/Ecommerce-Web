@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Event;
 
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 class ProductController extends Controller
@@ -102,10 +103,32 @@ class ProductController extends Controller
 
     public function showProductsForEvent($event_id)
     {
+        $selectedCurrency = Cache::get('selected_currency_' . auth()->id());
+        $selectedCurrencySign = "";
+        switch ($selectedCurrency) {
+            case 'LBP':
+                $selectedCurrencySign = 'L.L '; // Assign the currency sign for LBP
+                break;
+            case 'USD':
+                $selectedCurrencySign = '$ '; // Assign the currency sign for USD
+                break;
+            case 'EUR':
+                $selectedCurrencySign = '€ '; // Assign the currency sign for EUR
+                break;
+            case 'KWD':
+                $selectedCurrencySign = 'KWD '; // Assign the currency sign for KWD
+                break;
+            // Add more cases for other currencies if needed
+            default:
+                $selectedCurrencySign = ''; // Default value if no currency is selected
+        }
+        if($selectedCurrency == null){
+            $selectedCurrency = "USD";
+        }
         $products = Product::where('event_id', $event_id)->get();
         $event = Event::findOrFail($event_id);
 
-        return view('Buyers.event.eventItems.index', ['products' => $products, 'event' => $event]);
+        return view('Buyers.event.eventItems.index', ['products' => $products, 'event' => $event])->with('selectedCurrencySign', $selectedCurrencySign)->with('selectedCurrency', $selectedCurrency);
     }
 
     /**
