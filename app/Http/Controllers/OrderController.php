@@ -28,14 +28,12 @@ class OrderController extends Controller
         $orders=Order::orderBy('id','DESC')->where('store_id', $storeId)->paginate(10);
         return view('Sellers.order.index')->with('orders',$orders);
     }
-    public function createStripeSession(Request $request){
+    public function createStripeSession($order){
         // dd($request->all());
         \Stripe\Stripe::setApiKey(config("stripe.sk"));
-        $order = $request->all();
         $selectedCurrency = Cache::get('selected_currency_' . auth()->id());
         $order['quantity']=count(Helper::getAllProductFromCart());
-        if($request->shipping){
-            $order['shipping_id']=$request->shipping;
+        if($order['shipping_id']){
             $shipping=Shipping::where('id',$order['shipping_id'])->pluck('price');
             if(session('coupon')){
                 $order['total_amount']=Helper::totalCartPrice()+$shipping[0]-session('coupon')['value'];
@@ -62,7 +60,20 @@ class OrderController extends Controller
                 $order['total_amount']=Helper::totalCartPrice();
             }
         }
-        
+                
+        $status=$order->save();
+        if($order)
+        $users=User::where('role','admin')->first();
+        $details=[
+            'title'=>'New order created',
+            'actionURL'=>route('order.show',$order->id),
+            'fas'=>'fa-file-alt'
+        ];
+
+
+
+        session()->forget('cart');
+        session()->forget('coupon');
         $session = \Stripe\Checkout\Session::create([
             'line_items' => [
                 [
@@ -77,24 +88,34 @@ class OrderController extends Controller
                 ],
             ],
             'mode' => 'payment',
-            'success_url' => route('payment.success'), 
-            'cancel_url' => route('payment.cancel'), 
+            'success_url' => route('payment.success', ['order_id' => $order['id']]), 
+            'cancel_url' => route('payment.cancel', ['order_id' => $order['id']]), 
         ]);
 
-        $request->session()->put('order', $order);
         return $session;
     }
 
 
 
-    public function stripeSuccess(Request $request)
+    public function stripeSuccess($order_id)
     {
-        return true;
+
+        Cart::where('user_id', auth()->user()->id)->where('order_id', null)->update(['order_id' => $order_id]);
+        request()->session()->flash('success','Your product successfully placed in order');
+        return redirect()->route('home');
     }
 
-    public function stripeCancel(Request $request)
+    public function stripeCancel($order_id)
     {
-        return false;
+        $order = Order::find($order_id);
+        if ($order) {
+            // Delete the order
+            $order->delete();
+            // Flash a message indicating the order has been deleted
+            request()->session()->flash('error', 'Your order has been canceled and deleted');
+        }
+        request()->session()->flash('error','Your product was not placed in an order');
+        return redirect()->route('home');
     }
     /**
      * Show the form for creating a new resource.
@@ -125,16 +146,7 @@ class OrderController extends Controller
             'email'=>'string|required'
         ]);
 
-        if(request('payment_method')=='stripe'){
-            $orderStripe = new Order();
-            $orderStripe = $request->all();
-            $session = $this->createStripeSession($request);
 
-            return redirect()->away($session->url);
-        }
-        else{
-
-        }
 
         
         $store_id = Memory::where('storeId', '>', 0)->orderBy('id', 'desc')->value('storeId');
@@ -187,7 +199,6 @@ class OrderController extends Controller
                 $order_data['total_amount']=Helper::totalCartPrice();
             }
         }
-        // return $order_data['total_amount'];
         $order_data['status']="new";
         if(request('payment_method')=='paypal'){
             $order_data['payment_method']='paypal';
@@ -197,6 +208,11 @@ class OrderController extends Controller
             $order_data['payment_method']='cod';
             $order_data['payment_status']='Unpaid';
         }
+
+        // Notification::send($users, new StatusNotification($details));
+        
+
+                
         $order->fill($order_data);
         $status=$order->save();
         if($order)
@@ -206,17 +222,26 @@ class OrderController extends Controller
             'actionURL'=>route('order.show',$order->id),
             'fas'=>'fa-file-alt'
         ];
-        // Notification::send($users, new StatusNotification($details));
-        if(request('payment_method')=='paypal'){
-            return redirect()->route('payment')->with(['id'=>$order->id]);
-        }
-        else{
-            session()->forget('cart');
-            session()->forget('coupon');
-        }
-        Cart::where('user_id', auth()->user()->id)->where('order_id', null)->update(['order_id' => $order->id]);
 
-        // dd($users);        
+
+
+        session()->forget('cart');
+        session()->forget('coupon');
+
+        if(request('payment_method')=='stripe'){
+
+            $session = $this->createStripeSession($order);
+            
+            return redirect()->away($session->url);
+        }
+        else if(request('payment_method')=='coingate'){
+            
+        }
+
+
+
+
+        Cart::where('user_id', auth()->user()->id)->where('order_id', null)->update(['order_id' => $order->id]);
         request()->session()->flash('success','Your product successfully placed in order');
         return redirect()->route('home');
     }

@@ -197,5 +197,5 @@ Route::post('cart/order', [OrderController::class, 'store'])->name('cart.order')
 
 
 //Stripe
-Route::get('/success', [StripeController::class,'success'])->name('payment.success');
-Route::get('/cancel', [StripeController::class,'cancel'])->name('payment.cancel');
+Route::get('/success/{order_id}', [OrderController::class,'stripeSuccess'])->name('payment.success');
+Route::get('/cancel/{order_id}', [OrderController::class,'stripeCancel'])->name('payment.cancel');
