@@ -10,7 +10,6 @@
             <!-- Top Right -->
             <div class="right-content">
               <ul class="list-main">
-                <li><i class="ti-location-pin"></i> <a>Track Order</a></li>
                 {{-- <li><i class="ti-alarm-clock"></i> <a href="#">Daily deal</a></li> --}}
                 @auth
                     <li><i class="ti-user"></i> <a href="{{ route('user-profile') }}" target="_blank">Dashboard</a></li>
@@ -122,7 +121,7 @@
                         <span>Total</span>
                         <span class="total-amount">${{ number_format(Helper::totalWishlistPrice(), 2) }}</span>
                       </div>
-                      <a class="btn animate">Cart</a>
+                      <a href="{{ route('cart') }}" class="btn animate">Cart</a>
                     </div>
                   </div>
                 @endauth
