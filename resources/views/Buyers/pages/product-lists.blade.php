@@ -24,9 +24,9 @@
 		<form action="{{route('shop.filter')}}" method="POST">
 		@csrf
 		<input type="hidden" name="store_id" value="{{ request('store_id') }}">
-		
+
 		<input type="hidden" name="store_id" value="{{ session('current_store_id') }}">
-		
+
 			<!-- Product Style 1 -->
 			<section class="product-area shop-sidebar shop-list shop section">
 				<div class="container">
@@ -37,8 +37,8 @@
                                 <div class="single-widget category">
                                     <h3 class="title">Categories</h3>
                                     <ul class="categor-list">
-										
-										
+
+
 										@if($categories)
 										<li>
 											@foreach($categories as $cat_info)
@@ -56,7 +56,7 @@
 											@endforeach
 										</li>
 										@endif
-                                        
+
                                     </ul>
                                 </div>
                                 <!--/ End Single Widget -->
@@ -73,10 +73,28 @@
 												</div>
 											</div> --}}
 											@php
-												$max=DB::table('products')->max('price');
-												// dd($max);
-											@endphp
-											<div id="slider-range" data-min="0" data-max="{{$max}}"></div>
+                                            use App\Models\Memory;
+                                            use App\Models\Category;
+                                            use App\Models\Product;
+                                            $store_id =Memory::where('storeId', '>', 0)->orderBy('id', 'desc')->value('storeId');
+
+                                            $category_ids = Category::where('store_id', $store_id)
+                                                    ->where('status', 'active')
+                                                    ->where('is_parent', 1)
+                                                    ->pluck('id');
+
+                                            $productsFiltered = Product::whereIn('cat_id', $category_ids)->where('is_event_item', 0);
+
+                                            $maxx = $productsFiltered->max('price');
+                                            if (is_null($maxx)) {
+                                                $maxx = 0;
+                                            }
+
+                                            @endphp
+
+                                            <div id="slider-range" data-min="0" data-max="{{ $maxx === 0 ? 0 : $maxx }}"></div>
+
+
 											<div class="product_filter">
 											<button type="submit" class="filter_button">Filter</button>
 											<div class="label-input">
@@ -99,10 +117,9 @@
 										</li>
 									</ul> --}}
 								</div>
-								<!--/ End Shop By Price -->
-                                <!-- Single Widget -->
-                                
-                                
+
+
+
                         	</div>
 						</div>
 						<div class="col-lg-9 col-md-8 col-12">
@@ -128,7 +145,7 @@
 													<option value="title" @if(!empty($_GET['sortBy']) && $_GET['sortBy']=='title') selected @endif>Name</option>
 													<option value="price" @if(!empty($_GET['sortBy']) && $_GET['sortBy']=='price') selected @endif>Price</option>
 													<option value="category" @if(!empty($_GET['sortBy']) && $_GET['sortBy']=='category') selected @endif>Category</option>
-													<option value="brand" @if(!empty($_GET['sortBy']) && $_GET['sortBy']=='brand') selected @endif>Brand</option>
+
 												</select>
 											</div>
 										</div>
@@ -138,7 +155,7 @@
 										</ul>
 									</div>
 										<!--Display Products-->
-							
+
 							<div class="row">
 								@if(count($products))
 									@foreach($products as $product)
@@ -152,14 +169,14 @@
 															<a href="{{route('product-detail',$product->slug)}}">
 																@php
 																$photo=explode(',',$product->photo);
-														
+
 														@endphp
 															<img class="default-img" src="{{$photo[0]}}" alt="{{$photo[0]}}">
 															<img class="hover-img" src="{{$photo[0]}}" alt="{{$photo[0]}}">
 															</a>
 															<div class="button-head">
 																<div class="product-action">
-																	<a data-toggle="modal" data-target="#{{$product->id}}" title="Quick View" href="#"><i class=" ti-eye"></i><span>Quick Shop</span></a>
+
 																	<a  href="{{route('add-to-wishlist',$product->slug)}}" title="Wishlist"  class="wishlist" data-id="{{$product->id}}"><i class=" ti-heart "></i><span>Add to Wishlist</span></a>
 																</div>
 																<div class="product-action-2">
@@ -215,141 +232,22 @@
 									<!--/ End Shop Top -->
 								</div>
 							</div>
-							
-							
-							
-							
-							
-							
-						
+
+
+
+
+
+
+
                           </div>
 						</div>
-						
+
 					</div>
 				</div>
 			</section>
 			<!--/ End Product Style 1  -->
 		</form>
-		<!-- Modal -->
-		@if($products)
-			@foreach($products as $key=>$product)
-				<div class="modal fade" id="{{$product->id}}" tabindex="-1" role="dialog">
-						<div class="modal-dialog" role="document">
-							<div class="modal-content">
-								<div class="modal-header">
-									<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class="ti-close" aria-hidden="true"></span></button>
-								</div>
-								<div class="modal-body">
-									<div class="row no-gutters">
-										<div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
-											<!-- Product Slider -->
-												<div class="product-gallery">
-													<div class="quickview-slider-active">
-														@php
-															$photo=explode(',',$product->photo);
-														// dd($photo);
-														@endphp
-														@foreach($photo as $data)
-															<div class="single-slider">
-																<img src="{{$data}}" alt="{{$data}}">
-															</div>
-														@endforeach
-													</div>
-												</div>
-											<!-- End Product slider -->
-										</div>
-										<div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
-											<div class="quickview-content">
-												<h2>{{$product->title}}</h2>
-												<div class="quickview-ratting-review">
-													<div class="quickview-ratting-wrap">
-														<div class="quickview-ratting">
-															{{-- <i class="yellow fa fa-star"></i>
-															<i class="yellow fa fa-star"></i>
-															<i class="yellow fa fa-star"></i>
-															<i class="yellow fa fa-star"></i>
-															<i class="fa fa-star"></i> --}}
-															@php
-																$rate=DB::table('product_reviews')->where('product_id',$product->id)->avg('rate');
-																$rate_count=DB::table('product_reviews')->where('product_id',$product->id)->count();
-															@endphp
-															@for($i=1; $i<=5; $i++)
-																@if($rate>=$i)
-																	<i class="yellow fa fa-star"></i>
-																@else
-																<i class="fa fa-star"></i>
-																@endif
-															@endfor
-														</div>
-														<a href="#"> ({{$rate_count}} customer review)</a>
-													</div>
-													<div class="quickview-stock">
-														@if($product->stock >0)
-														<span><i class="fa fa-check-circle-o"></i> {{$product->stock}} in stock</span>
-														@else
-														<span><i class="fa fa-times-circle-o text-danger"></i> {{$product->stock}} out stock</span>
-														@endif
-													</div>
-												</div>
-												@php
-													$after_discount=($product->price-($product->price*$product->discount)/100);
-												@endphp
-												<h3><small><del class="text-muted">${{number_format($product->price,2)}}</del></small>    ${{number_format($after_discount,2)}}  </h3>
-												<div class="quickview-peragraph">
-													<p>{!! html_entity_decode($product->summary) !!}</p>
-												</div>
-												@if($product->size)
-													<div class="size">
-														<h4>Size</h4>
-														<ul>
-															@php
-																$sizes=explode(',',$product->size);
-																// dd($sizes);
-															@endphp
-															@foreach($sizes as $size)
-															<li><a href="#" class="one">{{$size}}</a></li>
-															@endforeach
-														</ul>
-													</div>
-												@endif
-												<form  method="POST">
-													@csrf
-													<div class="quantity">
-														<!-- Input Order -->
-														<div class="input-group">
-															<div class="button minus">
-																<button type="button" class="btn btn-primary btn-number" disabled="disabled" data-type="minus" data-field="quant[1]">
-																	<i class="ti-minus"></i>
-																</button>
-															</div>
-															<input type="hidden" name="slug" value="{{$product->slug}}">
-															<input type="text" name="quant[1]" class="input-number"  data-min="1" data-max="1000" value="1">
-															<div class="button plus">
-																<button type="button" class="btn btn-primary btn-number" data-type="plus" data-field="quant[1]">
-																	<i class="ti-plus"></i>
-																</button>
-															</div>
-														</div>
-														<!--/ End Input Order -->
-													</div>
-													<div class="add-to-cart">
-														<button type="submit" class="btn">Add to cart</button>
-														<a class="btn min"><i class="ti-heart"></i></a>
-													</div>
-												</form>
-												<div class="default-social">
-												<!-- ShareThis BEGIN --><div class="sharethis-inline-share-buttons"></div><!-- ShareThis END -->
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-				</div>
-			@endforeach
-		@endif
-			<!-- Modal end -->
+
 @endsection
 @push ('styles')
 <style>
@@ -364,7 +262,7 @@
         margin-top:10px;
         color: white;
     }
-		
+
 </style>
 @endpush
 @push('scripts')

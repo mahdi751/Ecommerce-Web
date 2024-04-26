@@ -3,7 +3,7 @@
 @section('title','E-SHOP')
 
 @section('main-content')
-	<!-- Breadcrumbs -->
+
     <div class="breadcrumbs">
         <div class="container">
             <div class="row">
@@ -18,27 +18,25 @@
             </div>
         </div>
     </div>
-    <!-- End Breadcrumbs -->
 
-    <!-- Product Style -->
     <form action="{{route('shop.filter')}}" method="POST">
         @csrf
-        
-        
+
+
         <section class="product-area shop-sidebar shop section">
             <div class="container">
                 <div class="row">
-                    
+
 
 
 
                     <div class="col-lg-3 col-md-4 col-12">
                         <div class="shop-sidebar">
-                                <!-- Single Widget -->
+
                                 <div class="single-widget category">
                                     <h3 class="title">Categories</h3>
                                     <ul class="categor-list">
-										
+
 										@if($categories)
 										<li>
 											@foreach($categories as $cat_info)
@@ -56,11 +54,10 @@
 											@endforeach
 										</li>
 										@endif
-                                        
+
                                     </ul>
                                 </div>
-                                <!--/ End Single Widget -->
-                                <!-- Shop By Price -->
+
                                     <div class="single-widget range">
                                         <h3 class="title">Shop by Price</h3>
                                         <div class="price-filter">
@@ -83,10 +80,10 @@
                                         </div>
 
                                     </div>
-                                    <!--/ End Shop By Price -->
-                                
+
+
                     </div>
-                    
+
                 </div>
                 <div class="col-lg-9 col-md-8 col-12">
                     <div class="row">
@@ -111,7 +108,7 @@
                                             <option value="title" @if(!empty($_GET['sortBy']) && $_GET['sortBy']=='title') selected @endif>Name</option>
                                             <option value="price" @if(!empty($_GET['sortBy']) && $_GET['sortBy']=='price') selected @endif>Price</option>
                                             <option value="category" @if(!empty($_GET['sortBy']) && $_GET['sortBy']=='category') selected @endif>Category</option>
-                                            
+
                                         </select>
                                     </div>
                                 </div>
@@ -120,7 +117,7 @@
                                     <li><a href="{{route('product-lists')}}"><i class="fa fa-th-list"></i></a></li>
                                 </ul>
                             </div>
-                            <!--/ End Shop Top -->
+
                         </div>
                     </div>
                     <div class="row">
@@ -164,30 +161,30 @@
                         @else
                                 <h4 class="text-warning" style="margin:100px auto;">There are no products.</h4>
                         @endif
-    
-    
-                        
-    
+
+
+
+
                     </div>
                     <div class="row">
                         <div class="col-md-12 justify-content-center d-flex">
                             {{$products->appends($_GET)->links()}}
                         </div>
-                   
+
                       </div>
-                      
+
 
                 </div>
-                
+
             </div>
         </section>
     </form>
 
-    <!--/ End Product Style 1  -->
 
 
 
-    <!-- Modal -->
+
+
     @if($products)
         @foreach($products as $key=>$product)
             <div class="modal fade" id="{{$product->id}}" tabindex="-1" role="dialog">
@@ -199,7 +196,7 @@
                             <div class="modal-body">
                                 <div class="row no-gutters">
                                     <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
-                                        <!-- Product Slider -->
+
                                             <div class="product-gallery">
                                                 <div class="quickview-slider-active">
                                                     @php
@@ -213,33 +210,12 @@
                                                     @endforeach
                                                 </div>
                                             </div>
-                                        <!-- End Product slider -->
+
                                     </div>
                                     <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
                                         <div class="quickview-content">
                                             <h2>{{$product->title}}</h2>
-                                            <div class="quickview-ratting-review">
-                                                <div class="quickview-ratting-wrap">
-                                                    <div class="quickview-ratting">
-                                                        {{-- <i class="yellow fa fa-star"></i>
-                                                        <i class="yellow fa fa-star"></i>
-                                                        <i class="yellow fa fa-star"></i>
-                                                        <i class="yellow fa fa-star"></i>
-                                                        <i class="fa fa-star"></i> --}}
-                                                        @php
-                                                            $rate=DB::table('product_reviews')->where('product_id',$product->id)->avg('rate');
-                                                            $rate_count=DB::table('product_reviews')->where('product_id',$product->id)->count();
-                                                        @endphp
-                                                        @for($i=1; $i<=5; $i++)
-                                                            @if($rate>=$i)
-                                                                <i class="yellow fa fa-star"></i>
-                                                            @else
-                                                            <i class="fa fa-star"></i>
-                                                            @endif
-                                                        @endfor
-                                                    </div>
-                                                    <a href="#"> ({{$rate_count}} customer review)</a>
-                                                </div>
+
                                                 <div class="quickview-stock">
                                                     @if($product->stock >0)
                                                     <span><i class="fa fa-check-circle-o"></i> {{$product->stock}} in stock</span>
@@ -283,15 +259,7 @@
                                                             @endforeach
                                                         </select>
                                                     </div>
-                                                    {{-- <div class="col-lg-6 col-12">
-                                                        <h5 class="title">Color</h5>
-                                                        <select>
-                                                            <option selected="selected">orange</option>
-                                                            <option>purple</option>
-                                                            <option>black</option>
-                                                            <option>pink</option>
-                                                        </select>
-                                                    </div> --}}
+
                                                 </div>
                                             </div>
                                             <form  method="POST">
@@ -312,16 +280,14 @@
                                                             </button>
                                                         </div>
                                                     </div>
-                                                    <!--/ End Input Order -->
+
                                                 </div>
                                                 <div class="add-to-cart">
                                                     <button type="submit" class="btn">Add to cart</button>
                                                     <a class="btn min"><i class="ti-heart"></i></a>
                                                 </div>
                                             </form>
-                                            <div class="default-social">
-                                            <!-- ShareThis BEGIN --><div class="sharethis-inline-share-buttons"></div><!-- ShareThis END -->
-                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
@@ -351,42 +317,10 @@
 @endpush
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
-    {{-- <script>
-        $('.cart').click(function(){
-            var quantity=1;
-            var pro_id=$(this).data('id');
-            $.ajax({
-                url:"{{route('add-to-cart')}}",
-                type:"POST",
-                data:{
-                    _token:"{{csrf_token()}}",
-                    quantity:quantity,
-                    pro_id:pro_id
-                },
-                success:function(response){
-                    console.log(response);
-					if(typeof(response)!='object'){
-						response=$.parseJSON(response);
-					}
-					if(response.status){
-						swal('success',response.msg,'success').then(function(){
-							document.location.href=document.location.href;
-						});
-					}
-                    else{
-                        swal('error',response.msg,'error').then(function(){
-							// document.location.href=document.location.href;
-						});
-                    }
-                }
-            })
-        });
-    </script> --}}
+
     <script>
         $(document).ready(function(){
-        /*----------------------------------------------------*/
-        /*  Jquery Ui slider js
-        /*----------------------------------------------------*/
+
         if ($("#slider-range").length > 0) {
             const max_value = parseInt( $("#slider-range").data('max') ) || 500;
             const min_value = parseInt($("#slider-range").data('min')) || 0;
