@@ -3,6 +3,7 @@
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\GithubController;
 use App\Http\Controllers\GoogleAuthController;
+use App\Http\Controllers\StripeController;
 use App\Http\Controllers\SubscriberController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SellerController;
@@ -188,3 +189,13 @@ Route::get("auth/github/call-back", [GithubController::class,"callBack"]);
 
 Route::post('/SendEmails', [SubscriberController::class, 'SendEmails'])->name('SendEmails');
 Route::post('/Savesubscribe', [SubscriberController::class, 'SaveSubscribe'])->name('Savesubscribe');
+
+
+//Checkout
+Route::get('/checkout', [CartController::class, 'checkout'])->name('checkout');
+Route::post('cart/order', [OrderController::class, 'store'])->name('cart.order');
+
+
+//Stripe
+Route::get('/success', [StripeController::class,'success'])->name('payment.success');
+Route::get('/cancel', [StripeController::class,'cancel'])->name('payment.cancel');

@@ -119,8 +119,8 @@
               <div class="col-lg-4 col-md-7 col-12">
                 <div class="right">
                   <div class="button5">
-                    <a class="btn">Checkout</a>
-                    <a class="btn">Continue shopping</a>
+                    <a href="{{route('checkout')}}" class="btn">Checkout</a>
+                    <a href="{{route('product-grids')}}" class="btn">Continue shopping</a>
                   </div>
                 </div>
               </div>

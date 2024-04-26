@@ -25,6 +25,7 @@
                                 <th>Charge</th>
                                 <th>Total Amount</th>
                                 <th>Status</th>
+                                <th>Currency</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -38,6 +39,7 @@
                                 <th>Charge</th>
                                 <th>Total Amount</th>
                                 <th>Status</th>
+                                <th>Currency</th>
                                 <th>Action</th>
                             </tr>
                         </tfoot>
@@ -71,6 +73,7 @@
                                             <span class="badge badge-danger">{{ $order->status }}</span>
                                         @endif
                                     </td>
+                                    <td>{{$order->currency}}</td>
                                     <td>
                                         <a href="{{ route('order.show', $order->id) }}"
                                             class="btn btn-warning btn-sm float-left mr-1"

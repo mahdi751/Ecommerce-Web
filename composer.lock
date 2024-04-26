@@ -7,135 +7,6 @@
     "content-hash": "9991bb6d7f601f49bc0d953e92ccf6af",
     "packages": [
         {
-            "name": "amrshawky/currency",
-            "version": "1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/amrshawky/currency.git",
-                "reference": "39f13b6783ef611fd13916d48abd31bca2ab1e54"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/amrshawky/currency/zipball/39f13b6783ef611fd13916d48abd31bca2ab1e54",
-                "reference": "39f13b6783ef611fd13916d48abd31bca2ab1e54",
-                "shasum": ""
-            },
-            "require": {
-                "ext-json": "*",
-                "guzzlehttp/guzzle": ">=6.0",
-                "php": ">=7.2"
-            },
-            "require-dev": {
-                "phpunit/phpunit": ">=8.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "AmrShawky\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Amr Shawky",
-                    "homepage": "https://amrshawky.com"
-                }
-            ],
-            "description": "A PHP library for current and historical currency exchange rates & crypto exchange rates based on the free API provided by exchangerate.host",
-            "keywords": [
-                "crypto exchange rates",
-                "currency",
-                "currency converter",
-                "exchange rates",
-                "php"
-            ],
-            "support": {
-                "issues": "https://github.com/amrshawky/currency/issues",
-                "source": "https://github.com/amrshawky/currency/tree/1.0.0"
-            },
-            "funding": [
-                {
-                    "url": "https://ko-fi.com/amrshawky",
-                    "type": "ko_fi"
-                }
-            ],
-            "abandoned": true,
-            "time": "2021-05-13T23:41:33+00:00"
-        },
-        {
-            "name": "amrshawky/laravel-currency",
-            "version": "6.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/amrshawky/laravel-currency.git",
-                "reference": "a6ab6c4f65b58b4a89e2f467e91cc139e59c4df7"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/amrshawky/laravel-currency/zipball/a6ab6c4f65b58b4a89e2f467e91cc139e59c4df7",
-                "reference": "a6ab6c4f65b58b4a89e2f467e91cc139e59c4df7",
-                "shasum": ""
-            },
-            "require": {
-                "amrshawky/currency": "^1.0",
-                "ext-json": "*",
-                "guzzlehttp/guzzle": ">=6.0",
-                "illuminate/support": "^6.0|^7.0|^8.0|^9.0|^10.0",
-                "php": ">=7.2"
-            },
-            "require-dev": {
-                "phpunit/phpunit": ">=8.5.23"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "AmrShawky\\LaravelCurrency\\CurrencyServiceProvider"
-                    ],
-                    "aliases": {
-                        "Currency": "AmrShawky\\LaravelCurrency\\Facade\\Currency"
-                    }
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "AmrShawky\\LaravelCurrency\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Amr Shawky",
-                    "homepage": "https://amrshawky.com"
-                }
-            ],
-            "description": "A Laravel package for current and historical currency exchange rates & crypto exchange rates based on the free API provided by exchangerate.host",
-            "keywords": [
-                "currency",
-                "currency converter",
-                "exchange rates",
-                "laravel"
-            ],
-            "support": {
-                "issues": "https://github.com/amrshawky/laravel-currency/issues",
-                "source": "https://github.com/amrshawky/laravel-currency/tree/6.0.0"
-            },
-            "funding": [
-                {
-                    "url": "https://ko-fi.com/amrshawky",
-                    "type": "ko_fi"
-                }
-            ],
-            "abandoned": true,
-            "time": "2023-02-17T18:40:31+00:00"
-        },
-        {
             "name": "ashallendesign/laravel-exchange-rates",
             "version": "v7.4.0",
             "source": {
@@ -5513,6 +5384,65 @@
                 "source": "https://github.com/spatie/macroable/tree/1.0.1"
             },
             "time": "2020-11-03T10:15:05+00:00"
+        },
+        {
+            "name": "stripe/stripe-php",
+            "version": "v14.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/stripe/stripe-php.git",
+                "reference": "044f9dd190967b8fb7e55fd0ea25f11c625c00a4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/044f9dd190967b8fb7e55fd0ea25f11c625c00a4",
+                "reference": "044f9dd190967b8fb7e55fd0ea25f11c625c00a4",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "php": ">=5.6.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "3.5.0",
+                "phpstan/phpstan": "^1.2",
+                "phpunit/phpunit": "^5.7 || ^9.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Stripe\\": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Stripe and contributors",
+                    "homepage": "https://github.com/stripe/stripe-php/contributors"
+                }
+            ],
+            "description": "Stripe PHP Library",
+            "homepage": "https://stripe.com/",
+            "keywords": [
+                "api",
+                "payment processing",
+                "stripe"
+            ],
+            "support": {
+                "issues": "https://github.com/stripe/stripe-php/issues",
+                "source": "https://github.com/stripe/stripe-php/tree/v14.4.0"
+            },
+            "time": "2024-04-25T20:38:24+00:00"
         },
         {
             "name": "symfony/console",
