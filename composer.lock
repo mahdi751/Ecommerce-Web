@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9991bb6d7f601f49bc0d953e92ccf6af",
+    "content-hash": "74656bb3dece5497cdcc88b2a2906507",
     "packages": [
         {
             "name": "ashallendesign/laravel-exchange-rates",
@@ -1728,82 +1728,6 @@
             "time": "2022-05-21T17:30:32+00:00"
         },
         {
-            "name": "kantorge/laravel-currency-exchange-rates",
-            "version": "v0.0.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/kantorge/laravel-currency-exchange-rates.git",
-                "reference": "0ad0b4d1db518f70710c9f90eb36768aecb9fab5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/kantorge/laravel-currency-exchange-rates/zipball/0ad0b4d1db518f70710c9f90eb36768aecb9fab5",
-                "reference": "0ad0b4d1db518f70710c9f90eb36768aecb9fab5",
-                "shasum": ""
-            },
-            "require": {
-                "guzzlehttp/guzzle": "^7.8",
-                "php": "^8.1"
-            },
-            "require-dev": {
-                "laravel/pint": "^1.0",
-                "nunomaduro/collision": "^7.8",
-                "orchestra/testbench": "^8.8",
-                "pestphp/pest": "^2.20",
-                "pestphp/pest-plugin-arch": "^2.0",
-                "pestphp/pest-plugin-laravel": "^2.0",
-                "phpstan/extension-installer": "^1.1",
-                "phpstan/phpstan-deprecation-rules": "^1.0",
-                "phpstan/phpstan-phpunit": "^1.0"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Kantorge\\CurrencyExchangeRates\\CurrencyExchangeRatesServiceProvider"
-                    ],
-                    "aliases": {
-                        "CurrencyExchangeRates": "Kantorge\\CurrencyExchangeRates\\Facades\\CurrencyExchangeRates"
-                    }
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Kantorge\\CurrencyExchangeRates\\": "src/",
-                    "Kantorge\\CurrencyExchangeRates\\Database\\Factories\\": "database/factories/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Gergely Kántor",
-                    "email": "kantorge@gmail.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "A Laravel package to retrieve historical currency exchange rate data",
-            "homepage": "https://github.com/kantorge/laravel-currency-exchange-rates",
-            "keywords": [
-                "kantorge",
-                "laravel",
-                "laravel-currency-exchange-rates"
-            ],
-            "support": {
-                "issues": "https://github.com/kantorge/laravel-currency-exchange-rates/issues",
-                "source": "https://github.com/kantorge/laravel-currency-exchange-rates/tree/v0.0.3"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/kantorge",
-                    "type": "github"
-                }
-            ],
-            "time": "2024-01-01T21:51:18+00:00"
-        },
-        {
             "name": "laravel/framework",
             "version": "v9.52.16",
             "source": {
@@ -2186,16 +2110,16 @@
         },
         {
             "name": "laravel/socialite",
-            "version": "v5.13.0",
+            "version": "v5.13.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/socialite.git",
-                "reference": "a03e9b2f63d8125f61952fe4f5b75d70fd7c8286"
+                "reference": "feed1c1ccfd991bc12af59de4aa24f657d9c5cbe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/socialite/zipball/a03e9b2f63d8125f61952fe4f5b75d70fd7c8286",
-                "reference": "a03e9b2f63d8125f61952fe4f5b75d70fd7c8286",
+                "url": "https://api.github.com/repos/laravel/socialite/zipball/feed1c1ccfd991bc12af59de4aa24f657d9c5cbe",
+                "reference": "feed1c1ccfd991bc12af59de4aa24f657d9c5cbe",
                 "shasum": ""
             },
             "require": {
@@ -2254,7 +2178,7 @@
                 "issues": "https://github.com/laravel/socialite/issues",
                 "source": "https://github.com/laravel/socialite"
             },
-            "time": "2024-04-15T18:09:46+00:00"
+            "time": "2024-04-24T20:36:50+00:00"
         },
         {
             "name": "laravel/tinker",
@@ -3584,16 +3508,16 @@
         },
         {
             "name": "paragonie/sodium_compat",
-            "version": "v1.21.0",
+            "version": "v1.21.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/sodium_compat.git",
-                "reference": "102bcf2312dc21c16c7c93fd44a6d2a2e1343e26"
+                "reference": "bb312875dcdd20680419564fe42ba1d9564b9e37"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/sodium_compat/zipball/102bcf2312dc21c16c7c93fd44a6d2a2e1343e26",
-                "reference": "102bcf2312dc21c16c7c93fd44a6d2a2e1343e26",
+                "url": "https://api.github.com/repos/paragonie/sodium_compat/zipball/bb312875dcdd20680419564fe42ba1d9564b9e37",
+                "reference": "bb312875dcdd20680419564fe42ba1d9564b9e37",
                 "shasum": ""
             },
             "require": {
@@ -3664,9 +3588,9 @@
             ],
             "support": {
                 "issues": "https://github.com/paragonie/sodium_compat/issues",
-                "source": "https://github.com/paragonie/sodium_compat/tree/v1.21.0"
+                "source": "https://github.com/paragonie/sodium_compat/tree/v1.21.1"
             },
-            "time": "2024-04-19T09:18:28+00:00"
+            "time": "2024-04-22T22:05:04+00:00"
         },
         {
             "name": "phpoption/phpoption",
@@ -5274,66 +5198,6 @@
                 }
             ],
             "time": "2022-01-14T07:31:45+00:00"
-        },
-        {
-            "name": "spatie/laravel-package-tools",
-            "version": "1.16.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/spatie/laravel-package-tools.git",
-                "reference": "ddf678e78d7f8b17e5cdd99c0c3413a4a6592e53"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-package-tools/zipball/ddf678e78d7f8b17e5cdd99c0c3413a4a6592e53",
-                "reference": "ddf678e78d7f8b17e5cdd99c0c3413a4a6592e53",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/contracts": "^9.28|^10.0|^11.0",
-                "php": "^8.0"
-            },
-            "require-dev": {
-                "mockery/mockery": "^1.5",
-                "orchestra/testbench": "^7.7|^8.0",
-                "pestphp/pest": "^1.22",
-                "phpunit/phpunit": "^9.5.24",
-                "spatie/pest-plugin-test-time": "^1.1"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Spatie\\LaravelPackageTools\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Freek Van der Herten",
-                    "email": "freek@spatie.be",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Tools for creating Laravel packages",
-            "homepage": "https://github.com/spatie/laravel-package-tools",
-            "keywords": [
-                "laravel-package-tools",
-                "spatie"
-            ],
-            "support": {
-                "issues": "https://github.com/spatie/laravel-package-tools/issues",
-                "source": "https://github.com/spatie/laravel-package-tools/tree/1.16.4"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/spatie",
-                    "type": "github"
-                }
-            ],
-            "time": "2024-03-20T07:29:11+00:00"
         },
         {
             "name": "spatie/macroable",
@@ -8014,84 +7878,6 @@
                 "source": "https://github.com/webmozarts/assert/tree/1.11.0"
             },
             "time": "2022-06-03T18:03:27+00:00"
-        },
-        {
-            "name": "worksome/exchange",
-            "version": "v1.3.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/worksome/exchange.git",
-                "reference": "782ba461a0fc5977afed175f2e041bfd84c60aca"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/worksome/exchange/zipball/782ba461a0fc5977afed175f2e041bfd84c60aca",
-                "reference": "782ba461a0fc5977afed175f2e041bfd84c60aca",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/contracts": "^9.49|^10.0",
-                "nunomaduro/termwind": "^v1.15",
-                "php": "^8.2",
-                "spatie/laravel-package-tools": "^1.14"
-            },
-            "require-dev": {
-                "guzzlehttp/guzzle": "^7.4",
-                "nunomaduro/collision": "^6.3",
-                "nunomaduro/larastan": "^2.4",
-                "orchestra/testbench": "^7.20|^8.0",
-                "pestphp/pest": "^1.22",
-                "pestphp/pest-plugin-laravel": "^1.4",
-                "pestphp/pest-plugin-parallel": "^1.0",
-                "worksome/coding-style": "^2.3",
-                "worksome/pest-plugin-silence": "^0.1.2"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Worksome\\Exchange\\ExchangeServiceProvider"
-                    ],
-                    "aliases": {
-                        "Exchange": "Worksome\\Exchange\\Facades\\Exchange"
-                    }
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Worksome\\Exchange\\": "src",
-                    "Worksome\\Exchange\\Database\\Factories\\": "database/factories"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Luke Downing",
-                    "email": "lukeraymonddowning@gmail.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Check Exchange Rates for any currency in Laravel.",
-            "homepage": "https://github.com/worksome/exchange",
-            "keywords": [
-                "exchange",
-                "laravel",
-                "worksome"
-            ],
-            "support": {
-                "issues": "https://github.com/worksome/exchange/issues",
-                "source": "https://github.com/worksome/exchange/tree/v1.3.0"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/worksome",
-                    "type": "github"
-                }
-            ],
-            "time": "2023-02-01T16:51:07+00:00"
         }
     ],
     "packages-dev": [
@@ -10214,16 +10000,16 @@
         },
         {
             "name": "spatie/backtrace",
-            "version": "1.5.3",
+            "version": "1.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/backtrace.git",
-                "reference": "483f76a82964a0431aa836b6ed0edde0c248e3ab"
+                "reference": "8373b9d51638292e3bfd736a9c19a654111b4a23"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/backtrace/zipball/483f76a82964a0431aa836b6ed0edde0c248e3ab",
-                "reference": "483f76a82964a0431aa836b6ed0edde0c248e3ab",
+                "url": "https://api.github.com/repos/spatie/backtrace/zipball/8373b9d51638292e3bfd736a9c19a654111b4a23",
+                "reference": "8373b9d51638292e3bfd736a9c19a654111b4a23",
                 "shasum": ""
             },
             "require": {
@@ -10231,6 +10017,7 @@
             },
             "require-dev": {
                 "ext-json": "*",
+                "laravel/serializable-closure": "^1.3",
                 "phpunit/phpunit": "^9.3",
                 "spatie/phpunit-snapshot-assertions": "^4.2",
                 "symfony/var-dumper": "^5.1"
@@ -10260,7 +10047,7 @@
                 "spatie"
             ],
             "support": {
-                "source": "https://github.com/spatie/backtrace/tree/1.5.3"
+                "source": "https://github.com/spatie/backtrace/tree/1.6.1"
             },
             "funding": [
                 {
@@ -10272,7 +10059,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2023-06-28T12:59:17+00:00"
+            "time": "2024-04-24T13:22:11+00:00"
         },
         {
             "name": "spatie/flare-client-php",
@@ -10345,16 +10132,16 @@
         },
         {
             "name": "spatie/ignition",
-            "version": "1.13.2",
+            "version": "1.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/ignition.git",
-                "reference": "952798e239d9969e4e694b124c2cc222798dbb28"
+                "reference": "80385994caed328f6f9c9952926932e65b9b774c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/ignition/zipball/952798e239d9969e4e694b124c2cc222798dbb28",
-                "reference": "952798e239d9969e4e694b124c2cc222798dbb28",
+                "url": "https://api.github.com/repos/spatie/ignition/zipball/80385994caed328f6f9c9952926932e65b9b774c",
+                "reference": "80385994caed328f6f9c9952926932e65b9b774c",
                 "shasum": ""
             },
             "require": {
@@ -10424,7 +10211,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-04-16T08:49:17+00:00"
+            "time": "2024-04-26T08:45:51+00:00"
         },
         {
             "name": "spatie/laravel-ignition",
@@ -10650,5 +10437,5 @@
         "php": "^8.0.2"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }

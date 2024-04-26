@@ -43,12 +43,15 @@ class OrderController extends Controller
             }
         }
         else{
-            
-            $store_id = Memory::where('storeId', '>', 0)->orderBy('id', 'desc')->value('storeId');
+
+            $store_id = Memory::where('storeId', '>', 0)
+                   ->where('userId', auth()->id())
+                   ->orderBy('id', 'desc')
+                   ->value('storeId');
             $shipping = Shipping::create([
-                'type' => 'Free', 
-                'price' => 0, 
-                'status' => 'active', 
+                'type' => 'Free',
+                'price' => 0,
+                'status' => 'active',
                 'store_id' => $store_id,
             ]);
 
@@ -60,7 +63,7 @@ class OrderController extends Controller
                 $order['total_amount']=Helper::totalCartPrice();
             }
         }
-                
+
         $status=$order->save();
         if($order)
         $users=User::where('role','admin')->first();
@@ -88,8 +91,8 @@ class OrderController extends Controller
                 ],
             ],
             'mode' => 'payment',
-            'success_url' => route('payment.success', ['order_id' => $order['id']]), 
-            'cancel_url' => route('payment.cancel', ['order_id' => $order['id']]), 
+            'success_url' => route('payment.success', ['order_id' => $order['id']]),
+            'cancel_url' => route('payment.cancel', ['order_id' => $order['id']]),
         ]);
 
         return $session;
@@ -148,8 +151,11 @@ class OrderController extends Controller
 
 
 
-        
-        $store_id = Memory::where('storeId', '>', 0)->orderBy('id', 'desc')->value('storeId');
+
+        $store_id = Memory::where('storeId', '>', 0)
+                   ->where('userId', auth()->id())
+                   ->orderBy('id', 'desc')
+                   ->value('storeId');
         // return $request->all();
         $selectedCurrency = Cache::get('selected_currency_' . auth()->id());
         if(empty(Cart::where('user_id',auth()->user()->id)->where('order_id',null)->first())){
@@ -164,7 +170,7 @@ class OrderController extends Controller
         $order_data['store_id'] = $store_id;
         $order_data['order_number']='ORD-'.strtoupper(Str::random(10));
         $order_data['user_id']=$request->user()->id;
-        
+
         // return session('coupon')['value'];
         $order_data['sub_total']=Helper::totalCartPrice();
         $order_data['quantity']=count(Helper::getAllProductFromCart());
@@ -182,12 +188,15 @@ class OrderController extends Controller
             }
         }
         else{
-            
-            $store_id = Memory::where('storeId', '>', 0)->orderBy('id', 'desc')->value('storeId');
+
+            $store_id = Memory::where('storeId', '>', 0)
+                   ->where('userId', auth()->id())
+                   ->orderBy('id', 'desc')
+                   ->value('storeId');
             $shipping = Shipping::create([
-                'type' => 'Free', 
-                'price' => 0, 
-                'status' => 'active', 
+                'type' => 'Free',
+                'price' => 0,
+                'status' => 'active',
                 'store_id' => $store_id,
             ]);
 
@@ -210,9 +219,9 @@ class OrderController extends Controller
         }
 
         // Notification::send($users, new StatusNotification($details));
-        
 
-                
+
+
         $order->fill($order_data);
         $status=$order->save();
         if($order)
@@ -231,11 +240,11 @@ class OrderController extends Controller
         if(request('payment_method')=='stripe'){
 
             $session = $this->createStripeSession($order);
-            
+
             return redirect()->away($session->url);
         }
         else if(request('payment_method')=='coingate'){
-            
+
         }
 
 
@@ -345,17 +354,17 @@ class OrderController extends Controller
             elseif($order->status=="process"){
                 request()->session()->flash('success','Your order is under processing please wait.');
                 return redirect()->route('home');
-    
+
             }
             elseif($order->status=="delivered"){
                 request()->session()->flash('success','Your order is successfully delivered.');
                 return redirect()->route('home');
-    
+
             }
             else{
                 request()->session()->flash('error','Your order canceled. please try again');
                 return redirect()->route('home');
-    
+
             }
         }
         else{

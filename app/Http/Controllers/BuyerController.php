@@ -36,26 +36,31 @@ class BuyerController extends Controller
         $storeParameters = $request->route()->parameters();
         $store_id = $storeParameters['store_id'];
         session(['current_store_id' => $store_id]);
-    
+
         // Log the current store ID
         Log::info('Current Store ID: ' . $store_id);
-    
+
         // Check if the store ID is greater than 0 and log the action
-       
+
         if (is_numeric($store_id) && $store_id > 0) {
             Log::info('Current Store ID inside save: ' . $store_id);
             $newMemory = new Memory();
             $newMemory->storeId = $store_id;
+            $newMemory->userId = auth()->id();
             $newMemory->save();
             Log::info('Memory row stored for Store ID: ' . $store_id);
         } else {
             Log::warning('Invalid Store ID: ' . $store_id);
         }
-    
+
         // Retrieve the latest store ID from the memory table and log it
-        $store_id = Memory::where('storeId', '>', 0)->orderBy('id', 'desc')->value('storeId');
+        $store_id = Memory::where('storeId', '>', 0)
+                   ->where('userId', auth()->id())
+                   ->orderBy('id', 'desc')
+                   ->value('storeId');
+
         Log::info('Latest Store ID from Memory table: ' . $store_id);
-    
+
         $selectedCurrency = Cache::get('selected_currency_' . auth()->id());
         $selectedCurrencySign = "";
         switch ($selectedCurrency) {
@@ -96,7 +101,7 @@ class BuyerController extends Controller
     ->where('start_time', '<=', $endOfWeek->format('Y-m-d H:i:s'))
     ->orderBy('start_time')
                     ->paginate(10);
-    
+
         $category_ids = Category::where('store_id', $store_id)
                                 ->where('status', 'active')
                                 ->where('is_parent', 1)
@@ -104,7 +109,7 @@ class BuyerController extends Controller
         $categories = Category::whereIn('id', $category_ids)->get();
         // Log the retrieved categories
 
-    
+
         $featured = Product::whereIn('cat_id', $category_ids)
                            ->where('status', 'active')
                            ->where('is_featured', 1)
@@ -113,8 +118,8 @@ class BuyerController extends Controller
                            ->limit(2)
                            ->get();
         // Log the retrieved featured products
-      
-    
+
+
         $products = Product::whereIn('cat_id', $category_ids)
                            ->where('status', 'active')
                            ->where('is_event_item', 0)
@@ -122,8 +127,8 @@ class BuyerController extends Controller
                            ->limit(8)
                            ->get();
         // Log the retrieved products
-     
-    
+
+
         // Pass the retrieved data to the frontend view
         return view('Buyers.index')
                 ->with('selectedCurrency', $selectedCurrency)
@@ -177,7 +182,7 @@ class BuyerController extends Controller
             ->with('product_detail',$product_detail)
             ->with('selectedCurrency', $selectedCurrency)
             ->with("selectedCurrencySign",$selectedCurrencySign);
-            
+
         }
 
     public function productGrids(Request $request){
@@ -206,17 +211,20 @@ class BuyerController extends Controller
       $store_id = $request->input('store_id');
       // Retrieve the current store ID from the request
       //$store_id = Memory::findOrFail(1)->storeId;
-      $store_id = Memory::where('storeId', '>', 0)->orderBy('id', 'desc')->value('storeId');
-      
+      $store_id = Memory::where('storeId', '>', 0)
+                   ->where('userId', auth()->id())
+                   ->orderBy('id', 'desc')
+                   ->value('storeId');
+
       // Retrieve category IDs associated with the store ID
       $category_ids = Category::where('store_id',$store_id)
       ->where('status', 'active')
       ->where('is_parent', 1)
       ->pluck('id');
-      
+
       // Filter products to include only those belonging to the retrieved category IDs
       $products->whereIn('cat_id', $category_ids)->where('is_event_item', 0);
-      
+
       // Sort products based on user-selected option
       if(!empty($_GET['sortBy'])){
           if($_GET['sortBy'] == 'title'){
@@ -226,30 +234,30 @@ class BuyerController extends Controller
               $products->orderBy('price', 'ASC');
           }
         }
-        
+
         // Filter products based on price range if provided
         if(!empty($_GET['price'])){
             $price = explode('-', $_GET['price']);
             $products->whereBetween('price', $price);
         }
-        
+
         // Retrieve recent products for display
         $recent_products = Product::where('status', 'active')
         ->where('is_event_item', 0)
         ->orderBy('id', 'DESC')
         ->limit(3)
         ->get();
-        
+
         // Paginate products based on user-selected option or default to 9 products per page
         if(!empty($_GET['show'])){
             $products = $products->where('status', 'active')->paginate($_GET['show']);
         } else {
             $products = $products->where('status', 'active')->paginate(9);
         }
-        
+
         // Render the view with filtered, sorted, and paginated products along with recent products
         return view('Buyers.pages.product-grids')
-        
+
               ->with('selectedCurrency', $selectedCurrency)
               ->with("selectedCurrencySign",$selectedCurrencySign)
         ->with('products', $products)
@@ -286,18 +294,21 @@ class BuyerController extends Controller
 
     // Retrieve the store ID from the request
     //$store_id = Memory::findOrFail(1)->storeId;
-    $store_id = Memory::where('storeId', '>', 0)->orderBy('id', 'desc')->value('storeId');
-    
-    
-    
-    
+    $store_id = Memory::where('storeId', '>', 0)
+                   ->where('userId', auth()->id())
+                   ->orderBy('id', 'desc')
+                   ->value('storeId');
+
+
+
+
     // Retrieve the category IDs associated with the store ID
     $category_ids = Category::where('store_id', $store_id)->pluck('id');
     $categories = Category::whereIn('id', $category_ids)->get();
-    
+
     // Apply category filter based on the retrieved category IDs
     $products->whereIn('cat_id', $category_ids)->where('is_event_item', 0);
-    
+
     // Apply other filters if provided
     if(!empty($_GET['sortBy'])){
         if($_GET['sortBy'] == 'title'){
@@ -307,22 +318,22 @@ class BuyerController extends Controller
             $products->orderBy('price', 'ASC');
         }
     }
-    
+
     if(!empty($_GET['price'])){
         $price = explode('-', $_GET['price']);
         $products->whereBetween('price', $price);
     }
-    
+
     // Retrieve recent products
     $recent_products = Product::where('status', 'active')->where('is_event_item', 0)->orderBy('id', 'DESC')->limit(3)->get();
-    
+
     // Paginate the results
     if(!empty($_GET['show'])){
         $products = $products->where('status', 'active')->paginate($_GET['show']);
     } else {
         $products = $products->where('status', 'active')->paginate(6);
     }
-    
+
     // Return the view with the products
     return view('Buyers.pages.product-lists')
     ->with('selectedCurrency', $selectedCurrency)
@@ -331,8 +342,11 @@ class BuyerController extends Controller
 }
 public function productFilter(Request $request){
     //$store_id = Memory::findOrFail(1)->storeId;
-    $store_id = Memory::where('storeId', '>', 0)->orderBy('id', 'desc')->value('storeId');
-    
+    $store_id = Memory::where('storeId', '>', 0)
+                   ->where('userId', auth()->id())
+                   ->orderBy('id', 'desc')
+                   ->value('storeId');
+
     $category_ids = Category::where('store_id', $store_id)
     ->where('status', 'active')
     ->where('is_parent', 1)
@@ -383,7 +397,10 @@ $categories = Category::whereIn('id', $category_ids)->get();
 public function productSearch(Request $request){
     // Retrieve the store ID from the session
     //$store_id = Memory::findOrFail(1)->storeId;
-    $store_id = Memory::where('storeId', '>', 0)->orderBy('id', 'desc')->value('storeId');
+    $store_id = Memory::where('storeId', '>', 0)
+                   ->where('userId', auth()->id())
+                   ->orderBy('id', 'desc')
+                   ->value('storeId');
     $selectedCurrency = Cache::get('selected_currency_' . auth()->id());
     $selectedCurrency = Cache::get('selected_currency_' . auth()->id());
     $selectedCurrencySign = "";
@@ -406,14 +423,14 @@ public function productSearch(Request $request){
     }
 
 
-    
-    
+
+
     // Retrieve category IDs associated with the store ID
     $category_ids = Category::where('store_id', $store_id)
     ->where('status', 'active')
     ->where('is_parent', 1)
     ->pluck('id');
-    
+
     // Retrieve recent products for display
     $recent_products = Product::whereIn('cat_id', $category_ids)
                                ->where('is_event_item', 0)
@@ -421,7 +438,7 @@ public function productSearch(Request $request){
                                ->orderBy('id', 'DESC')
                                ->limit(3)
                                ->get();
-                               
+
                                // Search for products with the given search query and associated with the categories of the store
                                $products = Product::whereIn('cat_id', $category_ids)
                        ->where('is_event_item', 0)
@@ -435,9 +452,9 @@ public function productSearch(Request $request){
                         })
                        ->orderBy('id', 'DESC')
                        ->paginate(9);
-                       
+
                        $categories = Category::whereIn('id', $category_ids)->get();
-                       
+
     // Return the view with the search results and recent products
     return view('Buyers.pages.product-grids')
     ->with('selectedCurrency', $selectedCurrency)
@@ -479,17 +496,17 @@ public function productCat(Request $request){
   ->where('status', 'active')
   ->orderBy('id', 'DESC')
   ->get();
-  
+
   // Retrieve recent products
   $recent_products = Product::where('status', 'active')
   ->where('is_event_item', 0)
   ->orderBy('id', 'DESC')
   ->limit(3)
   ->get();
-  
+
   // Determine which view to return based on the request URL
   $view = request()->is('e-shop.loc/product-grids') ? 'Buyers.pages.product-grids' : 'Buyers.pages.product-lists';
-  
+
   // Pass the retrieved products and recent products to the view
   return view($view)
   ->with('selectedCurrency', $selectedCurrency)
@@ -521,7 +538,7 @@ public function productSubCat(Request $request){
           $selectedCurrencySign = ''; // Default value if no currency is selected
   }
 
-  
+
   // Retrieve products associated with the subcategory slug and store ID
   $products = Category::where('slug', $request->sub_slug)
   ->where('store_id', $current_store_id)
@@ -530,17 +547,17 @@ public function productSubCat(Request $request){
   ->where('status', 'active')
   ->orderBy('id', 'DESC')
   ->get();
-  
+
   // Retrieve recent products
   $recent_products = Product::where('status', 'active')
   ->where('is_event_item', 0)
   ->orderBy('id', 'DESC')
   ->limit(3)
   ->get();
-  
+
   // Determine which view to return based on the request URL
   $view = request()->is('e-shop.loc/product-grids') ? 'Buyers.product-grids' : 'Buyers.pages.product-lists';
-  
+
   // Pass the retrieved products and recent products to the view
   return view($view)
             ->with('selectedCurrency', $selectedCurrency)
@@ -559,8 +576,11 @@ public function updateCurrency(Request $request) {
     $selectedCurrency = $request->input('cur');
     session(['selected_currency' => $selectedCurrency]);
 
-    Cache::put('selected_currency_' . auth()->id(), $selectedCurrency, now()->addHours(24)); 
-    $store_id = Memory::where('storeId', '>', 0)->orderBy('id', 'desc')->value('storeId');
+    Cache::put('selected_currency_' . auth()->id(), $selectedCurrency, now()->addHours(24));
+    $store_id = Memory::where('storeId', '>', 0)
+                   ->where('userId', auth()->id())
+                   ->orderBy('id', 'desc')
+                   ->value('storeId');
     Log::info('Latest Store ID from Memory table: ' . $store_id);
     return redirect()->back();
 

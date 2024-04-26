@@ -22,9 +22,12 @@ class Helper{
     }
 
     public static function getHeaderCategory(){
-      
-        $store_id = Memory::where('storeId', '>', 0)->orderBy('id', 'desc')->value('storeId');
-        
+
+        $store_id = Memory::where('storeId', '>', 0)
+                   ->where('userId', auth()->id())
+                   ->orderBy('id', 'desc')
+                   ->value('storeId');
+
         $category_ids = Category::where('store_id', $store_id)->pluck('id');
         $categories = Category::whereIn('id', $category_ids)->get();
 
@@ -116,16 +119,16 @@ class Helper{
             $response = Http::get($baseUrl . 'rates/latest', [
                 'apikey' => $apiKey,
             ]);
-    
+
             if ($response->successful() && isset($response->json()["rates"])) {
                 $rates = $response->json()["rates"];
-    
-                Cache::put('currency_conversion_rates', $rates, now()->addHours(6)); 
+
+                Cache::put('currency_conversion_rates', $rates, now()->addHours(6));
             } else {
                 return "Failed to fetch conversion rates";
             }
         }
-    
+
         if (isset($rates[$cur])) {
             return $rates[$cur] * $amount;
         } else {
