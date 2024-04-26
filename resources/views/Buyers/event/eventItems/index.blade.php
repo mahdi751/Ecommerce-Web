@@ -26,7 +26,7 @@
               <!-- Start Single List  -->
               <div class="single-list">
 
-                <div class="card .card-bid">
+                <div class="card card-bid">
                   <img style="width: 200px; height:100px;" src="{{ $product->photo }}" class="event-item-img"
                     alt="{{ $product->title }}">
                   <div class="card-body">
@@ -56,26 +56,26 @@
                         </button>
                       </form>
                     @else
-                      @csrf
                       <div class="form-group">
 
                         <button type="button" class=" btn-sold" disabled>
                           Item Sold</button>
+
+                        <div class="bid-message-container">
+                          <div id="bidMessage_{{ $product->id }}" class="bid-message">New bid placed!</div>
+                        </div>
+
+                      </div>
                     @endif
-                    <div class="bid-message-container">
-                      <div id="bidMessage_{{ $product->id }}" class="bid-message">New bid placed!</div>
-                    </div>
 
                   </div>
                 </div>
-
               </div>
             </div>
+          @endforeach
         </div>
-        @endforeach
       </div>
     </div>
-  </div>
 
   </div>
 
@@ -159,7 +159,12 @@
             console.log(response.json());
             throw new Error('Network response was not ok');
           }
-          document.getElementById('userBid_' + productId).innerText = bidAmount;
+
+          if (parseInt(bidAmount) >= parseInt('{{ $product->closing_bid }}')) {
+            document.getElementById('userBid_' + productId).innerText = parseFloat('{{ $product->closing_bid }}');
+          } else {
+            document.getElementById('userBid_' + productId).innerText = bidAmount;
+          }
           document.getElementById('bidAmount_' + productId).value = '';
 
           return response.json();
