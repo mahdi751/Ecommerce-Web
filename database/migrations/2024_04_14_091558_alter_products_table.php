@@ -21,7 +21,7 @@ class AlterProductsTable extends Migration
             $table->decimal('closing_bid', 8, 2)->nullable();
             $table->enum('bid_status', ['open', 'closed'])->default('open')->nullable();
             $table->unsignedBigInteger('event_id')->nullable();
-            $table->foreign('event_id')->references('id')->on('events')->onDelete('SET NULL');
+            $table->foreign('event_id')->references('id')->on('events')->onDelete('cascade');;
         });
     }
 
