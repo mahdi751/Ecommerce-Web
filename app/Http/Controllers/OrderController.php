@@ -24,7 +24,8 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders=Order::orderBy('id','DESC')->paginate(10);
+        $storeId = session('current_store_id');
+        $orders=Order::orderBy('id','DESC')->where('store_id', $storeId)->paginate(10);
         return view('Sellers.order.index')->with('orders',$orders);
     }
 
