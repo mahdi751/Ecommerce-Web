@@ -177,8 +177,6 @@
                         </a>
                         <div class="button-head">
                           <div class="product-action">
-                            <a data-toggle="modal" data-target="#{{ $product->id }}" title="Quick View"
-                              href="#"><i class=" ti-eye"></i><span>Quick Shop</span></a>
                             <a title="Wishlist"href="{{ route('add-to-wishlist', $product->slug) }}"><i
                                 class=" ti-heart "></i><span>Add to Wishlist</span></a>
                           </div>
@@ -284,8 +282,7 @@
                     </a>
                     <div class="button-head">
                       <div class="product-action">
-                        <a data-toggle="modal" data-target="#{{ $product->id }}" title="Quick View"
-                          href="#"><i class=" ti-eye"></i><span>Quick Shop</span></a>
+
                         <a title="Wishlist" href="{{ route('add-to-wishlist', $product->slug) }}"><i
                             class=" ti-heart "></i><span>Add to Wishlist</span></a>
                       </div>
@@ -345,7 +342,7 @@
                           // dd($photo);
                         @endphp
                         <img src="{{ $photo[0] }}" alt="{{ $photo[0] }}" class="product-image">
-                        <a class="buy"><i class="fa fa-shopping-bag"></i></a>
+                        <a href="{{route('product-detail',$product->slug)}}" class="buy"><i class="fa fa-shopping-bag"></i></a>
                       </div>
                     </div>
                     @php
@@ -616,12 +613,10 @@
 @push('scripts')
   <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
   <script>
-    /*==================================================================
-                                                                                                                    [ Isotope ]*/
     var $topeContainer = $('.isotope-grid');
     var $filter = $('.filter-tope-group');
 
-    // filter items on button click
+
     $filter.each(function() {
       $filter.on('click', 'button', function() {
         var filterValue = $(this).attr('data-filter');
@@ -630,19 +625,28 @@
         });
       });
 
-    });
+      // filter items on button click
+      $filter.each(function() {
+        $filter.on('click', 'button', function() {
+          var filterValue = $(this).attr('data-filter');
+          $topeContainer.isotope({
+            filter: filterValue
+          });
+        });
 
-    // init Isotope
-    $(window).on('load', function() {
-      var $grid = $topeContainer.each(function() {
-        $(this).isotope({
-          itemSelector: '.isotope-item',
-          layoutMode: 'fitRows',
-          percentPosition: true,
-          animationEngine: 'best-available',
-          masonry: {
-            columnWidth: '.isotope-item'
-          }
+
+        $(window).on('load', function() {
+          var $grid = $topeContainer.each(function() {
+            $(this).isotope({
+              itemSelector: '.isotope-item',
+              layoutMode: 'fitRows',
+              percentPosition: true,
+              animationEngine: 'best-available',
+              masonry: {
+                columnWidth: '.isotope-item'
+              }
+            });
+          });
         });
       });
     });
@@ -662,9 +666,9 @@
   <script>
     function cancelFullScreen(el) {
       var requestMethod = el.cancelFullScreen || el.webkitCancelFullScreen || el.mozCancelFullScreen || el.exitFullscreen;
-      if (requestMethod) { // cancel full screen.
+      if (requestMethod) {
         requestMethod.call(el);
-      } else if (typeof window.ActiveXObject !== "undefined") { // Older IE.
+      } else if (typeof window.ActiveXObject !== "undefined") {
         var wscript = new ActiveXObject("WScript.Shell");
         if (wscript !== null) {
           wscript.SendKeys("{F11}");
@@ -673,13 +677,13 @@
     }
 
     function requestFullScreen(el) {
-      // Supports most browsers and their versions.
+
       var requestMethod = el.requestFullScreen || el.webkitRequestFullScreen || el.mozRequestFullScreen || el
         .msRequestFullscreen;
 
-      if (requestMethod) { // Native full screen.
+      if (requestMethod) {
         requestMethod.call(el);
-      } else if (typeof window.ActiveXObject !== "undefined") { // Older IE.
+      } else if (typeof window.ActiveXObject !== "undefined") {
         var wscript = new ActiveXObject("WScript.Shell");
         if (wscript !== null) {
           wscript.SendKeys("{F11}");
@@ -687,5 +691,6 @@
       }
       return false
     }
-  </script>
-@endpush
+    }
+    }
+  @endpush

@@ -17,6 +17,7 @@ use App\Http\Controllers\ProductReviewController;
 use App\Http\Controllers\CouponsController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\BuyerController;
 use App\Http\Controllers\EventController;
@@ -40,6 +41,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/logout', [LoginController::class,'logout'])->name('logout');
 
 
 
@@ -140,9 +142,7 @@ Route::get('/about-us', [BuyerController::class, 'aboutUs'])->name('about-us');
     Route::get('/product-grids', [BuyerController::class, 'productGrids'])->name('product-grids');
     Route::get('/product-lists', [BuyerController::class, 'productLists'])->name('product-lists');
     Route::match(['get', 'post'], '/filter', [BuyerController::class, 'productFilter'])->name('shop.filter');
-    Route::get('/wishlist', function () {
-        return view('Buyers.pages.wishlist');
-    })->name('wishlist');
+    Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
     Route::get('/wishlist/{slug}', [WishlistController::class, 'wishlist'])->name('add-to-wishlist');
     Route::get('wishlist-delete/{id}', [WishlistController::class, 'wishlistDelete'])->name('wishlist-delete');
 
@@ -210,3 +210,17 @@ Route::get('/coin-gate/fail',[OrderController::class,'failCoinGate']);
 
 Route::get('order/pdf/{id}', [OrderController::class, 'pdf'])->name('order.pdf');
 Route::get('/income', [OrderController::class, 'incomeChart'])->name('product.order.income');
+Route::get('/profile', [HomeController::class, 'profile'])->name('user-profile');
+Route::post('/profile/{id}', [HomeController::class, 'profileUpdate'])->name('user-profile-update');
+//  Order
+Route::get('/order', [HomeController::class, 'orderIndex'])->name('user.order.index');
+Route::get('/order/show/{id}', [HomeController::class,'orderShow'])->name('user.order.show');
+Route::delete('/order/delete/{id}', [HomeController::class, 'userOrderDelete'])->name('user.order.delete');
+// Product Review
+// Route::get('/user-review', [HomeController::class, 'productReviewIndex'])->name('user.productreview.index');
+// Route::delete('/user-review/delete/{id}', [HomeController::class, 'productReviewDelete'])->name('user.productreview.delete');
+// Route::get('/user-review/edit/{id}', [HomeController::class, 'productReviewEdit'])->name('user.productreview.edit');
+// Route::patch('/user-review/update/{id}', [HomeController::class, 'productReviewUpdate'])->name('user.productreview.update');
+//Password Change
+        Route::get('change-password', [HomeController::class, 'changePassword'])->name('user.change.password.form');
+        Route::post('change-password', [HomeController::class, 'changPasswordStore'])->name('change.password');
