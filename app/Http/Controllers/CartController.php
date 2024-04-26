@@ -295,7 +295,37 @@ class CartController extends Controller
         //     $cart->fill($data);
         //     $cart->save();
         // }
-        return view('frontend.pages.checkout');
+
+
+                // Get the selected currency from the cache
+                $selectedCurrency = Cache::get('selected_currency_' . auth()->id());
+
+                // Initialize the variable to hold the currency sign
+                $selectedCurrencySign = "";
+        
+                // Assign the currency sign based on the selected currency
+                switch ($selectedCurrency) {
+                    case 'LBP':
+                        $selectedCurrencySign = 'L.L '; // Assign the currency sign for LBP
+                        break;
+                    case 'USD':
+                        $selectedCurrencySign = '$ '; // Assign the currency sign for USD
+                        break;
+                    case 'EUR':
+                        $selectedCurrencySign = '€ '; // Assign the currency sign for EUR
+                        break;
+                    case 'KWD':
+                        $selectedCurrencySign = 'KWD '; // Assign the currency sign for KWD
+                        break;
+                    default:
+                        $selectedCurrencySign = ''; // Default value if no currency is selected
+                }
+                
+                // If no currency is selected, default to USD
+                if ($selectedCurrency == null) {
+                    $selectedCurrency = "USD";
+                }
+        return view('Buyers.pages.checkout')->with('selectedCurrency', $selectedCurrency)->with('selectedCurrencySign', $selectedCurrencySign);
     }
 
 

@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Memory;
 use Illuminate\Http\Request;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Shipping;
-use App\User;
+use App\Models\User;
 use PDF;
 use Notification;
 use Helper;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Cache;
 use App\Notifications\StatusNotification;
 
 class OrderController extends Controller
@@ -54,53 +56,33 @@ class OrderController extends Controller
             'post_code'=>'string|nullable',
             'email'=>'string|required'
         ]);
-        // return $request->all();
 
+        
+        $store_id = Memory::where('storeId', '>', 0)->orderBy('id', 'desc')->value('storeId');
+        // return $request->all();
+        $selectedCurrency = Cache::get('selected_currency_' . auth()->id());
         if(empty(Cart::where('user_id',auth()->user()->id)->where('order_id',null)->first())){
             request()->session()->flash('error','Cart is Empty !');
             return back();
         }
-        // $cart=Cart::get();
-        // // return $cart;
-        // $cart_index='ORD-'.strtoupper(uniqid());
-        // $sub_total=0;
-        // foreach($cart as $cart_item){
-        //     $sub_total+=$cart_item['amount'];
-        //     $data=array(
-        //         'cart_id'=>$cart_index,
-        //         'user_id'=>$request->user()->id,
-        //         'product_id'=>$cart_item['id'],
-        //         'quantity'=>$cart_item['quantity'],
-        //         'amount'=>$cart_item['amount'],
-        //         'status'=>'new',
-        //         'price'=>$cart_item['price'],
-        //     );
 
-        //     $cart=new Cart();
-        //     $cart->fill($data);
-        //     $cart->save();
-        // }
-
-        // $total_prod=0;
-        // if(session('cart')){
-        //         foreach(session('cart') as $cart_items){
-        //             $total_prod+=$cart_items['quantity'];
-        //         }
-        // }
 
         $order=new Order();
         $order_data=$request->all();
+        $order_data['currency'] = $selectedCurrency;
+        $order_data['store_id'] = $store_id;
         $order_data['order_number']='ORD-'.strtoupper(Str::random(10));
         $order_data['user_id']=$request->user()->id;
-        $order_data['shipping_id']=$request->shipping;
-        $shipping=Shipping::where('id',$order_data['shipping_id'])->pluck('price');
+        
         // return session('coupon')['value'];
         $order_data['sub_total']=Helper::totalCartPrice();
-        $order_data['quantity']=Helper::cartCount();
+        $order_data['quantity']=count(Helper::getAllProductFromCart());
         if(session('coupon')){
             $order_data['coupon']=session('coupon')['value'];
         }
         if($request->shipping){
+            $order_data['shipping_id']=$request->shipping;
+            $shipping=Shipping::where('id',$order_data['shipping_id'])->pluck('price');
             if(session('coupon')){
                 $order_data['total_amount']=Helper::totalCartPrice()+$shipping[0]-session('coupon')['value'];
             }
@@ -109,6 +91,16 @@ class OrderController extends Controller
             }
         }
         else{
+            
+            $store_id = Memory::where('storeId', '>', 0)->orderBy('id', 'desc')->value('storeId');
+            $shipping = Shipping::create([
+                'type' => 'Free', 
+                'price' => 0, 
+                'status' => 'active', 
+                'store_id' => $store_id,
+            ]);
+
+            $order_data['shipping_id']=$shipping->id;
             if(session('coupon')){
                 $order_data['total_amount']=Helper::totalCartPrice()-session('coupon')['value'];
             }
@@ -129,14 +121,13 @@ class OrderController extends Controller
         $order->fill($order_data);
         $status=$order->save();
         if($order)
-        // dd($order->id);
         $users=User::where('role','admin')->first();
         $details=[
             'title'=>'New order created',
             'actionURL'=>route('order.show',$order->id),
             'fas'=>'fa-file-alt'
         ];
-        Notification::send($users, new StatusNotification($details));
+        // Notification::send($users, new StatusNotification($details));
         if(request('payment_method')=='paypal'){
             return redirect()->route('payment')->with(['id'=>$order->id]);
         }

@@ -189,3 +189,8 @@ Route::get("auth/github/call-back", [GithubController::class,"callBack"]);
 
 Route::post('/SendEmails', [SubscriberController::class, 'SendEmails'])->name('SendEmails');
 Route::post('/Savesubscribe', [SubscriberController::class, 'SaveSubscribe'])->name('Savesubscribe');
+
+
+//Checkout
+Route::get('/checkout', [CartController::class, 'checkout'])->name('checkout');
+Route::post('cart/order', [OrderController::class, 'store'])->name('cart.order');
