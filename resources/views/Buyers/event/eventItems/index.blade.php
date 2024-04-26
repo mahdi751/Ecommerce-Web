@@ -33,6 +33,8 @@
                     <h5 class="card-title">{{ $product->title }}</h5>
                     <p class="card-text">{!! html_entity_decode($product->summary) !!}</p>
                     <p class="card-text">Starting price: ${{ $product->starting_bid_price }}</p>
+                    <p class="card-text">min increment: ${{ $product->minimum_bid_increment }}</p>
+
                     <p class="card-text">Current highest bid: $<span
                         id="currentBid_{{ $product->id }}">{{ optional($product->highestBid)->bid ?? 0 }}</span></p>
                     <p class="card-text">your bid:
