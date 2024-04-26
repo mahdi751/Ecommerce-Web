@@ -13,6 +13,7 @@ use App\Http\Controllers\ProductReviewController;
 use App\Http\Controllers\CouponsController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\BuyerController;
 use App\Http\Controllers\EventController;
@@ -36,6 +37,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/logout', [LoginController::class,'logout'])->name('logout');
 
 
 
@@ -138,7 +140,7 @@ Route::get('/about-us', [BuyerController::class, 'aboutUs'])->name('about-us');
 
 Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
     Lfm::routes();
-});     
+});
 
 
 Route::group(['prefix' => '/admin', 'middleware' => ['auth', 'admin']], function () {
@@ -171,3 +173,20 @@ Route::get('/cart', function () {return view('Buyers.pages.cart');})->name('cart
 
 Route::get("auth/github", [GithubController::class,"redirect"])->name("github-auth");
 Route::get("auth/github/call-back", [GithubController::class,"callBack"]);
+
+
+
+Route::get('/profile', [HomeController::class, 'profile'])->name('user-profile');
+Route::post('/profile/{id}', [HomeController::class, 'profileUpdate'])->name('user-profile-update');
+//  Order
+Route::get('/order', [HomeController::class, 'orderIndex'])->name('user.order.index');
+Route::get('/order/show/{id}', [HomeController::class,'orderShow'])->name('user.order.show');
+Route::delete('/order/delete/{id}', [HomeController::class, 'userOrderDelete'])->name('user.order.delete');
+// Product Review
+// Route::get('/user-review', [HomeController::class, 'productReviewIndex'])->name('user.productreview.index');
+// Route::delete('/user-review/delete/{id}', [HomeController::class, 'productReviewDelete'])->name('user.productreview.delete');
+// Route::get('/user-review/edit/{id}', [HomeController::class, 'productReviewEdit'])->name('user.productreview.edit');
+// Route::patch('/user-review/update/{id}', [HomeController::class, 'productReviewUpdate'])->name('user.productreview.update');
+//Password Change
+        Route::get('change-password', [HomeController::class, 'changePassword'])->name('user.change.password.form');
+        Route::post('change-password', [HomeController::class, 'changPasswordStore'])->name('change.password');
