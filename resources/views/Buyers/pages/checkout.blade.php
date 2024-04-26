@@ -368,7 +368,7 @@
                                                     <select name="shipping" class="nice-select">
                                                         <option value="">Select your address</option>
                                                         @foreach(Helper::shipping() as $shipping)
-                                                        <option selected value="{{$shipping->id}}" class="shippingOption" data-price="{{$shipping->price}}">{{$shipping->type}}: ${{$shipping->price}}</option>
+                                                        <option selected value="{{$shipping->id}}" class="shippingOption" data-price="{{$shipping->price}}">{{$shipping->type}}: {{$selectedCurrencySign}}{{Helper::getAmountConverted($selectedCurrency, $shipping->price)}}</option>
                                                         @endforeach
                                                     </select>
                                                 @else 
