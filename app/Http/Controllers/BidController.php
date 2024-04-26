@@ -43,6 +43,13 @@ return response()->json(['error' => 'Your bid must be higher than your previous 
 }
 $product = Product::findOrFail($request->product_id);
 
+$minimumBidAmount = ($product->highestBid->bid ?? $product->starting_bid_price) + $product->minimum_bid_increment;
+
+// Ensure the bid amount is higher than the minimum bid amount
+if( ($request->bid <= $minimumBidAmount) && ($request->bid < $product->closing_bid)) {
+    return response()->json(['error' => 'Your bid must be higher than the current highest bid plus the minimum bid increment'], 422);
+}
+
     // Check if the bid is higher than the starting bid price
     if ($request->bid < $product->starting_bid_price) {
         return response()->json(['error' => 'Your bid must be higher than the starting bid price'], 422);

@@ -47,7 +47,8 @@
                           <input type="number" class="form-control" id="bidAmount_{{ $product->id }}" name="bid"
                             min="{{ (optional($product->highestBid)->bid ?? 0) + 1 }}" required>
                         </div>
-                        <button type="button" class="btn btn-primary" onclick="placeBid('{{ $product->id }}')">Place
+                        <button style="margin: 10px 0" type="button" class="btn btn-primary"
+                          onclick="placeBid('{{ $product->id }}')">Place
                           Bid</button>
                         <button type="button" class="btn btn-primary"
                           onclick="grabItem('{{ $product->id }}','{{ $product->closing_bid }}')">Grab it for

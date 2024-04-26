@@ -217,7 +217,7 @@ protected function validateEventItem($request)
     return $this->validate($request, [
         'starting_bid_price' => 'required|numeric',
         'minimum_bid_increment' => 'required|numeric',
-        'closing_bid' => 'required|numeric',
+        'closing_bid' => 'required|numeric|min:' . $request->input('starting_bid_price'), 
         'bid_status' => 'required|in:open,closed',
         'event_id' => 'required|exists:events,id',
     ]);
