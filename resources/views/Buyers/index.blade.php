@@ -91,15 +91,14 @@
                           $photo = explode(',', $event->photo);
                           // dd($photo);
                         @endphp
-                        <img style="width: 200px; height:100px;" src="{{ $photo[0] }}" alt="{{ $photo[0] }}">
+                        <img style="width: 200px; height:150px;" src="{{ $photo[0] }}" alt="{{ $photo[0] }}">
 
                       </div>
                     </div>
                     <div class="col-12 no-padding">
                       <div class="content">
 
-                        <h4 class="title"> <a
-                            href="{{ route('products.show', ['event_id' => $event->id]) }}">{{ $event->title }}</a></h4>
+                        <h4 class="title"> {{ $event->title }}</h4>
                         <p> {!! html_entity_decode($event->description) !!}</p>
                         <p class="price with-discount"> <a
                             href="{{ route('products.show', ['event_id' => $event->id]) }}">view</a></p>
@@ -342,7 +341,8 @@
                           // dd($photo);
                         @endphp
                         <img src="{{ $photo[0] }}" alt="{{ $photo[0] }}" class="product-image">
-                        <a href="{{route('product-detail',$product->slug)}}" class="buy"><i class="fa fa-shopping-bag"></i></a>
+                        <a href="{{ route('product-detail', $product->slug) }}" class="buy"><i
+                            class="fa fa-shopping-bag"></i></a>
                       </div>
                     </div>
                     @php

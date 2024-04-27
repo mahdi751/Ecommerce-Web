@@ -27,7 +27,7 @@
               <div class="single-list">
 
                 <div class="card card-bid">
-                  <img style="width: 200px; height:100px;" src="{{ $product->photo }}" class="event-item-img"
+                  <img style="width: 200px; " src="{{ $product->photo }}" class="event-item-img"
                     alt="{{ $product->title }}">
                   <div class="card-body">
                     <h5 class="card-title">{{ $product->title }}</h5>
