@@ -46,7 +46,6 @@ class ShippingController extends Controller
             'status'=>'required|in:active,inactive'
         ]);
         $data=$request->all();
-        // return $data;
         $status=Shipping::create($data);
         if($status){
             request()->session()->flash('success','Shipping successfully created');
@@ -102,7 +101,6 @@ class ShippingController extends Controller
             'status'=>'required|in:active,inactive'
         ]);
         $data=$request->all();
-        // return $data;
         $status=$shipping->fill($data)->save();
         if($status){
             request()->session()->flash('success','Shipping successfully updated');

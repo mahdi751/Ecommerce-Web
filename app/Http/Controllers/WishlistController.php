@@ -18,20 +18,19 @@ class WishlistController extends Controller
         $selectedCurrencySign = "";
         switch ($selectedCurrency) {
             case 'LBP':
-                $selectedCurrencySign = 'L.L '; // Assign the currency sign for LBP
+                $selectedCurrencySign = 'L.L ';
                 break;
             case 'USD':
-                $selectedCurrencySign = '$ '; // Assign the currency sign for USD
+                $selectedCurrencySign = '$ ';
                 break;
             case 'EUR':
-                $selectedCurrencySign = '€ '; // Assign the currency sign for EUR
+                $selectedCurrencySign = '€ ';
                 break;
             case 'KWD':
-                $selectedCurrencySign = 'KWD '; // Assign the currency sign for KWD
+                $selectedCurrencySign = 'KWD ';
                 break;
-            // Add more cases for other currencies if needed
             default:
-                $selectedCurrencySign = ''; // Default value if no currency is selected
+                $selectedCurrencySign = '';
         }
         if($selectedCurrency == null){
             $selectedCurrency = "USD";
@@ -41,25 +40,22 @@ class WishlistController extends Controller
     }
 
     public function wishlist(Request $request){
-        // dd($request->all());
         if (empty($request->slug)) {
             request()->session()->flash('error','Invalid Products');
             return back();
-        }        
+        }
         $product = Product::where('slug', $request->slug)->first();
-        // return $product;
         if (empty($product)) {
             request()->session()->flash('error','Invalid Products');
             return back();
         }
 
         $already_wishlist = Wishlist::where('user_id', Auth::id())->where('cart_id',null)->where('product_id', $product->id)->first();
-        // return $already_wishlist;
         if($already_wishlist) {
             request()->session()->flash('error','You already placed in wishlist');
             return back();
         }else{
-            
+
             $wishlist = new Wishlist;
             $wishlist->user_id = Auth::id();
             $wishlist->product_id = $product->id;
@@ -70,17 +66,17 @@ class WishlistController extends Controller
             $wishlist->save();
         }
         request()->session()->flash('success','Product successfully added to wishlist');
-        return back();       
-    }  
-    
+        return back();
+    }
+
     public function wishlistDelete(Request $request){
         $wishlist = Wishlist::find($request->id);
         if ($wishlist) {
             $wishlist->delete();
             request()->session()->flash('success','Wishlist successfully removed');
-            return back();  
+            return back();
         }
         request()->session()->flash('error','Error please try again');
-        return back();       
-    }     
+        return back();
+    }
 }

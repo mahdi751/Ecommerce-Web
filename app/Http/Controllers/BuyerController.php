@@ -32,15 +32,12 @@ class BuyerController extends Controller
     }
 
     public function home(Request $request){
-        // Retrieve the current store ID from the request
         $storeParameters = $request->route()->parameters();
         $store_id = $storeParameters['store_id'];
         session(['current_store_id' => $store_id]);
 
-        // Log the current store ID
         Log::info('Current Store ID: ' . $store_id);
 
-        // Check if the store ID is greater than 0 and log the action
 
         if (is_numeric($store_id) && $store_id > 0) {
             Log::info('Current Store ID inside save: ' . $store_id);
@@ -53,7 +50,6 @@ class BuyerController extends Controller
             Log::warning('Invalid Store ID: ' . $store_id);
         }
 
-        // Retrieve the latest store ID from the memory table and log it
         $store_id = Memory::where('storeId', '>', 0)
                    ->where('userId', auth()->id())
                    ->orderBy('id', 'desc')
@@ -65,25 +61,23 @@ class BuyerController extends Controller
         $selectedCurrencySign = "";
         switch ($selectedCurrency) {
             case 'LBP':
-                $selectedCurrencySign = 'L.L '; // Assign the currency sign for LBP
+                $selectedCurrencySign = 'L.L '; 
                 break;
             case 'USD':
-                $selectedCurrencySign = '$ '; // Assign the currency sign for USD
+                $selectedCurrencySign = '$ '; 
                 break;
             case 'EUR':
-                $selectedCurrencySign = '€ '; // Assign the currency sign for EUR
+                $selectedCurrencySign = '€ ';
                 break;
             case 'KWD':
-                $selectedCurrencySign = 'KWD '; // Assign the currency sign for KWD
+                $selectedCurrencySign = 'KWD '; 
                 break;
-            // Add more cases for other currencies if needed
             default:
-                $selectedCurrencySign = ''; // Default value if no currency is selected
+                $selectedCurrencySign = ''; 
         }
         if($selectedCurrency == null){
             $selectedCurrency = "USD";
         }
-        // Retrieve events, categories, featured products, and products
         $currentDateTime = Carbon::now();
         $events = Event::where('store_id', $store_id)
                         ->where('status','active')
@@ -91,8 +85,6 @@ class BuyerController extends Controller
                         ->where('end_time', '>=', $currentDateTime)
                         ->orderBy('id','DESC')
                         ->paginate(10);
-        // Log the retrieved events
-       // Retrieve the upcoming event (starts within the next week excluding the ongoing event)
     $endOfWeek = $currentDateTime->copy()->addDays(7);
 
     $uevents = Event::where('store_id', $store_id)
@@ -107,7 +99,6 @@ class BuyerController extends Controller
                                 ->where('is_parent', 1)
                                 ->pluck('id');
         $categories = Category::whereIn('id', $category_ids)->get();
-        // Log the retrieved categories
 
 
         $featured = Product::whereIn('cat_id', $category_ids)
@@ -117,7 +108,6 @@ class BuyerController extends Controller
                            ->orderBy('price', 'DESC')
                            ->limit(2)
                            ->get();
-        // Log the retrieved featured products
 
 
         $products = Product::whereIn('cat_id', $category_ids)
@@ -126,10 +116,8 @@ class BuyerController extends Controller
                            ->orderBy('id', 'DESC')
                            ->limit(8)
                            ->get();
-        // Log the retrieved products
 
 
-        // Pass the retrieved data to the frontend view
         return view('Buyers.index')
                 ->with('selectedCurrency', $selectedCurrency)
                 ->with("selectedCurrencySign",$selectedCurrencySign)
@@ -158,26 +146,24 @@ class BuyerController extends Controller
         $selectedCurrencySign = "";
         switch ($selectedCurrency) {
             case 'LBP':
-                $selectedCurrencySign = 'L.L '; // Assign the currency sign for LBP
+                $selectedCurrencySign = 'L.L '; 
                 break;
             case 'USD':
-                $selectedCurrencySign = '$ '; // Assign the currency sign for USD
+                $selectedCurrencySign = '$ '; 
                 break;
             case 'EUR':
-                $selectedCurrencySign = '€ '; // Assign the currency sign for EUR
+                $selectedCurrencySign = '€ '; 
                 break;
             case 'KWD':
-                $selectedCurrencySign = 'KWD '; // Assign the currency sign for KWD
+                $selectedCurrencySign = 'KWD '; 
                 break;
-            // Add more cases for other currencies if needed
             default:
-                $selectedCurrencySign = ''; // Default value if no currency is selected
+                $selectedCurrencySign = ''; 
         }
 
         if($selectedCurrency == null){
             $selectedCurrency = "USD";
         }
-        // dd($product_detail);
         return view('Buyers.pages.productDetail')
             ->with('product_detail',$product_detail)
             ->with('selectedCurrency', $selectedCurrency)
@@ -186,46 +172,38 @@ class BuyerController extends Controller
         }
 
     public function productGrids(Request $request){
-      // Initialize query builder for the Product model
       $products = Product::query();
       $selectedCurrency = Cache::get('selected_currency_' . auth()->id());
       $selectedCurrencySign = "";
       switch ($selectedCurrency) {
           case 'LBP':
-              $selectedCurrencySign = 'L.L '; // Assign the currency sign for LBP
+              $selectedCurrencySign = 'L.L '; 
               break;
           case 'USD':
-              $selectedCurrencySign = '$ '; // Assign the currency sign for USD
+              $selectedCurrencySign = '$ '; 
               break;
           case 'EUR':
-              $selectedCurrencySign = '€ '; // Assign the currency sign for EUR
+              $selectedCurrencySign = '€ '; 
               break;
           case 'KWD':
-              $selectedCurrencySign = 'KWD '; // Assign the currency sign for KWD
+              $selectedCurrencySign = 'KWD '; 
               break;
-          // Add more cases for other currencies if needed
           default:
-              $selectedCurrencySign = ''; // Default value if no currency is selected
+              $selectedCurrencySign = ''; 
       }
 
       $store_id = $request->input('store_id');
-      // Retrieve the current store ID from the request
-      //$store_id = Memory::findOrFail(1)->storeId;
       $store_id = Memory::where('storeId', '>', 0)
                    ->where('userId', auth()->id())
                    ->orderBy('id', 'desc')
                    ->value('storeId');
-
-      // Retrieve category IDs associated with the store ID
       $category_ids = Category::where('store_id',$store_id)
       ->where('status', 'active')
       ->where('is_parent', 1)
       ->pluck('id');
 
-      // Filter products to include only those belonging to the retrieved category IDs
       $products->whereIn('cat_id', $category_ids)->where('is_event_item', 0);
 
-      // Sort products based on user-selected option
       if(!empty($_GET['sortBy'])){
           if($_GET['sortBy'] == 'title'){
               $products->where('status', 'active')->orderBy('title', 'ASC');
@@ -235,27 +213,23 @@ class BuyerController extends Controller
           }
         }
 
-        // Filter products based on price range if provided
         if(!empty($_GET['price'])){
             $price = explode('-', $_GET['price']);
             $products->whereBetween('price', $price);
         }
 
-        // Retrieve recent products for display
         $recent_products = Product::where('status', 'active')
         ->where('is_event_item', 0)
         ->orderBy('id', 'DESC')
         ->limit(3)
         ->get();
 
-        // Paginate products based on user-selected option or default to 9 products per page
         if(!empty($_GET['show'])){
             $products = $products->where('status', 'active')->paginate($_GET['show']);
         } else {
             $products = $products->where('status', 'active')->paginate(9);
         }
 
-        // Render the view with filtered, sorted, and paginated products along with recent products
         return view('Buyers.pages.product-grids')
 
               ->with('selectedCurrency', $selectedCurrency)
@@ -268,32 +242,28 @@ class BuyerController extends Controller
     $products = Product::query();
 
     $store_id = $request->input('store_id');
-   // $store_id = $request->input('store_id');
 
     //dd($store_id);
     $selectedCurrency = Cache::get('selected_currency_' . auth()->id());
     $selectedCurrencySign = "";
     switch ($selectedCurrency) {
         case 'LBP':
-            $selectedCurrencySign = 'L.L '; // Assign the currency sign for LBP
+            $selectedCurrencySign = 'L.L '; 
             break;
         case 'USD':
-            $selectedCurrencySign = '$ '; // Assign the currency sign for USD
+            $selectedCurrencySign = '$ '; 
             break;
         case 'EUR':
-            $selectedCurrencySign = '€ '; // Assign the currency sign for EUR
+            $selectedCurrencySign = '€ '; 
             break;
         case 'KWD':
-            $selectedCurrencySign = 'KWD '; // Assign the currency sign for KWD
+            $selectedCurrencySign = 'KWD '; 
             break;
-        // Add more cases for other currencies if needed
         default:
-            $selectedCurrencySign = ''; // Default value if no currency is selected
+            $selectedCurrencySign = ''; 
     }
 
 
-    // Retrieve the store ID from the request
-    //$store_id = Memory::findOrFail(1)->storeId;
     $store_id = Memory::where('storeId', '>', 0)
                    ->where('userId', auth()->id())
                    ->orderBy('id', 'desc')
@@ -301,15 +271,11 @@ class BuyerController extends Controller
 
 
 
-
-    // Retrieve the category IDs associated with the store ID
     $category_ids = Category::where('store_id', $store_id)->pluck('id');
     $categories = Category::whereIn('id', $category_ids)->get();
 
-    // Apply category filter based on the retrieved category IDs
     $products->whereIn('cat_id', $category_ids)->where('is_event_item', 0);
 
-    // Apply other filters if provided
     if(!empty($_GET['sortBy'])){
         if($_GET['sortBy'] == 'title'){
             $products->where('status', 'active')->orderBy('title', 'ASC');
@@ -324,24 +290,20 @@ class BuyerController extends Controller
         $products->whereBetween('price', $price);
     }
 
-    // Retrieve recent products
     $recent_products = Product::where('status', 'active')->where('is_event_item', 0)->orderBy('id', 'DESC')->limit(3)->get();
 
-    // Paginate the results
     if(!empty($_GET['show'])){
         $products = $products->where('status', 'active')->paginate($_GET['show']);
     } else {
         $products = $products->where('status', 'active')->paginate(6);
     }
 
-    // Return the view with the products
     return view('Buyers.pages.product-lists')
     ->with('selectedCurrency', $selectedCurrency)
     ->with("selectedCurrencySign",$selectedCurrencySign)
     ->with('products', $products)->with('recent_products', $recent_products)->with("categories",$categories);
 }
 public function productFilter(Request $request){
-    //$store_id = Memory::findOrFail(1)->storeId;
     $store_id = Memory::where('storeId', '>', 0)
                    ->where('userId', auth()->id())
                    ->orderBy('id', 'desc')
@@ -395,8 +357,6 @@ $categories = Category::whereIn('id', $category_ids)->get();
 
 
 public function productSearch(Request $request){
-    // Retrieve the store ID from the session
-    //$store_id = Memory::findOrFail(1)->storeId;
     $store_id = Memory::where('storeId', '>', 0)
                    ->where('userId', auth()->id())
                    ->orderBy('id', 'desc')
@@ -406,32 +366,29 @@ public function productSearch(Request $request){
     $selectedCurrencySign = "";
     switch ($selectedCurrency) {
         case 'LBP':
-            $selectedCurrencySign = 'L.L '; // Assign the currency sign for LBP
+            $selectedCurrencySign = 'L.L ';
             break;
         case 'USD':
-            $selectedCurrencySign = '$ '; // Assign the currency sign for USD
+            $selectedCurrencySign = '$ '; 
             break;
         case 'EUR':
-            $selectedCurrencySign = '€ '; // Assign the currency sign for EUR
+            $selectedCurrencySign = '€ '; 
             break;
         case 'KWD':
-            $selectedCurrencySign = 'KWD '; // Assign the currency sign for KWD
+            $selectedCurrencySign = 'KWD ';
             break;
-        // Add more cases for other currencies if needed
         default:
-            $selectedCurrencySign = ''; // Default value if no currency is selected
+            $selectedCurrencySign = ''; 
     }
 
 
 
 
-    // Retrieve category IDs associated with the store ID
     $category_ids = Category::where('store_id', $store_id)
     ->where('status', 'active')
     ->where('is_parent', 1)
     ->pluck('id');
 
-    // Retrieve recent products for display
     $recent_products = Product::whereIn('cat_id', $category_ids)
                                ->where('is_event_item', 0)
                                ->where('status', 'active')
@@ -439,7 +396,6 @@ public function productSearch(Request $request){
                                ->limit(3)
                                ->get();
 
-                               // Search for products with the given search query and associated with the categories of the store
                                $products = Product::whereIn('cat_id', $category_ids)
                        ->where('is_event_item', 0)
                        ->where('status', 'active')
@@ -455,7 +411,6 @@ public function productSearch(Request $request){
 
                        $categories = Category::whereIn('id', $category_ids)->get();
 
-    // Return the view with the search results and recent products
     return view('Buyers.pages.product-grids')
     ->with('selectedCurrency', $selectedCurrency)
     ->with("selectedCurrencySign",$selectedCurrencySign)
@@ -465,30 +420,27 @@ public function productSearch(Request $request){
 
 
 public function productCat(Request $request){
-  // Retrieve the current store ID from the request
   $current_store_id = $request->id;
   $selectedCurrency = Cache::get('selected_currency_' . auth()->id());
   $selectedCurrencySign = "";
   switch ($selectedCurrency) {
       case 'LBP':
-          $selectedCurrencySign = 'L.L '; // Assign the currency sign for LBP
+          $selectedCurrencySign = 'L.L '; 
           break;
       case 'USD':
-          $selectedCurrencySign = '$ '; // Assign the currency sign for USD
+          $selectedCurrencySign = '$ '; 
           break;
       case 'EUR':
-          $selectedCurrencySign = '€ '; // Assign the currency sign for EUR
+          $selectedCurrencySign = '€ '; 
           break;
       case 'KWD':
-          $selectedCurrencySign = 'KWD '; // Assign the currency sign for KWD
+          $selectedCurrencySign = 'KWD '; 
           break;
-      // Add more cases for other currencies if needed
       default:
-          $selectedCurrencySign = ''; // Default value if no currency is selected
+          $selectedCurrencySign = ''; 
   }
 
 
-  // Retrieve products associated with the category slug and store ID
   $products = Category::where('slug', $request->slug)
   ->where('store_id', $current_store_id)
   ->firstOrFail()
@@ -497,17 +449,14 @@ public function productCat(Request $request){
   ->orderBy('id', 'DESC')
   ->get();
 
-  // Retrieve recent products
   $recent_products = Product::where('status', 'active')
   ->where('is_event_item', 0)
   ->orderBy('id', 'DESC')
   ->limit(3)
   ->get();
 
-  // Determine which view to return based on the request URL
   $view = request()->is('e-shop.loc/product-grids') ? 'Buyers.pages.product-grids' : 'Buyers.pages.product-lists';
 
-  // Pass the retrieved products and recent products to the view
   return view($view)
   ->with('selectedCurrency', $selectedCurrency)
   ->with("selectedCurrencySign",$selectedCurrencySign)
@@ -516,30 +465,27 @@ public function productCat(Request $request){
 }
 
 public function productSubCat(Request $request){
-  // Retrieve the current store ID from the request
   $current_store_id = $request->id;
   $selectedCurrency = Cache::get('selected_currency_' . auth()->id());
   $selectedCurrencySign = "";
   switch ($selectedCurrency) {
       case 'LBP':
-          $selectedCurrencySign = 'L.L '; // Assign the currency sign for LBP
+          $selectedCurrencySign = 'L.L '; 
           break;
       case 'USD':
-          $selectedCurrencySign = '$ '; // Assign the currency sign for USD
+          $selectedCurrencySign = '$ '; 
           break;
       case 'EUR':
-          $selectedCurrencySign = '€ '; // Assign the currency sign for EUR
+          $selectedCurrencySign = '€ '; 
           break;
       case 'KWD':
-          $selectedCurrencySign = 'KWD '; // Assign the currency sign for KWD
+          $selectedCurrencySign = 'KWD '; 
           break;
-      // Add more cases for other currencies if needed
       default:
-          $selectedCurrencySign = ''; // Default value if no currency is selected
+          $selectedCurrencySign = ''; 
   }
 
 
-  // Retrieve products associated with the subcategory slug and store ID
   $products = Category::where('slug', $request->sub_slug)
   ->where('store_id', $current_store_id)
   ->firstOrFail()
@@ -548,17 +494,14 @@ public function productSubCat(Request $request){
   ->orderBy('id', 'DESC')
   ->get();
 
-  // Retrieve recent products
   $recent_products = Product::where('status', 'active')
   ->where('is_event_item', 0)
   ->orderBy('id', 'DESC')
   ->limit(3)
   ->get();
 
-  // Determine which view to return based on the request URL
   $view = request()->is('e-shop.loc/product-grids') ? 'Buyers.product-grids' : 'Buyers.pages.product-lists';
 
-  // Pass the retrieved products and recent products to the view
   return view($view)
             ->with('selectedCurrency', $selectedCurrency)
             ->with("selectedCurrencySign",$selectedCurrencySign)

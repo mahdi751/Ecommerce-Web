@@ -24,7 +24,6 @@ class SubscriberController extends Controller
         foreach ($subscribers as $subscriber) {
             Log::info('email sent from store to: ' . $subscriber->email);
             $user = User::where('email', $subscriber->email)->first();
-            //dd($user);
             $emailContent = "Hello {$user->name}\n\n";
             $emailContent .= "We're excited to inform you about a new event for bidding that has just been added!\n\n";
             $emailContent .= "Visit our website to participate in the bidding and seize the opportunity!\n\n";
