@@ -63,12 +63,13 @@
                         <button type="button" class=" btn-sold" disabled>
                           Item Sold</button>
 
-                        <div class="bid-message-container">
-                          <div id="bidMessage_{{ $product->id }}" class="bid-message">New bid placed!</div>
-                        </div>
+
 
                       </div>
                     @endif
+                    <div class="bid-message-container">
+                      <div id="bidMessage_{{ $product->id }}" class="bid-message">New bid placed!</div>
+                    </div>
 
                   </div>
                 </div>

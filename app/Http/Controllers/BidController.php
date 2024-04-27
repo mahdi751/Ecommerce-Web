@@ -50,7 +50,7 @@ if( ( $product->bid_status == 'closed')) {
 $minimumBidAmount = ($product->highestBid->bid ?? $product->starting_bid_price) + $product->minimum_bid_increment;
 
 // Ensure the bid amount is higher than the minimum bid amount
-if( ($request->bid <= $minimumBidAmount) && ($request->bid < $product->closing_bid)) {
+if( ($request->bid < $minimumBidAmount) && ($request->bid < $product->closing_bid)) {
     return response()->json(['error' => 'Your bid must be higher than the current highest bid plus the minimum bid increment'], 422);
 }
 
