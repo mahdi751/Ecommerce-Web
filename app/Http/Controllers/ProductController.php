@@ -48,7 +48,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        // return $request->all();
+       
         $this->validateProduct($request);
 
         $data=$request->all();
@@ -107,20 +107,20 @@ class ProductController extends Controller
         $selectedCurrencySign = "";
         switch ($selectedCurrency) {
             case 'LBP':
-                $selectedCurrencySign = 'L.L '; // Assign the currency sign for LBP
+                $selectedCurrencySign = 'L.L '; 
                 break;
             case 'USD':
-                $selectedCurrencySign = '$ '; // Assign the currency sign for USD
+                $selectedCurrencySign = '$ ';
                 break;
             case 'EUR':
-                $selectedCurrencySign = '€ '; // Assign the currency sign for EUR
+                $selectedCurrencySign = '€ '; 
                 break;
             case 'KWD':
-                $selectedCurrencySign = 'KWD '; // Assign the currency sign for KWD
+                $selectedCurrencySign = 'KWD '; 
                 break;
-            // Add more cases for other currencies if needed
+          
             default:
-                $selectedCurrencySign = ''; // Default value if no currency is selected
+                $selectedCurrencySign = ''; 
         }
         if($selectedCurrency == null){
             $selectedCurrency = "USD";

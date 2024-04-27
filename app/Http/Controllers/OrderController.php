@@ -225,7 +225,6 @@ class OrderController extends Controller
             $order_data['payment_status']='unpaid';
         }
 
-        // Notification::send($users, new StatusNotification($details));
 
 
 
@@ -316,11 +315,9 @@ class OrderController extends Controller
             'status'=>'required|in:new,process,delivered,cancel'
         ]);
         $data=$request->all();
-        // return $request->status;
         if($request->status=='delivered'){
             foreach($order->cart as $cart){
                 $product=$cart->product;
-                // return $product;
                 $product->stock -=$cart->quantity;
                 $product->save();
             }
@@ -365,7 +362,6 @@ class OrderController extends Controller
     }
 
     public function productTrackOrder(Request $request){
-        // return $request->all();
         $order=Order::where('user_id',auth()->user()->id)->where('order_number',$request->order_number)->first();
         if($order){
             if($order->status=="new"){
@@ -395,16 +391,12 @@ class OrderController extends Controller
         }
     }
 
-    // PDF generate
     public function pdf(Request $request){
         $order=Order::getAllOrder($request->id);
-        // return $order;
         $file_name=$order->order_number.'-'.$order->first_name.'.pdf';
-        // return $file_name;
         $pdf=PDF::loadview('Sellers.order.pdf',compact('order'));
         return $pdf->download($file_name);
     }
-    // Income chart
     public function incomeChart(Request $request){
         $year=\Carbon\Carbon::now()->year;
         // dd($year);
@@ -412,14 +404,11 @@ class OrderController extends Controller
             ->groupBy(function($d){
                 return \Carbon\Carbon::parse($d->created_at)->format('m');
             });
-            // dd($items);
         $result=[];
         foreach($items as $month=>$item_collections){
             foreach($item_collections as $item){
                 $amount=$item->cart_info->sum('amount');
-                // dd($amount);
                 $m=intval($month);
-                // return $m;
                 isset($result[$m]) ? $result[$m] += $amount :$result[$m]=$amount;
             }
         }
